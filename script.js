@@ -128,7 +128,10 @@ function showDetails(year, hwCase, car) {
 // Add to wanted list
 function addWantedCar(carObj) {
   let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-  const exists = wanted.some(w => w.car.name === carObj.car.name && w.year === carObj.year && w.caseLetter === carObj.caseLetter);
+
+  // Check uniqueness based on image URL
+  const exists = wanted.some(w => w.car.image === carObj.car.image);
+
   if (!exists) {
     wanted.push(carObj);
     localStorage.setItem('wantedCars', JSON.stringify(wanted));
@@ -137,6 +140,7 @@ function addWantedCar(carObj) {
     alert(`${carObj.car.name} is already in Wanted Cars.`);
   }
 }
+
 
 // Show all cars from same case
 showAllBtn.addEventListener('click', () => {
