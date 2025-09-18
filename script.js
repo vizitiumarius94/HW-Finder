@@ -15,6 +15,10 @@ const allCarsDiv = document.getElementById('allCars');
 const popupClose = document.getElementById('popupClose');
 const wantedPageBtn = document.getElementById('wantedPageBtn');
 
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+
 let currentYear = null;
 let currentCase = null;
 
@@ -23,12 +27,48 @@ wantedPageBtn.addEventListener('click', () => {
   window.location.href = 'wanted.html';
 });
 
-// Search bar input
+// Export wanted cars
+exportBtn.addEventListener('click', () => {
+  const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+  if (wanted.length === 0) { alert("No cars in Wanted list!"); return; }
+  const blob = new Blob([JSON.stringify(wanted, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "wanted_cars.json";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Import wanted cars
+importBtn.addEventListener('click', () => importFile.click());
+importFile.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      const imported = JSON.parse(evt.target.result);
+      if (!Array.isArray(imported)) throw new Error("Invalid format");
+      let existing = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+      imported.forEach(item => {
+        const exists = existing.some(w => w.car.name === item.car.name && w.year === item.year && w.caseLetter === item.caseLetter);
+        if (!exists) existing.push(item);
+      });
+      localStorage.setItem('wantedCars', JSON.stringify(existing));
+      alert("Wanted Cars imported successfully!");
+    } catch (err) {
+      alert("Failed to import: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+// Search bar
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.toLowerCase();
   resultsDiv.innerHTML = '';
-
-  if (query.length === 0) return;
+  if (!query) return;
 
   for (const year in carsData) {
     carsData[year].cases.forEach(hwCase => {
@@ -41,15 +81,14 @@ searchBar.addEventListener('input', () => {
             <p>${car.name}</p>
             <button class="add-btn">+ Wanted</button>
           `;
-          // Open popup when clicking on image or name
+          // Open popup on image/name
           card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
           card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
           // Add to wanted
-          card.querySelector('.add-btn').addEventListener('click', (e) => {
-            e.stopPropagation(); // prevent opening popup
+          card.querySelector('.add-btn').addEventListener('click', e => {
+            e.stopPropagation();
             addWantedCar({ year, caseLetter: hwCase.letter, car });
           });
-
           resultsDiv.appendChild(card);
         }
       });
@@ -57,7 +96,7 @@ searchBar.addEventListener('input', () => {
   }
 });
 
-// Show popup details
+// Show popup
 function showDetails(year, hwCase, car) {
   currentYear = year;
   currentCase = hwCase;
@@ -83,20 +122,13 @@ function showDetails(year, hwCase, car) {
   allCarsDiv.innerHTML = '';
   popup.style.display = 'block';
   document.body.classList.add('popup-open');
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Add car to wanted list in localStorage
+// Add to wanted list
 function addWantedCar(carObj) {
   let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-
-  const exists = wanted.some(
-    w => w.car.name === carObj.car.name &&
-         w.year === carObj.year &&
-         w.caseLetter === carObj.caseLetter
-  );
-
+  const exists = wanted.some(w => w.car.name === carObj.car.name && w.year === carObj.year && w.caseLetter === carObj.caseLetter);
   if (!exists) {
     wanted.push(carObj);
     localStorage.setItem('wantedCars', JSON.stringify(wanted));
@@ -106,12 +138,11 @@ function addWantedCar(carObj) {
   }
 }
 
-// Show all cars from same year/case
+// Show all cars from same case
 showAllBtn.addEventListener('click', () => {
   if (!currentYear || !currentCase) return;
 
   allCarsDiv.innerHTML = `<h3>All Cars from ${currentYear} - Case ${currentCase.letter}</h3>`;
-
   currentCase.cars.forEach(car => {
     const div = document.createElement('div');
     div.classList.add('car-item');
@@ -120,26 +151,21 @@ showAllBtn.addEventListener('click', () => {
       <p>${car.name}</p>
       <button class="add-btn-small">+ Wanted</button>
     `;
-    // Show popup if image or name clicked
     div.querySelector('img').addEventListener('click', () => showDetails(currentYear, currentCase, car));
     div.querySelector('p').addEventListener('click', () => showDetails(currentYear, currentCase, car));
-    // Add to wanted
-    div.querySelector('.add-btn-small').addEventListener('click', (e) => {
+    div.querySelector('.add-btn-small').addEventListener('click', e => {
       e.stopPropagation();
       addWantedCar({ year: currentYear, caseLetter: currentCase.letter, car });
     });
-
     allCarsDiv.appendChild(div);
   });
 });
 
-// Close popup button
+// Close popup
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
   document.body.classList.remove('popup-open');
 });
-
-// Close popup when clicking outside
 window.addEventListener('click', e => {
   if (e.target === popup) {
     popup.style.display = 'none';
