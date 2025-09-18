@@ -11,8 +11,18 @@
     <h1>Hot Wheels Case Finder</h1>
     <input type="text" id="searchBar" placeholder="Search for a car...">
     <div id="results" class="results-grid"></div>
-    <div id="details" class="details"></div>
   </div>
+
+  <!-- Popup Modal -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span id="popupClose" class="popup-close">&times;</span>
+      <div id="details"></div>
+      <button id="showAllBtn">Show All Cars from this Year & Case</button>
+      <div id="allCars"></div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
