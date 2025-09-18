@@ -8,8 +8,10 @@ body {
 
 .container {
   max-width: 900px;
+  width: 95%;
   margin: auto;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -22,6 +24,7 @@ h1 {
   padding: 10px;
   font-size: 18px;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 /* Search results grid */
@@ -65,10 +68,11 @@ h1 {
 .popup-content {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  max-height: 85%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 500px;
+  max-height: 90%;
   background: #fff;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -76,21 +80,19 @@ h1 {
   overflow-y: auto;
   box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
   animation: slideUp 0.3s ease;
+  box-sizing: border-box;
 }
 
+/* Close button fixed so always visible */
 .popup-close {
-  position: fixed; /* fixed to viewport */
-  top: 10px;
-  right: 20px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
   font-size: 28px;
   font-weight: bold;
   color: #333;
   cursor: pointer;
   z-index: 1001;
-}
-
-.popup-close:hover {
-  color: #d00;
 }
 
 /* Car details */
