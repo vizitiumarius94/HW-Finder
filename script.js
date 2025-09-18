@@ -36,8 +36,20 @@ searchBar.addEventListener('input', () => {
         if (car.name.toLowerCase().includes(query)) {
           const card = document.createElement('div');
           card.classList.add('result-card');
-          card.innerHTML = `<img src="${car.image}" alt="${car.name}"><p>${car.name}</p>`;
-          card.addEventListener('click', () => showDetails(year, hwCase, car));
+          card.innerHTML = `
+            <img src="${car.image}" alt="${car.name}">
+            <p>${car.name}</p>
+            <button class="add-btn">+ Wanted</button>
+          `;
+          // Open popup when clicking on image or name
+          card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
+          card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
+          // Add to wanted
+          card.querySelector('.add-btn').addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent opening popup
+            addWantedCar({ year, caseLetter: hwCase.letter, car });
+          });
+
           resultsDiv.appendChild(card);
         }
       });
@@ -103,8 +115,20 @@ showAllBtn.addEventListener('click', () => {
   currentCase.cars.forEach(car => {
     const div = document.createElement('div');
     div.classList.add('car-item');
-    div.innerHTML = `<img src="${car.image}" alt="${car.name}"><p>${car.name}</p>`;
-    div.addEventListener('click', () => showDetails(currentYear, currentCase, car));
+    div.innerHTML = `
+      <img src="${car.image}" alt="${car.name}">
+      <p>${car.name}</p>
+      <button class="add-btn-small">+ Wanted</button>
+    `;
+    // Show popup if image or name clicked
+    div.querySelector('img').addEventListener('click', () => showDetails(currentYear, currentCase, car));
+    div.querySelector('p').addEventListener('click', () => showDetails(currentYear, currentCase, car));
+    // Add to wanted
+    div.querySelector('.add-btn-small').addEventListener('click', (e) => {
+      e.stopPropagation();
+      addWantedCar({ year: currentYear, caseLetter: currentCase.letter, car });
+    });
+
     allCarsDiv.appendChild(div);
   });
 });
