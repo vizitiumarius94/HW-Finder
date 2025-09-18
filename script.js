@@ -53,7 +53,12 @@ function showDetails(year, hwCase, car) {
     <h3>Super Treasure Hunt:</h3>
     <p>${hwCase.sth.name}</p>
     <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
+    <button id="addWantedBtn">+ Add to Wanted</button>
   `;
+
+  document.getElementById('addWantedBtn').addEventListener('click', () => {
+    addWantedCar({ year, caseLetter: hwCase.letter, car });
+  });
 
   allCarsDiv.innerHTML = '';
   popup.style.display = 'block';
@@ -63,6 +68,25 @@ function showDetails(year, hwCase, car) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function addWantedCar(carObj) {
+  let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+
+  const exists = wanted.some(
+    w => w.car.name === carObj.car.name &&
+         w.year === carObj.year &&
+         w.caseLetter === carObj.caseLetter
+  );
+
+  if (!exists) {
+    wanted.push(carObj);
+    localStorage.setItem('wantedCars', JSON.stringify(wanted));
+    alert(`${carObj.car.name} added to Wanted Cars!`);
+  } else {
+    alert(`${carObj.car.name} is already in Wanted Cars.`);
+  }
+}
+
+// Show all cars from the same year/case inside popup
 showAllBtn.addEventListener('click', () => {
   if (!currentYear || !currentCase) return;
 
@@ -72,19 +96,19 @@ showAllBtn.addEventListener('click', () => {
     const div = document.createElement('div');
     div.classList.add('car-item');
     div.innerHTML = `<img src="${car.image}" alt="${car.name}"><p>${car.name}</p>`;
-    div.addEventListener('click', () => showDetails(currentYear, currentCase, car)); // clickable
+    div.addEventListener('click', () => showDetails(currentYear, currentCase, car));
     allCarsDiv.appendChild(div);
   });
 });
 
-// Close popup
+// Close popup with button
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
   document.body.classList.remove('popup-open');
 });
 
 // Close popup if clicking outside content
-window.addEventListener('click', (e) => {
+window.addEventListener('click', e => {
   if (e.target === popup) {
     popup.style.display = 'none';
     document.body.classList.remove('popup-open');
