@@ -52,7 +52,7 @@ importFile.addEventListener('change', (e) => {
       if (!Array.isArray(imported)) throw new Error("Invalid format");
       let existing = JSON.parse(localStorage.getItem('wantedCars') || '[]');
       imported.forEach(item => {
-        const exists = existing.some(w => w.car.name === item.car.name && w.year === item.year && w.caseLetter === item.caseLetter);
+        const exists = existing.some(w => w.car.image === item.car.image);
         if (!exists) existing.push(item);
       });
       localStorage.setItem('wantedCars', JSON.stringify(existing));
@@ -64,7 +64,21 @@ importFile.addEventListener('change', (e) => {
   reader.readAsText(file);
 });
 
-// Search bar
+// Add to Wanted list
+function addWantedCar(carObj) {
+  let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+  const exists = wanted.some(w => w.car.image === carObj.car.image);
+  if (!exists) {
+    wanted.push(carObj);
+    localStorage.setItem('wantedCars', JSON.stringify(wanted));
+    alert(`${carObj.car.name} added to Wanted Cars!`);
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Search bar input
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.toLowerCase();
   resultsDiv.innerHTML = '';
@@ -81,14 +95,23 @@ searchBar.addEventListener('input', () => {
             <p>${car.name}</p>
             <button class="add-btn">+ Wanted</button>
           `;
-          // Open popup on image/name
+
+          // Open popup on image or name click
           card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
           card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
-          // Add to wanted
-          card.querySelector('.add-btn').addEventListener('click', e => {
-            e.stopPropagation();
-            addWantedCar({ year, caseLetter: hwCase.letter, car });
-          });
+
+          // Add to wanted button
+          const btn = card.querySelector('.add-btn');
+          if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
+            btn.style.display = 'none';
+          } else {
+            btn.addEventListener('click', e => {
+              e.stopPropagation();
+              addWantedCar({ year, caseLetter: hwCase.letter, car });
+              btn.style.display = 'none';
+            });
+          }
+
           resultsDiv.appendChild(card);
         }
       });
@@ -96,7 +119,7 @@ searchBar.addEventListener('input', () => {
   }
 });
 
-// Show popup
+// Show popup details
 function showDetails(year, hwCase, car) {
   currentYear = year;
   currentCase = hwCase;
@@ -115,9 +138,15 @@ function showDetails(year, hwCase, car) {
     <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
   `;
 
-  document.getElementById('addWantedBtn').addEventListener('click', () => {
-    addWantedCar({ year, caseLetter: hwCase.letter, car });
-  });
+  const popupBtn = document.getElementById('addWantedBtn');
+  if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
+    popupBtn.style.display = 'none';
+  } else {
+    popupBtn.addEventListener('click', () => {
+      addWantedCar({ year, caseLetter: hwCase.letter, car });
+      popupBtn.style.display = 'none';
+    });
+  }
 
   allCarsDiv.innerHTML = '';
   popup.style.display = 'block';
@@ -125,24 +154,7 @@ function showDetails(year, hwCase, car) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Add to wanted list
-function addWantedCar(carObj) {
-  let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-
-  // Check uniqueness based on image URL
-  const exists = wanted.some(w => w.car.image === carObj.car.image);
-
-  if (!exists) {
-    wanted.push(carObj);
-    localStorage.setItem('wantedCars', JSON.stringify(wanted));
-    alert(`${carObj.car.name} added to Wanted Cars!`);
-  } else {
-    alert(`${carObj.car.name} is already in Wanted Cars.`);
-  }
-}
-
-
-// Show all cars from same case
+// Show all cars from the same case
 showAllBtn.addEventListener('click', () => {
   if (!currentYear || !currentCase) return;
 
@@ -155,12 +167,21 @@ showAllBtn.addEventListener('click', () => {
       <p>${car.name}</p>
       <button class="add-btn-small">+ Wanted</button>
     `;
+
     div.querySelector('img').addEventListener('click', () => showDetails(currentYear, currentCase, car));
     div.querySelector('p').addEventListener('click', () => showDetails(currentYear, currentCase, car));
-    div.querySelector('.add-btn-small').addEventListener('click', e => {
-      e.stopPropagation();
-      addWantedCar({ year: currentYear, caseLetter: currentCase.letter, car });
-    });
+
+    const gridBtn = div.querySelector('.add-btn-small');
+    if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
+      gridBtn.style.display = 'none';
+    } else {
+      gridBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        addWantedCar({ year: currentYear, caseLetter: currentCase.letter, car });
+        gridBtn.style.display = 'none';
+      });
+    }
+
     allCarsDiv.appendChild(div);
   });
 });
