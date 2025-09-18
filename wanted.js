@@ -1,34 +1,41 @@
 const wantedListDiv = document.getElementById('wantedList');
-const clearBtn = document.getElementById('clearWanted');
+const backBtn = document.getElementById('backBtn');
 
-// Load wanted cars from localStorage
+backBtn.addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+
+// Load wanted cars
 function loadWantedCars() {
   const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
   wantedListDiv.innerHTML = '';
 
-  if (wanted.length === 0) {
-    wantedListDiv.innerHTML = '<p>No wanted cars yet.</p>';
+  if (!wanted.length) {
+    wantedListDiv.innerHTML = '<p>No cars in your Wanted list yet.</p>';
     return;
   }
 
-  wanted.forEach(item => {
-    const div = document.createElement('div');
-    div.classList.add('result-card');
-    div.innerHTML = `
+  wanted.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.classList.add('result-card');
+    card.innerHTML = `
       <img src="${item.car.image}" alt="${item.car.name}">
       <p>${item.car.name}</p>
-      <small>${item.year} - Case ${item.caseLetter}</small>
+      <p><strong>Year:</strong> ${item.year}</p>
+      <p><strong>Case:</strong> ${item.caseLetter}</p>
+      <button class="remove-btn">Remove</button>
     `;
-    wantedListDiv.appendChild(div);
+
+    // Remove from Wanted
+    card.querySelector('.remove-btn').addEventListener('click', () => {
+      let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+      wanted = wanted.filter(w => w.car.image !== item.car.image);
+      localStorage.setItem('wantedCars', JSON.stringify(wanted));
+      loadWantedCars(); // refresh list
+    });
+
+    wantedListDiv.appendChild(card);
   });
 }
-
-// Clear all wanted cars
-clearBtn.addEventListener('click', () => {
-  if (confirm('Are you sure you want to clear all wanted cars?')) {
-    localStorage.removeItem('wantedCars');
-    loadWantedCars();
-  }
-});
 
 loadWantedCars();
