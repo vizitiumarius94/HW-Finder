@@ -13,10 +13,17 @@ const detailsDiv = document.getElementById('details');
 const showAllBtn = document.getElementById('showAllBtn');
 const allCarsDiv = document.getElementById('allCars');
 const popupClose = document.getElementById('popupClose');
+const wantedPageBtn = document.getElementById('wantedPageBtn');
 
 let currentYear = null;
 let currentCase = null;
 
+// Redirect to Wanted Cars page
+wantedPageBtn.addEventListener('click', () => {
+  window.location.href = 'wanted.html';
+});
+
+// Search bar input
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.toLowerCase();
   resultsDiv.innerHTML = '';
@@ -38,6 +45,7 @@ searchBar.addEventListener('input', () => {
   }
 });
 
+// Show popup details
 function showDetails(year, hwCase, car) {
   currentYear = year;
   currentCase = hwCase;
@@ -53,7 +61,7 @@ function showDetails(year, hwCase, car) {
     <h3>Super Treasure Hunt:</h3>
     <p>${hwCase.sth.name}</p>
     <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
-    <button id="addWantedBtn">+ Add to Wanted</button>
+    <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
   `;
 
   document.getElementById('addWantedBtn').addEventListener('click', () => {
@@ -64,10 +72,10 @@ function showDetails(year, hwCase, car) {
   popup.style.display = 'block';
   document.body.classList.add('popup-open');
 
-  // Auto-scroll to top so popup is visible
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Add car to wanted list in localStorage
 function addWantedCar(carObj) {
   let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 
@@ -86,7 +94,7 @@ function addWantedCar(carObj) {
   }
 }
 
-// Show all cars from the same year/case inside popup
+// Show all cars from same year/case
 showAllBtn.addEventListener('click', () => {
   if (!currentYear || !currentCase) return;
 
@@ -101,13 +109,13 @@ showAllBtn.addEventListener('click', () => {
   });
 });
 
-// Close popup with button
+// Close popup button
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
   document.body.classList.remove('popup-open');
 });
 
-// Close popup if clicking outside content
+// Close popup when clicking outside
 window.addEventListener('click', e => {
   if (e.target === popup) {
     popup.style.display = 'none';
