@@ -84,49 +84,57 @@ searchBar.addEventListener('input', () => {
   resultsDiv.innerHTML = '';
   if (!query) return;
 
-  const queryParts = query.split(/\s+/); // split by space
+  let searchYear = null;
+  let searchCase = null;
+  let searchName = null;
+
+  const yearCaseMatch = query.match(/^(\d{4})([a-z])$/i); // matches 2025a
+  if (yearCaseMatch) {
+    searchYear = yearCaseMatch[1];
+    searchCase = yearCaseMatch[2];
+  } else if (/^\d{4}$/.test(query)) { // only a year like 2025
+    searchYear = query;
+  } else {
+    searchName = query;
+  }
 
   for (const year in carsData) {
+    if (searchYear && year !== searchYear) continue; // filter by year if specified
+
     carsData[year].cases.forEach(hwCase => {
+      if (searchCase && hwCase.letter.toLowerCase() !== searchCase) return; // filter by case
+
       hwCase.cars.forEach(car => {
-        // Check each query part
-        const matchesAll = queryParts.every(part => {
-          return car.name.toLowerCase().includes(part) ||
-                 year.includes(part) ||
-                 hwCase.letter.toLowerCase() === part;
-        });
+        if (searchName && !car.name.toLowerCase().includes(searchName)) return; // filter by name
 
-        if (matchesAll) {
-          const card = document.createElement('div');
-          card.classList.add('result-card');
-          card.innerHTML = `
-            <img src="${car.image}" alt="${car.name}">
-            <p>${car.name}</p>
-            <button class="add-btn">+ Wanted</button>
-          `;
+        const card = document.createElement('div');
+        card.classList.add('result-card');
+        card.innerHTML = `
+          <img src="${car.image}" alt="${car.name}">
+          <p>${car.name}</p>
+          <button class="add-btn">+ Wanted</button>
+        `;
 
-          // Popup on click
-          card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
-          card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
+        card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
+        card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
 
-          // Add to wanted button
-          const btn = card.querySelector('.add-btn');
-          if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
+        const btn = card.querySelector('.add-btn');
+        if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
+          btn.style.display = 'none';
+        } else {
+          btn.addEventListener('click', e => {
+            e.stopPropagation();
+            addWantedCar({ year, caseLetter: hwCase.letter, car });
             btn.style.display = 'none';
-          } else {
-            btn.addEventListener('click', e => {
-              e.stopPropagation();
-              addWantedCar({ year, caseLetter: hwCase.letter, car });
-              btn.style.display = 'none';
-            });
-          }
-
-          resultsDiv.appendChild(card);
+          });
         }
+
+        resultsDiv.appendChild(card);
       });
     });
   }
 });
+
 
 
 // Show popup details
