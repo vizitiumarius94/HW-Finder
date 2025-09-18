@@ -55,8 +55,12 @@ function showDetails(year, hwCase, car) {
     <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
   `;
 
-  allCarsDiv.innerHTML = ''; // reset extra list
+  allCarsDiv.innerHTML = '';
   popup.style.display = 'block';
+  document.body.classList.add('popup-open');
+
+  // Auto-scroll to top so popup is visible
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 showAllBtn.addEventListener('click', () => {
@@ -68,6 +72,7 @@ showAllBtn.addEventListener('click', () => {
     const div = document.createElement('div');
     div.classList.add('car-item');
     div.innerHTML = `<img src="${car.image}" alt="${car.name}"><p>${car.name}</p>`;
+    div.addEventListener('click', () => showDetails(currentYear, currentCase, car)); // clickable
     allCarsDiv.appendChild(div);
   });
 });
@@ -75,11 +80,13 @@ showAllBtn.addEventListener('click', () => {
 // Close popup
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
+  document.body.classList.remove('popup-open');
 });
 
 // Close popup if clicking outside content
 window.addEventListener('click', (e) => {
   if (e.target === popup) {
     popup.style.display = 'none';
+    document.body.classList.remove('popup-open');
   }
 });
