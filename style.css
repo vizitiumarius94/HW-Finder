@@ -1,62 +1,95 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-#searchBar {
+/* Popup overlay */
+.popup {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
   width: 100%;
-  padding: 10px;
-  font-size: 18px;
-  margin-bottom: 20px;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.6);
 }
 
-.results-grid {
+/* Popup content box */
+.popup-content {
+  background: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 700px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Close button */
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.popup-close:hover {
+  color: #d00;
+}
+
+/* Car details inside popup */
+#details {
+  margin-bottom: 20px;
+}
+#details img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+/* Button for showing all cars */
+#showAllBtn {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 15px;
+}
+#showAllBtn:hover {
+  background: #0056b3;
+}
+
+/* Grid for all cars from same case */
+#allCars {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 15px;
 }
-
-.result-card {
-  background: #fff;
-  padding: 10px;
-  border-radius: 8px;
+#allCars .car-item {
+  background: #f8f8f8;
+  padding: 8px;
+  border-radius: 6px;
   text-align: center;
-  cursor: pointer;
-  transition: 0.3s;
 }
-
-.result-card img {
+#allCars .car-item img {
   width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-radius: 4px;
+}
+#allCars .car-item p {
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-.result-card:hover {
-  background: #f0f0f0;
-}
-
-.details {
-  margin-top: 30px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.details img {
-  max-width: 200px;
-  display: block;
-  margin-bottom: 10px;
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
 }
