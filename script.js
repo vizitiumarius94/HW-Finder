@@ -12,6 +12,7 @@ const showAllBtn = document.getElementById('showAllBtn');
 const allCarsDiv = document.getElementById('allCars');
 const popupClose = document.getElementById('popupClose');
 const wantedPageBtn = document.getElementById('wantedPageBtn');
+const seriesPageBtn = document.getElementById('seriesPageBtn');
 
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
@@ -23,6 +24,11 @@ let currentCase = null;
 // Redirect to Wanted Cars page
 wantedPageBtn.addEventListener('click', () => {
   window.location.href = 'wanted.html';
+});
+
+//Redirect to series
+seriesPageBtn.addEventListener('click', () => {
+  window.location.href = 'series.html';
 });
 
 // Export wanted cars
