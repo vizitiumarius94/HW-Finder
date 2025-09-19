@@ -25,7 +25,8 @@ fetch('data.json')
 
 // Populate year dropdown
 function populateYearSelect() {
-  Object.keys(carsData).forEach(year => {
+  const years = Object.keys(carsData).sort();
+  years.forEach(year => {
     const option = document.createElement('option');
     option.value = year;
     option.textContent = year;
@@ -35,82 +36,97 @@ function populateYearSelect() {
 
 // When year changes, show series
 yearSelect.addEventListener('change', () => {
-  const year = yearSelect.value;
+  const selectedYear = yearSelect.value;
   seriesList.innerHTML = '';
-  if (!year) return;
+  if (!selectedYear) return;
 
   const seriesSet = new Set();
-  carsData[year].cases.forEach(hwCase => {
-    hwCase.cars.forEach(car => seriesSet.add(car.series));
-  });
+
+  if (selectedYear === 'all') {
+    // Loop through all years
+    Object.keys(carsData).forEach(year => {
+      carsData[year].cases.forEach(hwCase => {
+        hwCase.cars.forEach(car => seriesSet.add(car.series));
+      });
+    });
+  } else {
+    // Only selected year
+    carsData[selectedYear].cases.forEach(hwCase => {
+      hwCase.cars.forEach(car => seriesSet.add(car.series));
+    });
+  }
 
   Array.from(seriesSet).sort().forEach(seriesName => {
     const card = document.createElement('div');
     card.classList.add('result-card');
     card.innerHTML = `<div class="card-info"><h3>${seriesName}</h3></div>`;
-    card.addEventListener('click', () => showSeriesPopup(year, seriesName));
+    card.addEventListener('click', () => showSeriesPopup(selectedYear, seriesName));
     seriesList.appendChild(card);
   });
 });
 
 // Show popup with cars for selected series
-function showSeriesPopup(year, seriesName) {
-  seriesPopupTitle.textContent = `${seriesName} (${year})`;
+function showSeriesPopup(selectedYear, seriesName) {
+  seriesPopupTitle.textContent = `${seriesName} (${selectedYear === 'all' ? 'All Years' : selectedYear})`;
   seriesCarsGrid.innerHTML = '';
 
-  carsData[year].cases.forEach(hwCase => {
-    hwCase.cars
-      .filter(car => car.series === seriesName)
-      .forEach(car => {
-        const div = document.createElement('div');
-        div.classList.add('result-card');
+  const yearsToCheck = selectedYear === 'all' ? Object.keys(carsData) : [selectedYear];
 
-        let isOwned = ownedCars.some(o => o.car.image === car.image);
-        let isWanted = wantedCars.some(w => w.car.image === car.image);
+  yearsToCheck.forEach(year => {
+    carsData[year].cases.forEach(hwCase => {
+      hwCase.cars
+        .filter(car => car.series === seriesName)
+        .forEach(car => {
+          const div = document.createElement('div');
+          div.classList.add('result-card');
 
-        div.innerHTML = `
-          <img src="${car.image}" alt="${car.name}">
-          <div class="card-info">
-            <h4>${car.name}</h4>
-            <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
-            <p>Case: ${hwCase.letter}</p>
-            <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
-              ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
-            </button>
-            ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
-          </div>
-        `;
+          let isOwned = ownedCars.some(o => o.car.image === car.image);
+          let isWanted = wantedCars.some(w => w.car.image === car.image);
 
-        // Owned/unowned toggle
-        const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
-        ownedBtn.addEventListener('click', () => {
-          if (isOwned) {
-            ownedCars = ownedCars.filter(o => o.car.image !== car.image);
-            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-            ownedBtn.textContent = 'Mark Owned';
-            ownedBtn.className = 'owned-btn';
-            isOwned = false;
-          } else {
-            ownedCars.push({ year, caseLetter: hwCase.letter, car });
-            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-            ownedBtn.textContent = 'Unmark Owned';
-            ownedBtn.className = 'unowned-btn';
-            isOwned = true;
-          }
-        });
+          div.innerHTML = `
+            <img src="${car.image}" alt="${car.name}">
+            <div class="card-info">
+              <h4>${car.name}</h4>
+              <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
+              <p>Year: ${year} | Case: ${hwCase.letter}</p>
+              <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+                ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+              </button>
+              ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+            </div>
+          `;
 
-        // Add to wanted button
-        const addWantedBtn = div.querySelector('.add-wanted-btn');
-        if (addWantedBtn) {
-          addWantedBtn.addEventListener('click', () => {
-            wantedCars.push({ year, caseLetter: hwCase.letter, car });
-            localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-            addWantedBtn.style.display = 'none';
+          // Owned/unowned toggle
+          const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
+          ownedBtn.addEventListener('click', () => {
+            if (isOwned) {
+              ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+              ownedBtn.textContent = 'Mark Owned';
+              ownedBtn.className = 'owned-btn';
+              isOwned = false;
+            } else {
+              ownedCars.push({ year, caseLetter: hwCase.letter, car });
+              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+              ownedBtn.textContent = 'Unmark Owned';
+              ownedBtn.className = 'unowned-btn';
+              isOwned = true;
+            }
           });
-        }
 
-        seriesCarsGrid.appendChild(div);
-      });
+          // Add to wanted button
+          const addWantedBtn = div.querySelector('.add-wanted-btn');
+          if (addWantedBtn) {
+            addWantedBtn.addEventListener('click', () => {
+              wantedCars.push({ year, caseLetter: hwCase.letter, car });
+              localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+              addWantedBtn.style.display = 'none';
+            });
+          }
+
+          seriesCarsGrid.appendChild(div);
+        });
+    });
   });
 
   seriesPopup.style.display = 'block';
