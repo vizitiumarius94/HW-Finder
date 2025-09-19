@@ -65,6 +65,9 @@ function showDetails(year, hwCase, car) {
     </div>
   `;
 
+  allCarsDiv.innerHTML = ''; // Clear All Cars grid
+
+  // Add to wanted
   const addBtn = document.getElementById('addWantedBtn');
   if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
   else addBtn.addEventListener('click', () => {
@@ -73,43 +76,48 @@ function showDetails(year, hwCase, car) {
     addBtn.style.display = 'none';
   });
 
-  // All cars from case
-  allCarsDiv.innerHTML = '';
-  hwCase.cars.forEach(c => {
-    const div = document.createElement('div');
-    div.classList.add('car-item');
-    let isOwned = ownedCars.some(o => o.car.image === c.image);
+  // Show All Cars button
+  const showAllBtn = document.getElementById('showAllBtn');
+  showAllBtn.onclick = () => {
+    allCarsDiv.innerHTML = '';
+    hwCase.cars.forEach(c => {
+      const div = document.createElement('div');
+      div.classList.add('car-item');
+      let isOwned = ownedCars.some(o => o.car.image === c.image);
 
-    div.innerHTML = `
-      <img src="${c.image}" alt="${c.name}">
-      <div class="card-info">
-        <h4>${c.name}</h4>
-        <p>${c.series} (#${c.series_number})</p>
-        <p>HW#: ${c.hw_number}</p>
-        <p>Color: ${c.color}</p>
-        <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">${isOwned ? 'Unmark Owned' : 'Mark Owned'}</button>
-      </div>
-    `;
+      div.innerHTML = `
+        <img src="${c.image}" alt="${c.name}">
+        <div class="card-info">
+          <h4>${c.name}</h4>
+          <p>${c.series} (#${c.series_number})</p>
+          <p>HW#: ${c.hw_number}</p>
+          <p>Color: ${c.color}</p>
+          <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+            ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+          </button>
+        </div>
+      `;
 
-    const btn = div.querySelector('button');
-    btn.addEventListener('click', () => {
-      if (isOwned) {
-        ownedCars = ownedCars.filter(o => o.car.image !== c.image);
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        btn.textContent = 'Mark Owned';
-        btn.className = 'owned-btn';
-        isOwned = false;
-      } else {
-        ownedCars.push({ year, caseLetter: hwCase.letter, car: c });
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        btn.textContent = 'Unmark Owned';
-        btn.className = 'unowned-btn';
-        isOwned = true;
-      }
+      const btn = div.querySelector('button');
+      btn.addEventListener('click', () => {
+        if (isOwned) {
+          ownedCars = ownedCars.filter(o => o.car.image !== c.image);
+          localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+          btn.textContent = 'Mark Owned';
+          btn.className = 'owned-btn';
+          isOwned = false;
+        } else {
+          ownedCars.push({ year, caseLetter: hwCase.letter, car: c });
+          localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+          btn.textContent = 'Unmark Owned';
+          btn.className = 'unowned-btn';
+          isOwned = true;
+        }
+      });
+
+      allCarsDiv.appendChild(div);
     });
-
-    allCarsDiv.appendChild(div);
-  });
+  };
 
   popup.style.display = 'block';
   document.body.classList.add('popup-open');
