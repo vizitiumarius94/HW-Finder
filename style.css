@@ -100,7 +100,7 @@ h1, h2 {
   font-size: 14px;
 }
 
-/* Add / Owned / Remove buttons */
+/* Add / Owned / Unowned buttons */
 .add-btn, .add-btn-small, .owned-btn, .unowned-btn {
   margin-top: 8px;
   padding: 6px;
