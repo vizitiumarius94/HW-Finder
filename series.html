@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Series Collection</title>
+  <title>Hot Wheels Series</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Series Collection</h1>
-
-    <button id="backBtn" class="action-btn">Back to Search</button>
-
-    <!-- Year selection -->
-    <div id="yearList" class="results-grid" style="margin-bottom:15px;"></div>
-
-    <!-- Series list -->
+    <h1>Hot Wheels Series</h1>
+    <select id="yearSelect">
+      <option value="">Select Year</option>
+    </select>
     <div id="seriesList" class="results-grid"></div>
+  </div>
 
-    <!-- Cars grid for selected series -->
-    <div id="seriesCars"></div>
+  <!-- Popup for series cars -->
+  <div id="seriesPopup" class="popup">
+    <div class="popup-content">
+      <span id="seriesPopupClose" class="popup-close">&times;</span>
+      <h2 id="seriesPopupTitle"></h2>
+      <div id="seriesCarsGrid" class="results-grid"></div>
+    </div>
   </div>
 
   <script src="series.js"></script>
