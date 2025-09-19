@@ -18,7 +18,7 @@ const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
 
 // ------------------- FETCH DATA -------------------
-fetch('data.x')
+fetch('data.json')
   .then(res => res.json())
   .then(data => carsData = data);
 
@@ -264,7 +264,7 @@ exportBtn.addEventListener('click', () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'hotwheels_data.x';
+  a.download = 'hotwheels_data.json';
   a.click();
   URL.revokeObjectURL(url);
 });
