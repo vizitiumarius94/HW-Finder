@@ -139,42 +139,35 @@ h1, h2 {
   overflow-y: auto;
   background-color: rgba(0,0,0,0.7);
   z-index: 9999;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
+/* Popup content */
 .popup-content {
   background: #fff;
   border-radius: 8px;
   padding: 15px;
   max-width: 600px;
-  margin: 40px auto;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto; /* scroll if too tall */
+  max-height: 90vh; /* fits mobile screen */
+  box-sizing: border-box;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.card-detail {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-}
-
-.card-detail img {
-  max-width: 250px;
-  width: 100%;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-.card-detail .card-info {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  text-align: center;
+/* Close button inside popup-content */
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  color: #000;
+  cursor: pointer;
+  z-index: 10;
 }
 
 /* All Cars from case section */
@@ -204,14 +197,4 @@ h1, h2 {
 #allCars .car-item .card-info {
   font-size: 12px;
   text-align: center;
-}
-
-/* Close button */
-.popup-close {
-  position: fixed;
-  top: 15px;
-  right: 25px;
-  font-size: 28px;
-  color: #fff;
-  cursor: pointer;
 }
