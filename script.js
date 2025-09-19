@@ -29,20 +29,30 @@ searchBar.addEventListener('input', () => {
   let yearFilter = null;
   let caseFilter = null;
   let seriesFilter = null;
+  let thFilter = null;   // treasure hunt
+  let sthFilter = null;  // super treasure hunt
 
-  // Series search with s- prefix
-  if (query.startsWith('s-')) {
-    seriesFilter = query.slice(2).trim();
-  } 
-  // Year+case format, last character is case letter
-  else if (query.length > 1 && !isNaN(query.slice(0, -1))) {
-    yearFilter = query.slice(0, -1); // e.g., "2025a" -> "2025"
-    caseFilter = query.slice(-1);    // e.g., "2025a" -> "a"
-  } 
-  // Only year search
-  else if (!isNaN(query)) {
-    yearFilter = query;
+  // S-series
+  if (query.startsWith('s-')) seriesFilter = query.slice(2).trim();
+
+  // Year-series or Year-th / Year-sth
+  else if (/^\d{4}-.+/.test(query)) {
+    const [year, secondPart] = query.split('-');
+    yearFilter = year;
+    if (secondPart === 'th') thFilter = true;
+    else if (secondPart === 'sth') sthFilter = true;
+    else seriesFilter = secondPart.trim();
   }
+
+  // Year-case (e.g., 2025a)
+  else if (/^\d{4}[a-z]$/.test(query)) {
+    yearFilter = query.slice(0, 4);
+    caseFilter = query.slice(4);
+  }
+
+  // -th or -sth only
+  else if (query === '-th') thFilter = true;
+  else if (query === '-sth') sthFilter = true;
 
   Object.keys(carsData).forEach(yearKey => {
     if (yearFilter && yearFilter !== yearKey) return;
@@ -51,10 +61,14 @@ searchBar.addEventListener('input', () => {
       if (caseFilter && hwCase.letter.toLowerCase() !== caseFilter) return;
 
       hwCase.cars.forEach(car => {
-        if (
-          (!seriesFilter && !caseFilter && car.name.toLowerCase().includes(query)) ||
-          (seriesFilter && car.series.toLowerCase().includes(seriesFilter))
-        ) {
+        let show = false;
+
+        if (seriesFilter && car.series.toLowerCase().includes(seriesFilter)) show = true;
+        else if (thFilter && car.hw_number === hwCase.th.hw_number) show = true;
+        else if (sthFilter && car.hw_number === hwCase.sth.hw_number) show = true;
+        else if (!seriesFilter && !caseFilter && !thFilter && !sthFilter && car.name.toLowerCase().includes(query)) show = true;
+
+        if (show) {
           const card = document.createElement('div');
           card.classList.add('result-card');
 
@@ -81,7 +95,7 @@ searchBar.addEventListener('input', () => {
             showDetails(yearKey, hwCase, car);
           });
 
-          // ----------------- Owned/unowned toggle -----------------
+          // Owned/unowned toggle
           const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
           ownedBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -100,7 +114,7 @@ searchBar.addEventListener('input', () => {
             }
           });
 
-          // ----------------- Add to wanted button -----------------
+          // Add to wanted button
           const addWantedBtn = card.querySelector('.add-wanted-btn');
           if (addWantedBtn) {
             addWantedBtn.addEventListener('click', (e) => {
@@ -246,16 +260,11 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       const imported = JSON.parse(evt.target.result);
-
-      // Overwrite existing data completely
       wantedCars = imported.wantedCars || [];
       ownedCars = imported.ownedCars || [];
-
       localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
       alert("Import successful! Existing data replaced.");
-
-      // Refresh search results if needed
       searchBar.dispatchEvent(new Event('input'));
     } catch(err) {
       alert("Failed to import: " + err.message);
