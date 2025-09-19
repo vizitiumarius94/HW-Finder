@@ -30,8 +30,18 @@ searchBar.addEventListener('input', () => {
   for (const year in carsData) {
     carsData[year].cases.forEach(hwCase => {
       hwCase.cars.forEach(car => {
-        const combined = `${year}-${car.series}`.toLowerCase();
-        if (car.name.toLowerCase().includes(query) || combined.includes(query)) {
+        const combinedYearSeries = `${year}-${car.series}`.toLowerCase();
+        const combinedYearCase = `${year}${hwCase.letter}`.toLowerCase();
+
+        // Search logic: name OR series OR year-case combined
+        if (
+          car.name.toLowerCase().includes(query) ||
+          combinedYearSeries.includes(query) ||
+          combinedYearCase.includes(query) ||
+          car.series.toLowerCase().includes(query) ||
+          year.includes(query) ||
+          hwCase.letter.toLowerCase().includes(query)
+        ) {
           const card = document.createElement('div');
           card.classList.add('result-card');
           card.innerHTML = `
@@ -39,6 +49,8 @@ searchBar.addEventListener('input', () => {
             <div class="card-info">
               <h3>${car.name}</h3>
               <p>${year} - ${hwCase.letter}</p>
+              <p>${car.series} (#${car.series_number})</p>
+              <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
             </div>
           `;
           card.addEventListener('click', () => showDetails(year, hwCase, car));
@@ -72,9 +84,9 @@ function showDetails(year, hwCase, car) {
     </div>
   `;
 
-  allCarsDiv.innerHTML = ''; // Clear previous grid
+  allCarsDiv.innerHTML = '';
 
-  // Add to wanted functionality
+  // Add to wanted
   const addBtn = document.getElementById('addWantedBtn');
   if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
   else addBtn.addEventListener('click', () => {
@@ -83,7 +95,7 @@ function showDetails(year, hwCase, car) {
     addBtn.style.display = 'none';
   });
 
-  // Show All Cars button functionality
+  // Show All Cars from Case
   showAllBtn.onclick = () => {
     allCarsDiv.innerHTML = '';
     hwCase.cars.forEach(c => {
@@ -123,8 +135,6 @@ function showDetails(year, hwCase, car) {
 
       allCarsDiv.appendChild(div);
     });
-
-    // Scroll All Cars section into view on mobile
     allCarsDiv.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -143,7 +153,7 @@ popupClose.addEventListener('click', () => {
 wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 
-// Export & Import Wanted
+// Export & Import
 exportBtn.addEventListener('click', () => {
   if (!wantedCars.length) return alert("No cars to export!");
   const blob = new Blob([JSON.stringify(wantedCars, null, 2)], {type:'application/json'});
