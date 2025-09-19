@@ -27,26 +27,31 @@ searchBar.addEventListener('input', () => {
   if (!query) return;
 
   let yearFilter = null;
+  let caseFilter = null;
   let seriesFilter = null;
 
   if (query.includes('-')) {
     const parts = query.split('-');
     if (!isNaN(parts[0])) {
-      yearFilter = parts[0];
-      seriesFilter = parts.slice(1).join('-').trim();
+      yearFilter = parts[0]; // first part is year
+      const secondPart = parts.slice(1).join('-').trim();
+      if (secondPart.length === 1) caseFilter = secondPart; // single letter -> case
+      else seriesFilter = secondPart; // otherwise treat as series
     } else if (parts[0] === 's') {
       seriesFilter = parts.slice(1).join('-').trim();
     }
   }
 
   Object.keys(carsData).forEach(year => {
-    if (yearFilter && year !== yearFilter) return;
+    if (yearFilter && year !== year) return;
 
     carsData[year].cases.forEach(hwCase => {
+      if (caseFilter && hwCase.letter.toLowerCase() !== caseFilter) return;
+
       hwCase.cars.forEach(car => {
         if (
-          (seriesFilter && car.series.toLowerCase().includes(seriesFilter)) ||
-          (!seriesFilter && car.name.toLowerCase().includes(query))
+          (!seriesFilter && !query.includes('-') && car.name.toLowerCase().includes(query)) ||
+          (seriesFilter && car.series.toLowerCase().includes(seriesFilter))
         ) {
           const card = document.createElement('div');
           card.classList.add('result-card');
@@ -130,6 +135,8 @@ function showDetails(year, hwCase, car) {
         <p>${hwCase.sth.name}</p>
         <img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">
         <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+        <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
+        <div id="allCarsGrid" class="results-grid"></div>
       </div>
     </div>
   `;
@@ -140,6 +147,62 @@ function showDetails(year, hwCase, car) {
     wantedCars.push({ year, caseLetter: hwCase.letter, car });
     localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
     addBtn.style.display = 'none';
+  });
+
+  const showAllBtn = document.getElementById('showAllCaseBtn');
+  const allCarsGrid = document.getElementById('allCarsGrid');
+
+  showAllBtn.addEventListener('click', () => {
+    allCarsGrid.innerHTML = '';
+    hwCase.cars.forEach(c => {
+      const div = document.createElement('div');
+      div.classList.add('result-card');
+
+      let isOwned = ownedCars.some(o => o.car.image === c.image);
+      let isWanted = wantedCars.some(w => w.car.image === c.image);
+
+      div.innerHTML = `
+        <img src="${c.image}" alt="${c.name}">
+        <div class="card-info">
+          <h3>${c.name}</h3>
+          <p>${year} - ${hwCase.letter}</p>
+          <p>${c.series} (#${c.series_number})</p>
+          <p>HW#: ${c.hw_number} | Color: ${c.color}</p>
+          <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+            ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+          </button>
+          ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+        </div>
+      `;
+
+      const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
+      ownedBtn.addEventListener('click', () => {
+        if (isOwned) {
+          ownedCars = ownedCars.filter(o => o.car.image !== c.image);
+          localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+          ownedBtn.textContent = 'Mark Owned';
+          ownedBtn.className = 'owned-btn';
+          isOwned = false;
+        } else {
+          ownedCars.push({ year, caseLetter: hwCase.letter, car: c });
+          localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+          ownedBtn.textContent = 'Unmark Owned';
+          ownedBtn.className = 'unowned-btn';
+          isOwned = true;
+        }
+      });
+
+      const addWantedBtn = div.querySelector('.add-wanted-btn');
+      if (addWantedBtn) {
+        addWantedBtn.addEventListener('click', () => {
+          wantedCars.push({ year, caseLetter: hwCase.letter, car: c });
+          localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+          addWantedBtn.style.display = 'none';
+        });
+      }
+
+      allCarsGrid.appendChild(div);
+    });
   });
 
   popup.style.display = 'block';
