@@ -2,9 +2,7 @@ let carsData = {};
 
 fetch('data.json')
   .then(response => response.json())
-  .then(data => {
-    carsData = data;
-  });
+  .then(data => { carsData = data; });
 
 const searchBar = document.getElementById('searchBar');
 const resultsDiv = document.getElementById('results');
@@ -30,7 +28,7 @@ wantedPageBtn.addEventListener('click', () => {
 // Export wanted cars
 exportBtn.addEventListener('click', () => {
   const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-  if (wanted.length === 0) { alert("No cars in Wanted list!"); return; }
+  if (!wanted.length) { alert("No cars in Wanted list!"); return; }
   const blob = new Blob([JSON.stringify(wanted, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -64,7 +62,7 @@ importFile.addEventListener('change', (e) => {
   reader.readAsText(file);
 });
 
-// Add to Wanted list
+// Add car to Wanted
 function addWantedCar(carObj) {
   let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
   const exists = wanted.some(w => w.car.image === carObj.car.image);
@@ -73,45 +71,49 @@ function addWantedCar(carObj) {
     localStorage.setItem('wantedCars', JSON.stringify(wanted));
     alert(`${carObj.car.name} added to Wanted Cars!`);
     return true;
-  } else {
-    return false;
-  }
+  } else return false;
 }
 
-// Search bar input
+// Enhanced search: year+series, series only, or name
 searchBar.addEventListener('input', () => {
-  const query = searchBar.value.toLowerCase().trim();
+  const query = searchBar.value.trim().toLowerCase();
   resultsDiv.innerHTML = '';
   if (!query) return;
 
   let searchYear = null;
-  let searchCase = null;
+  let searchSeries = null;
   let searchName = null;
 
-  const yearCaseMatch = query.match(/^(\d{4})([a-z])$/i); // matches 2025a
-  if (yearCaseMatch) {
-    searchYear = yearCaseMatch[1];
-    searchCase = yearCaseMatch[2];
-  } else if (/^\d{4}$/.test(query)) { // only a year like 2025
-    searchYear = query;
+  // Match "YYYY-Series Name"
+  const yearSeriesMatch = query.match(/^(\d{4})-(.+)$/);
+  // Match "s-Series Name" (series only)
+  const seriesOnlyMatch = query.match(/^s-(.+)$/);
+
+  if (yearSeriesMatch) {
+    searchYear = yearSeriesMatch[1];
+    searchSeries = yearSeriesMatch[2];
+  } else if (seriesOnlyMatch) {
+    searchSeries = seriesOnlyMatch[1];
   } else {
     searchName = query;
   }
 
   for (const year in carsData) {
-    if (searchYear && year !== searchYear) continue; // filter by year if specified
+    if (searchYear && year !== searchYear) continue;
 
     carsData[year].cases.forEach(hwCase => {
-      if (searchCase && hwCase.letter.toLowerCase() !== searchCase) return; // filter by case
-
       hwCase.cars.forEach(car => {
-        if (searchName && !car.name.toLowerCase().includes(searchName)) return; // filter by name
+        // Series filter
+        if (searchSeries && !car.series.toLowerCase().includes(searchSeries)) return;
+        // Name filter
+        if (searchName && !car.name.toLowerCase().includes(searchName)) return;
 
         const card = document.createElement('div');
         card.classList.add('result-card');
         card.innerHTML = `
           <img src="${car.image}" alt="${car.name}">
           <p>${car.name}</p>
+          <p><small>${car.series}</small></p>
           <button class="add-btn">+ Wanted</button>
         `;
 
@@ -135,9 +137,7 @@ searchBar.addEventListener('input', () => {
   }
 });
 
-
-
-// Show popup details
+// Popup
 function showDetails(year, hwCase, car) {
   currentYear = year;
   currentCase = hwCase;
@@ -153,6 +153,7 @@ function showDetails(year, hwCase, car) {
     <h3>Super Treasure Hunt:</h3>
     <p>${hwCase.sth.name}</p>
     <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
+    <p><strong>Series:</strong> ${car.series}</p>
     <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
   `;
 
@@ -172,10 +173,9 @@ function showDetails(year, hwCase, car) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Show all cars from the same case
+// Show all cars from case
 showAllBtn.addEventListener('click', () => {
   if (!currentYear || !currentCase) return;
-
   allCarsDiv.innerHTML = `<h3>All Cars from ${currentYear} - Case ${currentCase.letter}</h3>`;
   currentCase.cars.forEach(car => {
     const div = document.createElement('div');
