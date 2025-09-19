@@ -34,7 +34,7 @@ searchBar.addEventListener('input', () => {
   // Series search: s-series or s-series+year
   if (query.startsWith('s-')) {
     searchType = 'series';
-    const parts = query.slice(2).split('+');
+    const parts = query.slice(2).split(' ');
     seriesFilter = parts[0].trim();
     if (parts[1]) yearFilter = parts[1].trim();
   }
@@ -53,7 +53,7 @@ searchBar.addEventListener('input', () => {
   // Case search: c-case+year
   else if (query.startsWith('c-')) {
     searchType = 'case';
-    const parts = query.slice(2).split('+');
+    const parts = query.slice(2).split(' ');
     caseFilter = parts[0].trim();
     if (parts[1]) yearFilter = parts[1].trim();
   }
