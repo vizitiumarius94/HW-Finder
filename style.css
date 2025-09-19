@@ -12,9 +12,9 @@ body {
   padding: 20px;
 }
 
-h1 {
+h1, h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* Search bar */
@@ -24,6 +24,8 @@ h1 {
   font-size: 18px;
   margin-bottom: 15px;
   box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 /* Button row */
@@ -35,7 +37,7 @@ h1 {
 }
 
 .action-btn {
-  flex: 1;
+  flex: 1 1 45%;
   padding: 10px;
   font-size: 16px;
   border: none;
@@ -50,7 +52,7 @@ h1 {
   background-color: #0056b3;
 }
 
-/* Results grid */
+/* Grid layout for results */
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -66,12 +68,14 @@ h1 {
   padding: 10px;
   box-sizing: border-box;
   transition: 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.result-card:hover, .car-item:hover {
+.result-card:hover, .car-item:hover, .card-detail:hover {
   background: #f0f0f0;
 }
 
+/* Images inside cards */
 .result-card img, .car-item img, .card-detail img {
   width: 100%;
   max-width: 200px;
@@ -83,21 +87,20 @@ h1 {
 /* Card info */
 .card-info {
   margin-top: 5px;
+  text-align: center;
 }
 
 .card-info h2, .card-info h3, .card-info h4 {
   margin: 5px 0;
   font-size: 16px;
-  text-align: center;
 }
 
 .card-info p {
   margin: 2px 0;
   font-size: 14px;
-  text-align: center;
 }
 
-/* Add/Owned buttons */
+/* Add / Owned / Remove buttons */
 .add-btn, .add-btn-small, .owned-btn {
   margin-top: 8px;
   padding: 6px;
@@ -112,6 +115,15 @@ h1 {
 
 .add-btn:hover, .add-btn-small:hover, .owned-btn:hover {
   background-color: #218838;
+}
+
+/* Unmark as owned button */
+.unowned-btn {
+  background-color: #dc3545;
+}
+
+.unowned-btn:hover {
+  background-color: #a71d2a;
 }
 
 /* Popup */
