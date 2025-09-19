@@ -20,53 +20,73 @@ fetch('data.json')
   .then(res => res.json())
   .then(data => carsData = data);
 
-// ------------------- SEARCH FUNCTIONALITY -------------------
+// ------------------- SEARCH FUNCTION -------------------
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.trim().toLowerCase();
   resultsDiv.innerHTML = '';
   if (!query) return;
 
+  let searchType = null;
   let yearFilter = null;
-  let caseFilter = null;
   let seriesFilter = null;
-  let thFilter = null;   // treasure hunt
-  let sthFilter = null;  // super treasure hunt
+  let caseFilter = null;
 
-  // S-series
-  if (query.startsWith('s-')) seriesFilter = query.slice(2).trim();
-
-  // Year-series or Year-th / Year-sth
-  else if (/^\d{4}-.+/.test(query)) {
-    const [year, secondPart] = query.split('-');
-    yearFilter = year;
-    if (secondPart === 'th') thFilter = true;
-    else if (secondPart === 'sth') sthFilter = true;
-    else seriesFilter = secondPart.trim();
+  // Series search: s-series or s-series+year
+  if (query.startsWith('s-')) {
+    searchType = 'series';
+    const parts = query.slice(2).split('+');
+    seriesFilter = parts[0].trim();
+    if (parts[1]) yearFilter = parts[1].trim();
+  }
+  // Super Treasure Hunt: sth- or sth-year
+  else if (query.startsWith('sth')) {
+    searchType = 'sth';
+    const parts = query.split('-');
+    if (parts[1]) yearFilter = parts[1].trim();
+  }
+  // Treasure Hunt: th- or th-year
+  else if (query.startsWith('th')) {
+    searchType = 'th';
+    const parts = query.split('-');
+    if (parts[1]) yearFilter = parts[1].trim();
+  }
+  // Case search: c-case+year
+  else if (query.startsWith('c-')) {
+    searchType = 'case';
+    const parts = query.slice(2).split('+');
+    caseFilter = parts[0].trim();
+    if (parts[1]) yearFilter = parts[1].trim();
+  }
+  // Default: name search
+  else {
+    searchType = 'name';
   }
 
-  // Year-case (e.g., 2025a)
-  else if (/^\d{4}[a-z]$/.test(query)) {
-    yearFilter = query.slice(0, 4);
-    caseFilter = query.slice(4);
-  }
-
-  // -th or -sth only
-  else if (query === '-th') thFilter = true;
-  else if (query === '-sth') sthFilter = true;
-
+  // Loop through years
   Object.keys(carsData).forEach(yearKey => {
     if (yearFilter && yearFilter !== yearKey) return;
 
     carsData[yearKey].cases.forEach(hwCase => {
-      if (caseFilter && hwCase.letter.toLowerCase() !== caseFilter) return;
-
       hwCase.cars.forEach(car => {
         let show = false;
 
-        if (seriesFilter && car.series.toLowerCase().includes(seriesFilter)) show = true;
-        else if (thFilter && car.hw_number === hwCase.th.hw_number) show = true;
-        else if (sthFilter && car.hw_number === hwCase.sth.hw_number) show = true;
-        else if (!seriesFilter && !caseFilter && !thFilter && !sthFilter && car.name.toLowerCase().includes(query)) show = true;
+        switch (searchType) {
+          case 'series':
+            if (car.series.toLowerCase().includes(seriesFilter)) show = true;
+            break;
+          case 'sth':
+            if (hwCase.sth && car.hw_number === hwCase.sth.hw_number) show = true;
+            break;
+          case 'th':
+            if (hwCase.th && car.hw_number === hwCase.th.hw_number) show = true;
+            break;
+          case 'case':
+            if (hwCase.letter.toLowerCase() === caseFilter) show = true;
+            break;
+          case 'name':
+            if (car.name.toLowerCase().includes(query)) show = true;
+            break;
+        }
 
         if (show) {
           const card = document.createElement('div');
@@ -89,15 +109,15 @@ searchBar.addEventListener('input', () => {
             </div>
           `;
 
-          // ----------------- Add click listener for popup -----------------
-          card.addEventListener('click', (e) => {
+          // Popup click
+          card.addEventListener('click', e => {
             if (e.target.tagName.toLowerCase() === 'button') return;
             showDetails(yearKey, hwCase, car);
           });
 
-          // Owned/unowned toggle
+          // Owned toggle
           const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
-          ownedBtn.addEventListener('click', (e) => {
+          ownedBtn.addEventListener('click', e => {
             e.stopPropagation();
             if (isOwned) {
               ownedCars = ownedCars.filter(o => o.car.image !== car.image);
@@ -114,10 +134,10 @@ searchBar.addEventListener('input', () => {
             }
           });
 
-          // Add to wanted button
+          // Add to wanted
           const addWantedBtn = card.querySelector('.add-wanted-btn');
           if (addWantedBtn) {
-            addWantedBtn.addEventListener('click', (e) => {
+            addWantedBtn.addEventListener('click', e => {
               e.stopPropagation();
               wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
               localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
@@ -145,11 +165,11 @@ function showDetails(year, hwCase, car) {
         <p><strong>HW Number:</strong> ${car.hw_number}</p>
         <p><strong>Color:</strong> ${car.color}</p>
         <h3>Treasure Hunt:</h3>
-        <p>${hwCase.th.name}</p>
-        <img src="${hwCase.th.image}" alt="TH" style="max-width:150px;">
+        <p>${hwCase.th?.name || 'N/A'}</p>
+        ${hwCase.th?.image ? `<img src="${hwCase.th.image}" alt="TH" style="max-width:150px;">` : ''}
         <h3>Super Treasure Hunt:</h3>
-        <p>${hwCase.sth.name}</p>
-        <img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">
+        <p>${hwCase.sth?.name || 'N/A'}</p>
+        ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
         <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
         <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
         <div id="allCarsGrid" class="results-grid"></div>
@@ -191,6 +211,7 @@ function showDetails(year, hwCase, car) {
         </div>
       `;
 
+      // Owned toggle
       const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
       ownedBtn.addEventListener('click', () => {
         if (isOwned) {
@@ -208,6 +229,7 @@ function showDetails(year, hwCase, car) {
         }
       });
 
+      // Add to wanted
       const addWantedBtn = div.querySelector('.add-wanted-btn');
       if (addWantedBtn) {
         addWantedBtn.addEventListener('click', () => {
@@ -260,11 +282,16 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       const imported = JSON.parse(evt.target.result);
+
+      // Overwrite existing data completely
       wantedCars = imported.wantedCars || [];
       ownedCars = imported.ownedCars || [];
+
       localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
       alert("Import successful! Existing data replaced.");
+
+      // Refresh search results
       searchBar.dispatchEvent(new Event('input'));
     } catch(err) {
       alert("Failed to import: " + err.message);
