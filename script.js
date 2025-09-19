@@ -84,10 +84,8 @@ searchBar.addEventListener('input', () => {
   let searchSeries = null;
   let searchName = null;
 
-  // Match "YYYY-Series Name"
-  const yearSeriesMatch = query.match(/^(\d{4})-(.+)$/);
-  // Match "s-Series Name" (series only)
-  const seriesOnlyMatch = query.match(/^s-(.+)$/);
+  const yearSeriesMatch = query.match(/^(\d{4})-(.+)$/); // YYYY-Series
+  const seriesOnlyMatch = query.match(/^s-(.+)$/); // s-Series
 
   if (yearSeriesMatch) {
     searchYear = yearSeriesMatch[1];
@@ -112,13 +110,19 @@ searchBar.addEventListener('input', () => {
         card.classList.add('result-card');
         card.innerHTML = `
           <img src="${car.image}" alt="${car.name}">
-          <p>${car.name}</p>
-          <p><small>${car.series}</small></p>
-          <button class="add-btn">+ Wanted</button>
+          <div class="card-info">
+            <h3>${car.name}</h3>
+            <p><strong>Year:</strong> ${year}</p>
+            <p><strong>Case:</strong> ${hwCase.letter}</p>
+            <p><strong>Series:</strong> ${car.series} (#${car.series_number})</p>
+            <p><strong>HW Number:</strong> ${car.hw_number}</p>
+            <p><strong>Color:</strong> ${car.color}</p>
+            <button class="add-btn">+ Wanted</button>
+          </div>
         `;
 
         card.querySelector('img').addEventListener('click', () => showDetails(year, hwCase, car));
-        card.querySelector('p').addEventListener('click', () => showDetails(year, hwCase, car));
+        card.querySelector('.card-info h3').addEventListener('click', () => showDetails(year, hwCase, car));
 
         const btn = card.querySelector('.add-btn');
         if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
@@ -143,18 +147,24 @@ function showDetails(year, hwCase, car) {
   currentCase = hwCase;
 
   detailsDiv.innerHTML = `
-    <h2>${car.name}</h2>
-    <img src="${car.image}" alt="${car.name}">
-    <p><strong>Year:</strong> ${year}</p>
-    <p><strong>Case:</strong> ${hwCase.letter}</p>
-    <h3>Treasure Hunt:</h3>
-    <p>${hwCase.th.name}</p>
-    <img src="${hwCase.th.image}" alt="Treasure Hunt">
-    <h3>Super Treasure Hunt:</h3>
-    <p>${hwCase.sth.name}</p>
-    <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
-    <p><strong>Series:</strong> ${car.series}</p>
-    <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+    <div class="card-detail">
+      <img src="${car.image}" alt="${car.name}">
+      <div class="card-info">
+        <h2>${car.name}</h2>
+        <p><strong>Year:</strong> ${year}</p>
+        <p><strong>Case:</strong> ${hwCase.letter}</p>
+        <p><strong>Series:</strong> ${car.series} (#${car.series_number})</p>
+        <p><strong>HW Number:</strong> ${car.hw_number}</p>
+        <p><strong>Color:</strong> ${car.color}</p>
+        <h3>Treasure Hunt:</h3>
+        <p>${hwCase.th.name}</p>
+        <img src="${hwCase.th.image}" alt="Treasure Hunt">
+        <h3>Super Treasure Hunt:</h3>
+        <p>${hwCase.sth.name}</p>
+        <img src="${hwCase.sth.image}" alt="Super Treasure Hunt">
+        <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+      </div>
+    </div>
   `;
 
   const popupBtn = document.getElementById('addWantedBtn');
@@ -182,12 +192,19 @@ showAllBtn.addEventListener('click', () => {
     div.classList.add('car-item');
     div.innerHTML = `
       <img src="${car.image}" alt="${car.name}">
-      <p>${car.name}</p>
-      <button class="add-btn-small">+ Wanted</button>
+      <div class="card-info">
+        <h4>${car.name}</h4>
+        <p><strong>Year:</strong> ${currentYear}</p>
+        <p><strong>Case:</strong> ${currentCase.letter}</p>
+        <p><strong>Series:</strong> ${car.series} (#${car.series_number})</p>
+        <p><strong>HW Number:</strong> ${car.hw_number}</p>
+        <p><strong>Color:</strong> ${car.color}</p>
+        <button class="add-btn-small">+ Wanted</button>
+      </div>
     `;
 
     div.querySelector('img').addEventListener('click', () => showDetails(currentYear, currentCase, car));
-    div.querySelector('p').addEventListener('click', () => showDetails(currentYear, currentCase, car));
+    div.querySelector('h4').addEventListener('click', () => showDetails(currentYear, currentCase, car));
 
     const gridBtn = div.querySelector('.add-btn-small');
     if (JSON.parse(localStorage.getItem('wantedCars') || '[]').some(w => w.car.image === car.image)) {
