@@ -14,13 +14,14 @@ const seriesPageBtn = document.getElementById('seriesPageBtn');
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
+const showAllBtn = document.getElementById('showAllBtn');
 
 // Fetch cars data
 fetch('data.json')
   .then(res => res.json())
   .then(data => carsData = data);
 
-// Search
+// Search functionality
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.toLowerCase();
   resultsDiv.innerHTML = '';
@@ -33,7 +34,13 @@ searchBar.addEventListener('input', () => {
         if (car.name.toLowerCase().includes(query) || combined.includes(query)) {
           const card = document.createElement('div');
           card.classList.add('result-card');
-          card.innerHTML = `<img src="${car.image}" alt="${car.name}"><div class="card-info"><h3>${car.name}</h3><p>${year} - ${hwCase.letter}</p></div>`;
+          card.innerHTML = `
+            <img src="${car.image}" alt="${car.name}">
+            <div class="card-info">
+              <h3>${car.name}</h3>
+              <p>${year} - ${hwCase.letter}</p>
+            </div>
+          `;
           card.addEventListener('click', () => showDetails(year, hwCase, car));
           resultsDiv.appendChild(card);
         }
@@ -65,9 +72,9 @@ function showDetails(year, hwCase, car) {
     </div>
   `;
 
-  allCarsDiv.innerHTML = ''; // Clear All Cars grid
+  allCarsDiv.innerHTML = ''; // Clear previous grid
 
-  // Add to wanted
+  // Add to wanted functionality
   const addBtn = document.getElementById('addWantedBtn');
   if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
   else addBtn.addEventListener('click', () => {
@@ -76,8 +83,7 @@ function showDetails(year, hwCase, car) {
     addBtn.style.display = 'none';
   });
 
-  // Show All Cars button
-  const showAllBtn = document.getElementById('showAllBtn');
+  // Show All Cars button functionality
   showAllBtn.onclick = () => {
     allCarsDiv.innerHTML = '';
     hwCase.cars.forEach(c => {
@@ -117,6 +123,9 @@ function showDetails(year, hwCase, car) {
 
       allCarsDiv.appendChild(div);
     });
+
+    // Scroll All Cars section into view on mobile
+    allCarsDiv.scrollIntoView({ behavior: 'smooth' });
   };
 
   popup.style.display = 'block';
@@ -130,10 +139,11 @@ popupClose.addEventListener('click', () => {
   document.body.classList.remove('popup-open');
 });
 
-// Buttons
+// Navigation
 wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 
+// Export & Import Wanted
 exportBtn.addEventListener('click', () => {
   if (!wantedCars.length) return alert("No cars to export!");
   const blob = new Blob([JSON.stringify(wantedCars, null, 2)], {type:'application/json'});
