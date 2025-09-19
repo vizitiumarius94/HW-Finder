@@ -10,26 +10,27 @@
   <div class="container">
     <h1>Hot Wheels Case Finder</h1>
 
-    <button id="wantedPageBtn" class="action-btn">Wanted Cars</button>
+    <!-- Search bar -->
+    <input type="text" id="searchBar" placeholder="Search for a car...">
 
-    <!-- Import / Export buttons -->
-    <div style="display:flex; gap:10px; margin-bottom:15px;">
-      <button id="exportBtn" class="action-btn" style="flex:1;">Export Wanted</button>
+    <!-- Action buttons: Wanted, Series, Export, Import -->
+    <div class="button-row">
+      <button id="wantedPageBtn" class="action-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="action-btn">Series Collection</button>
+      <button id="exportBtn" class="action-btn">Export Wanted</button>
       <input type="file" id="importFile" style="display:none;">
-      <button id="importBtn" class="action-btn" style="flex:1;">Import Wanted</button>
+      <button id="importBtn" class="action-btn">Import Wanted</button>
     </div>
 
-    <input type="text" id="searchBar" placeholder="Search for Year, Year+Case or a Car">
+    <!-- Search results -->
     <div id="results" class="results-grid"></div>
-  </div>
 
-  <!-- Popup / Bottom Sheet -->
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span id="popupClose" class="popup-close">&times;</span>
-      <div id="details"></div>
-      <button id="showAllBtn" class="action-btn">Show All Cars from this Year & Case</button>
+    <!-- Popup for car details -->
+    <div id="popup" class="popup">
+      <div class="popup-content" id="details"></div>
       <div id="allCars"></div>
+      <button id="showAllBtn" class="action-btn">Show All Cars from Case</button>
+      <span id="popupClose" class="popup-close">&times;</span>
     </div>
   </div>
 
