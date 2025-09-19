@@ -16,7 +16,7 @@ fetch('data.json')
     renderYearList();
   });
 
-// Display all years available
+// Display all years
 function renderYearList() {
   yearListDiv.innerHTML = '';
   Object.keys(carsData).sort().forEach(year => {
@@ -28,7 +28,7 @@ function renderYearList() {
   });
 }
 
-// Display all series for a selected year
+// Display series for selected year
 function renderSeriesList(year) {
   seriesListDiv.innerHTML = '';
   seriesCarsDiv.innerHTML = '';
@@ -47,7 +47,7 @@ function renderSeriesList(year) {
   });
 }
 
-// Display all cars in selected series for selected year
+// Display cars for selected series
 function renderSeriesCars(year, seriesName) {
   seriesCarsDiv.innerHTML = `<h2>${year} - ${seriesName}</h2>`;
   const carsArray = [];
@@ -65,8 +65,8 @@ function renderSeriesCars(year, seriesName) {
 
   carsArray.forEach(item => {
     const card = document.createElement('div');
-    card.classList.add('result-card');
-    const owned = ownedCars.some(c => c.car.image === item.car.image);
+    card.classList.add('car-item');
+    let isOwned = ownedCars.some(o => o.car.image === item.car.image);
 
     card.innerHTML = `
       <img src="${item.car.image}" alt="${item.car.name}">
@@ -77,29 +77,26 @@ function renderSeriesCars(year, seriesName) {
         <p><strong>Series:</strong> ${item.car.series} (#${item.car.series_number})</p>
         <p><strong>HW Number:</strong> ${item.car.hw_number}</p>
         <p><strong>Color:</strong> ${item.car.color}</p>
-        <button class="${owned ? 'unowned-btn' : 'owned-btn'}">
-          ${owned ? 'Unmark Owned' : 'Mark as Owned'}
+        <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+          ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
         </button>
       </div>
     `;
 
     const btn = card.querySelector('button');
     btn.addEventListener('click', () => {
-      if (owned) {
-        // Remove from owned
-        ownedCars = ownedCars.filter(c => c.car.image !== item.car.image);
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        btn.textContent = 'Mark as Owned';
+      if (isOwned) {
+        ownedCars = ownedCars.filter(o => o.car.image !== item.car.image);
+        btn.textContent = 'Mark Owned';
         btn.className = 'owned-btn';
-        owned = false;
+        isOwned = false;
       } else {
-        // Add to owned
         ownedCars.push(item);
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
         btn.textContent = 'Unmark Owned';
         btn.className = 'unowned-btn';
-        owned = true;
+        isOwned = true;
       }
+      localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
     });
 
     grid.appendChild(card);
