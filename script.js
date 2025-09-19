@@ -21,7 +21,7 @@ fetch('data.json')
   .then(res => res.json())
   .then(data => carsData = data);
 
-// Search functionality
+// ------------------- SEARCH FUNCTIONALITY -------------------
 searchBar.addEventListener('input', () => {
   const query = searchBar.value.toLowerCase();
   resultsDiv.innerHTML = '';
@@ -60,7 +60,7 @@ searchBar.addEventListener('input', () => {
   }
 });
 
-// Show detail popup
+// ------------------- SHOW DETAILS POPUP -------------------
 function showDetails(year, hwCase, car) {
   detailsDiv.innerHTML = `
     <div class="card-detail">
@@ -85,7 +85,6 @@ function showDetails(year, hwCase, car) {
 
   allCarsDiv.innerHTML = '';
 
-  // Add to wanted button
   const addBtn = document.getElementById('addWantedBtn');
   if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
   else addBtn.addEventListener('click', () => {
@@ -94,12 +93,12 @@ function showDetails(year, hwCase, car) {
     addBtn.style.display = 'none';
   });
 
-  // Show All Cars from Case
+  // ------------------- SHOW ALL CARS FROM CASE -------------------
   showAllBtn.onclick = () => {
     allCarsDiv.innerHTML = '';
     hwCase.cars.forEach(c => {
       const div = document.createElement('div');
-      div.classList.add('result-card'); // styled like search results
+      div.classList.add('result-card');
 
       let isOwned = ownedCars.some(o => o.car.image === c.image);
       let isWanted = wantedCars.some(w => w.car.image === c.image);
@@ -148,7 +147,6 @@ function showDetails(year, hwCase, car) {
 
       allCarsDiv.appendChild(div);
     });
-
     allCarsDiv.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -157,29 +155,31 @@ function showDetails(year, hwCase, car) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Close popup
+// ------------------- POPUP CLOSE -------------------
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
   document.body.classList.remove('popup-open');
 });
 
-// Navigation
+// ------------------- NAVIGATION -------------------
 wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 
-// Export & Import
+// ------------------- EXPORT & IMPORT BOTH WANTED + OWNED -------------------
 exportBtn.addEventListener('click', () => {
-  if (!wantedCars.length) return alert("No cars to export!");
-  const blob = new Blob([JSON.stringify(wantedCars, null, 2)], {type:'application/json'});
+  if (!wantedCars.length && !ownedCars.length) return alert("No data to export!");
+  const dataToExport = { wantedCars, ownedCars };
+  const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'wanted_cars.json';
+  a.download = 'hotwheels_data.json';
   a.click();
   URL.revokeObjectURL(url);
 });
 
 importBtn.addEventListener('click', () => importFile.click());
+
 importFile.addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
@@ -187,12 +187,22 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       const imported = JSON.parse(evt.target.result);
-      imported.forEach(item => {
-        if (!wantedCars.some(w => w.car.image === item.car.image)) wantedCars.push(item);
-      });
+      if (imported.wantedCars) {
+        imported.wantedCars.forEach(item => {
+          if (!wantedCars.some(w => w.car.image === item.car.image)) wantedCars.push(item);
+        });
+      }
+      if (imported.ownedCars) {
+        imported.ownedCars.forEach(item => {
+          if (!ownedCars.some(o => o.car.image === item.car.image)) ownedCars.push(item);
+        });
+      }
       localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+      localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
       alert("Import successful!");
-    } catch(err) { alert("Failed to import: "+err.message); }
+    } catch(err) {
+      alert("Failed to import: " + err.message);
+    }
   };
   reader.readAsText(file);
 });
