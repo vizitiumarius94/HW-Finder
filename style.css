@@ -1,3 +1,4 @@
+/* Reset and body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
@@ -7,10 +8,8 @@ body {
 
 .container {
   max-width: 900px;
-  width: 95%;
   margin: auto;
   padding: 20px;
-  box-sizing: border-box;
 }
 
 h1 {
@@ -18,163 +17,141 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Search bar */
 #searchBar {
   width: 100%;
   padding: 10px;
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   box-sizing: border-box;
 }
 
-/* Action buttons */
-.action-btn {
-  display: inline-block;
-  width: 100%;
-  background: #007bff;
-  color: #fff;
-  font-size: 16px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: background 0.2s;
-}
-.action-btn:hover {
-  background: #0056b3;
+/* Button row */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-/* Search results grid */
+.action-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.action-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Results grid */
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 15px;
 }
 
-.result-card {
+/* Cards */
+.result-card, .car-item, .card-detail {
+  display: flex;
+  flex-direction: column;
   background: #fff;
-  padding: 10px;
   border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
+  padding: 10px;
+  box-sizing: border-box;
   transition: 0.3s;
-  position: relative;
 }
 
-.result-card img {
+.result-card:hover, .car-item:hover {
+  background: #f0f0f0;
+}
+
+.result-card img, .car-item img, .card-detail img {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.result-card p {
-  margin: 10px 0 5px;
-}
-
-.result-card .add-btn {
-  padding: 5px 8px;
-  font-size: 13px;
-  background: #28a745;
-  color: #fff;
-  border: none;
+  max-width: 200px;
   border-radius: 6px;
-  cursor: pointer;
-}
-.result-card .add-btn:hover {
-  background: #218838;
+  margin-bottom: 10px;
+  align-self: center;
 }
 
-/* Popup / Bottom Sheet */
+/* Card info */
+.card-info {
+  margin-top: 5px;
+}
+
+.card-info h2, .card-info h3, .card-info h4 {
+  margin: 5px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.card-info p {
+  margin: 2px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Add/Owned buttons */
+.add-btn, .add-btn-small, .owned-btn {
+  margin-top: 8px;
+  padding: 6px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+}
+
+.add-btn:hover, .add-btn-small:hover, .owned-btn:hover {
+  background-color: #218838;
+}
+
+/* Popup */
 .popup {
   display: none;
   position: fixed;
-  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  overflow-y: auto;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .popup-content {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 500px;
-  max-height: 90%;
   background: #fff;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  padding: 20px;
-  overflow-y: auto;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
-  animation: slideUp 0.3s ease;
-  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 600px;
+  margin: 40px auto;
+  position: relative;
+}
+
+.popup-open {
+  overflow: hidden;
 }
 
 .popup-close {
   position: fixed;
   top: 15px;
-  right: 15px;
+  right: 25px;
   font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  z-index: 1001;
-}
-
-#details img {
-  max-width: 100%;
-  border-radius: 6px;
-  margin: 10px 0;
-}
-
-/* All Cars from Case grid */
-#allCars {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-#allCars .car-item {
-  background: #f8f8f8;
-  padding: 8px;
-  border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-}
-#allCars .car-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-#allCars .car-item p {
-  font-size: 13px;
-  margin-top: 5px;
-}
-#allCars .car-item .add-btn-small {
-  padding: 4px 6px;
-  font-size: 12px;
-  background: #28a745;
   color: #fff;
-  border: none;
-  border-radius: 4px;
   cursor: pointer;
-  margin-top: 5px;
-}
-#allCars .car-item .add-btn-small:hover {
-  background: #218838;
 }
 
-/* Animations */
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-body.popup-open {
-  overflow: hidden;
+/* All Cars from case section */
+#allCars {
+  margin-top: 20px;
 }
