@@ -77,18 +77,30 @@ function renderSeriesCars(year, seriesName) {
         <p><strong>Series:</strong> ${item.car.series} (#${item.car.series_number})</p>
         <p><strong>HW Number:</strong> ${item.car.hw_number}</p>
         <p><strong>Color:</strong> ${item.car.color}</p>
-        <button class="owned-btn">${owned ? "Owned" : "Mark as Owned"}</button>
+        <button class="${owned ? 'unowned-btn' : 'owned-btn'}">
+          ${owned ? 'Unmark Owned' : 'Mark as Owned'}
+        </button>
       </div>
     `;
 
-    const btn = card.querySelector('.owned-btn');
-    if (!owned) {
-      btn.addEventListener('click', () => {
+    const btn = card.querySelector('button');
+    btn.addEventListener('click', () => {
+      if (owned) {
+        // Remove from owned
+        ownedCars = ownedCars.filter(c => c.car.image !== item.car.image);
+        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+        btn.textContent = 'Mark as Owned';
+        btn.className = 'owned-btn';
+        owned = false;
+      } else {
+        // Add to owned
         ownedCars.push(item);
         localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        btn.textContent = 'Owned';
-      });
-    }
+        btn.textContent = 'Unmark Owned';
+        btn.className = 'unowned-btn';
+        owned = true;
+      }
+    });
 
     grid.appendChild(card);
   });
