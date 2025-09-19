@@ -1,3 +1,4 @@
+// ------------------- SCRIPT -------------------
 let carsData = {};
 let wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 let ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
@@ -7,6 +8,7 @@ const resultsDiv = document.getElementById('results');
 const popup = document.getElementById('popup');
 const detailsDiv = document.getElementById('details');
 const popupClose = document.getElementById('popupClose');
+const searchOldCases = document.getElementById('searchOldCases');
 
 const wantedPageBtn = document.getElementById('wantedPageBtn');
 const seriesPageBtn = document.getElementById('seriesPageBtn');
@@ -21,7 +23,7 @@ fetch('data.json')
   .then(data => carsData = data);
 
 // ------------------- SEARCH FUNCTION -------------------
-searchBar.addEventListener('input', () => {
+function performSearch() {
   const query = searchBar.value.trim().toLowerCase();
   resultsDiv.innerHTML = '';
   if (!query) return;
@@ -31,39 +33,32 @@ searchBar.addEventListener('input', () => {
   let seriesFilter = null;
   let caseFilter = null;
 
-  // Series search: s-series or s-series+year
-  if (query.startsWith('s-')) {
+  // Determine search type
+  if (query.startsWith('s-')) { // series search
     searchType = 'series';
     const parts = query.slice(2).split(' ');
     seriesFilter = parts[0].trim();
     if (parts[1]) yearFilter = parts[1].trim();
-  }
-  // Super Treasure Hunt: sth- or sth-year
-  else if (query.startsWith('sth')) {
+  } else if (query.startsWith('sth')) { // super treasure hunt
     searchType = 'sth';
     const parts = query.split('-');
     if (parts[1]) yearFilter = parts[1].trim();
-  }
-  // Treasure Hunt: th- or th-year
-  else if (query.startsWith('th')) {
+  } else if (query.startsWith('th')) { // treasure hunt
     searchType = 'th';
     const parts = query.split('-');
     if (parts[1]) yearFilter = parts[1].trim();
-  }
-  // Case search: c-case+year
-  else if (query.startsWith('c-')) {
+  } else if (query.startsWith('c-')) { // case search
     searchType = 'case';
     const parts = query.slice(2).split(' ');
     caseFilter = parts[0].trim();
     if (parts[1]) yearFilter = parts[1].trim();
-  }
-  // Default: name search
-  else {
+  } else { // default: name search
     searchType = 'name';
   }
 
-  // Loop through years
   Object.keys(carsData).forEach(yearKey => {
+    // Skip years <2023 if checkbox is unchecked
+    if (!searchOldCases.checked && parseInt(yearKey) < 2023) return;
     if (yearFilter && yearFilter !== yearKey) return;
 
     carsData[yearKey].cases.forEach(hwCase => {
@@ -150,7 +145,11 @@ searchBar.addEventListener('input', () => {
       });
     });
   });
-});
+}
+
+// Trigger search on input and checkbox change
+searchBar.addEventListener('input', performSearch);
+searchOldCases.addEventListener('change', performSearch);
 
 // ------------------- SHOW DETAILS POPUP -------------------
 function showDetails(year, hwCase, car) {
@@ -211,7 +210,6 @@ function showDetails(year, hwCase, car) {
         </div>
       `;
 
-      // Owned toggle
       const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
       ownedBtn.addEventListener('click', () => {
         if (isOwned) {
@@ -229,7 +227,6 @@ function showDetails(year, hwCase, car) {
         }
       });
 
-      // Add to wanted
       const addWantedBtn = div.querySelector('.add-wanted-btn');
       if (addWantedBtn) {
         addWantedBtn.addEventListener('click', () => {
@@ -274,7 +271,6 @@ exportBtn.addEventListener('click', () => {
 
 // ------------------- IMPORT -------------------
 importBtn.addEventListener('click', () => importFile.click());
-
 importFile.addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
@@ -282,17 +278,12 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       const imported = JSON.parse(evt.target.result);
-
-      // Overwrite existing data completely
       wantedCars = imported.wantedCars || [];
       ownedCars = imported.ownedCars || [];
-
       localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
       alert("Import successful! Existing data replaced.");
-
-      // Refresh search results
-      searchBar.dispatchEvent(new Event('input'));
+      performSearch();
     } catch(err) {
       alert("Failed to import: " + err.message);
     }
