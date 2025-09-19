@@ -58,7 +58,7 @@ function performSearch() {
 
   Object.keys(carsData).forEach(yearKey => {
     // Skip years <2023 if checkbox is unchecked
-    if (!searchOldCases.checked && parseInt(yearKey) < 2023) return;
+    if (!searchOldCases.checked && parseInt(yearKey) < 2024) return;
     if (yearFilter && yearFilter !== yearKey) return;
 
     carsData[yearKey].cases.forEach(hwCase => {
