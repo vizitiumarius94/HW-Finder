@@ -36,18 +36,18 @@ searchBar.addEventListener('input', () => {
   } 
   // Year+case format, last character is case letter
   else if (query.length > 1 && !isNaN(query.slice(0, -1))) {
-    yearFilter = query.slice(0, -1);
-    caseFilter = query.slice(-1);
+    yearFilter = query.slice(0, -1); // e.g., "2025a" -> "2025"
+    caseFilter = query.slice(-1);    // e.g., "2025a" -> "a"
   } 
-  // Otherwise normal search by name
-  else {
-    if (!isNaN(query)) yearFilter = query; // optional: filter by year only
+  // Only year search
+  else if (!isNaN(query)) {
+    yearFilter = query;
   }
 
-  Object.keys(carsData).forEach(year => {
-    if (yearFilter && year !== year) return;
+  Object.keys(carsData).forEach(yearKey => {
+    if (yearFilter && yearFilter !== yearKey) return;
 
-    carsData[year].cases.forEach(hwCase => {
+    carsData[yearKey].cases.forEach(hwCase => {
       if (caseFilter && hwCase.letter.toLowerCase() !== caseFilter) return;
 
       hwCase.cars.forEach(car => {
@@ -65,7 +65,7 @@ searchBar.addEventListener('input', () => {
             <img src="${car.image}" alt="${car.name}">
             <div class="card-info">
               <h3>${car.name}</h3>
-              <p>${year} - ${hwCase.letter}</p>
+              <p>${yearKey} - ${hwCase.letter}</p>
               <p>${car.series} (#${car.series_number})</p>
               <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
               <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
@@ -78,7 +78,7 @@ searchBar.addEventListener('input', () => {
           // ----------------- Add click listener for popup -----------------
           card.addEventListener('click', (e) => {
             if (e.target.tagName.toLowerCase() === 'button') return;
-            showDetails(year, hwCase, car);
+            showDetails(yearKey, hwCase, car);
           });
 
           // ----------------- Owned/unowned toggle -----------------
@@ -92,7 +92,7 @@ searchBar.addEventListener('input', () => {
               ownedBtn.className = 'owned-btn';
               isOwned = false;
             } else {
-              ownedCars.push({ year, caseLetter: hwCase.letter, car });
+              ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
               ownedBtn.textContent = 'Unmark Owned';
               ownedBtn.className = 'unowned-btn';
@@ -105,7 +105,7 @@ searchBar.addEventListener('input', () => {
           if (addWantedBtn) {
             addWantedBtn.addEventListener('click', (e) => {
               e.stopPropagation();
-              wantedCars.push({ year, caseLetter: hwCase.letter, car });
+              wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
               localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
               addWantedBtn.style.display = 'none';
             });
@@ -223,7 +223,7 @@ wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.htm
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 ownedPageBtn.addEventListener('click', () => window.location.href = 'owned.html');
 
-// ------------------- EXPORT & IMPORT -------------------
+// ------------------- EXPORT -------------------
 exportBtn.addEventListener('click', () => {
   if (!wantedCars.length && !ownedCars.length) return alert("No data to export!");
   const dataToExport = { wantedCars, ownedCars };
@@ -236,6 +236,7 @@ exportBtn.addEventListener('click', () => {
   URL.revokeObjectURL(url);
 });
 
+// ------------------- IMPORT -------------------
 importBtn.addEventListener('click', () => importFile.click());
 
 importFile.addEventListener('change', e => {
@@ -245,19 +246,17 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       const imported = JSON.parse(evt.target.result);
-      if (imported.wantedCars) {
-        imported.wantedCars.forEach(item => {
-          if (!wantedCars.some(w => w.car.image === item.car.image)) wantedCars.push(item);
-        });
-      }
-      if (imported.ownedCars) {
-        imported.ownedCars.forEach(item => {
-          if (!ownedCars.some(o => o.car.image === item.car.image)) ownedCars.push(item);
-        });
-      }
+
+      // Overwrite existing data completely
+      wantedCars = imported.wantedCars || [];
+      ownedCars = imported.ownedCars || [];
+
       localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-      alert("Import successful!");
+      alert("Import successful! Existing data replaced.");
+
+      // Refresh search results if needed
+      searchBar.dispatchEvent(new Event('input'));
     } catch(err) {
       alert("Failed to import: " + err.message);
     }
