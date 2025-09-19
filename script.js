@@ -11,10 +11,13 @@ const popupClose = document.getElementById('popupClose');
 
 const wantedPageBtn = document.getElementById('wantedPageBtn');
 const seriesPageBtn = document.getElementById('seriesPageBtn');
+const ownedPageBtn = document.getElementById('ownedPageBtn');
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
 const showAllBtn = document.getElementById('showAllBtn');
+
+
 
 // Fetch cars data
 fetch('data.json')
@@ -164,6 +167,7 @@ popupClose.addEventListener('click', () => {
 // ------------------- NAVIGATION -------------------
 wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
+ownedPageBtn.addEventListener('click', () => window.location.href = 'owned.html');
 
 // ------------------- EXPORT & IMPORT BOTH WANTED + OWNED -------------------
 exportBtn.addEventListener('click', () => {
