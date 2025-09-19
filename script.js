@@ -30,16 +30,18 @@ searchBar.addEventListener('input', () => {
   let caseFilter = null;
   let seriesFilter = null;
 
-  if (query.includes('-')) {
-    const parts = query.split('-');
-    if (!isNaN(parts[0])) {
-      yearFilter = parts[0]; // first part is year
-      const secondPart = parts.slice(1).join('-').trim();
-      if (secondPart.length === 1) caseFilter = secondPart; // single letter -> case
-      else seriesFilter = secondPart; // otherwise treat as series
-    } else if (parts[0] === 's') {
-      seriesFilter = parts.slice(1).join('-').trim();
-    }
+  // Series search with s- prefix
+  if (query.startsWith('s-')) {
+    seriesFilter = query.slice(2).trim();
+  } 
+  // Year+case format, last character is case letter
+  else if (query.length > 1 && !isNaN(query.slice(0, -1))) {
+    yearFilter = query.slice(0, -1);
+    caseFilter = query.slice(-1);
+  } 
+  // Otherwise normal search by name
+  else {
+    if (!isNaN(query)) yearFilter = query; // optional: filter by year only
   }
 
   Object.keys(carsData).forEach(year => {
@@ -50,7 +52,7 @@ searchBar.addEventListener('input', () => {
 
       hwCase.cars.forEach(car => {
         if (
-          (!seriesFilter && !query.includes('-') && car.name.toLowerCase().includes(query)) ||
+          (!seriesFilter && !caseFilter && car.name.toLowerCase().includes(query)) ||
           (seriesFilter && car.series.toLowerCase().includes(seriesFilter))
         ) {
           const card = document.createElement('div');
