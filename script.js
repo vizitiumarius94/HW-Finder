@@ -6,7 +6,6 @@ const searchBar = document.getElementById('searchBar');
 const resultsDiv = document.getElementById('results');
 const popup = document.getElementById('popup');
 const detailsDiv = document.getElementById('details');
-const allCarsDiv = document.getElementById('allCars');
 const popupClose = document.getElementById('popupClose');
 
 const wantedPageBtn = document.getElementById('wantedPageBtn');
@@ -15,9 +14,8 @@ const ownedPageBtn = document.getElementById('ownedPageBtn');
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
-const showAllBtn = document.getElementById('showAllBtn');
 
-// Fetch cars data
+// ------------------- FETCH DATA -------------------
 fetch('data.json')
   .then(res => res.json())
   .then(data => carsData = data);
@@ -31,20 +29,16 @@ searchBar.addEventListener('input', () => {
   let yearFilter = null;
   let seriesFilter = null;
 
-  // Check if query contains a dash
   if (query.includes('-')) {
     const parts = query.split('-');
     if (!isNaN(parts[0])) {
-      // Format: "2025-Then and Now"
       yearFilter = parts[0];
       seriesFilter = parts.slice(1).join('-').trim();
     } else if (parts[0] === 's') {
-      // Format: "s-Then and Now"
       seriesFilter = parts.slice(1).join('-').trim();
     }
   }
 
-  // Iterate through all years
   Object.keys(carsData).forEach(year => {
     if (yearFilter && year !== yearFilter) return;
 
@@ -74,9 +68,16 @@ searchBar.addEventListener('input', () => {
             </div>
           `;
 
-          // Owned/unowned toggle
+          // ----------------- Add click listener for popup -----------------
+          card.addEventListener('click', (e) => {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            showDetails(year, hwCase, car);
+          });
+
+          // ----------------- Owned/unowned toggle -----------------
           const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
-          ownedBtn.addEventListener('click', () => {
+          ownedBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (isOwned) {
               ownedCars = ownedCars.filter(o => o.car.image !== car.image);
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
@@ -92,10 +93,11 @@ searchBar.addEventListener('input', () => {
             }
           });
 
-          // Add to wanted button
+          // ----------------- Add to wanted button -----------------
           const addWantedBtn = card.querySelector('.add-wanted-btn');
           if (addWantedBtn) {
-            addWantedBtn.addEventListener('click', () => {
+            addWantedBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
               wantedCars.push({ year, caseLetter: hwCase.letter, car });
               localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
               addWantedBtn.style.display = 'none';
@@ -156,7 +158,7 @@ wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.htm
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 ownedPageBtn.addEventListener('click', () => window.location.href = 'owned.html');
 
-// ------------------- EXPORT & IMPORT BOTH WANTED + OWNED -------------------
+// ------------------- EXPORT & IMPORT -------------------
 exportBtn.addEventListener('click', () => {
   if (!wantedCars.length && !ownedCars.length) return alert("No data to export!");
   const dataToExport = { wantedCars, ownedCars };
