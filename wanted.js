@@ -48,7 +48,7 @@ importFile.addEventListener('change', (e) => {
   reader.readAsText(file);
 });
 
-// Load wanted cars
+// Load wanted cars as full cards
 function loadWantedCars() {
   const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
   wantedListDiv.innerHTML = '';
@@ -63,10 +63,15 @@ function loadWantedCars() {
     card.classList.add('result-card');
     card.innerHTML = `
       <img src="${item.car.image}" alt="${item.car.name}">
-      <p>${item.car.name}</p>
-      <p><strong>Year:</strong> ${item.year}</p>
-      <p><strong>Case:</strong> ${item.caseLetter}</p>
-      <button class="remove-btn">Remove</button>
+      <div class="card-info">
+        <h3>${item.car.name}</h3>
+        <p><strong>Year:</strong> ${item.year}</p>
+        <p><strong>Case:</strong> ${item.caseLetter}</p>
+        <p><strong>Series:</strong> ${item.car.series} (#${item.car.series_number})</p>
+        <p><strong>HW Number:</strong> ${item.car.hw_number}</p>
+        <p><strong>Color:</strong> ${item.car.color}</p>
+        <button class="remove-btn">Remove</button>
+      </div>
     `;
 
     card.querySelector('.remove-btn').addEventListener('click', () => {
