@@ -1,51 +1,10 @@
 const wantedListDiv = document.getElementById('wantedList');
 const backBtn = document.getElementById('backBtn');
 
-const exportBtn = document.getElementById('exportBtn');
-const importBtn = document.getElementById('importBtn');
-const importFile = document.getElementById('importFile');
 
 // Back to main search page
 backBtn.addEventListener('click', () => {
   window.location.href = 'index.html';
-});
-
-// Export wanted cars
-exportBtn.addEventListener('click', () => {
-  const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-  if (!wanted.length) { alert("No cars in Wanted list!"); return; }
-  const blob = new Blob([JSON.stringify(wanted, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = "wanted_cars.json";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// Import wanted cars
-importBtn.addEventListener('click', () => importFile.click());
-importFile.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (evt) => {
-    try {
-      const imported = JSON.parse(evt.target.result);
-      if (!Array.isArray(imported)) throw new Error("Invalid format");
-      let existing = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-      imported.forEach(item => {
-        const exists = existing.some(w => w.car.image === item.car.image);
-        if (!exists) existing.push(item);
-      });
-      localStorage.setItem('wantedCars', JSON.stringify(existing));
-      alert("Wanted Cars imported successfully!");
-      loadWantedCars();
-    } catch (err) {
-      alert("Failed to import: " + err.message);
-    }
-  };
-  reader.readAsText(file);
 });
 
 // Load wanted cars as full cards
