@@ -17,12 +17,51 @@ const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
 
-// ------------------- SERVICE WORKER -----------------
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js")
-    .then(() => console.log("Service Worker registered"));
-}
+// ------------------- SERVICE WORKER + UPDATE POPUP -------------------
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').then(reg => {
 
+    function showUpdate(worker) {
+      const banner = document.createElement('div');
+      banner.innerHTML = `
+        <div style="
+          position:fixed; bottom:10px; left:50%; transform:translateX(-50%);
+          background:#ff5722; color:white; padding:10px 20px;
+          border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.3);
+          font-family:sans-serif; z-index:9999;
+        ">
+          🔄 A new version is available.
+          <button style="
+            margin-left:10px; padding:5px 10px; border:none;
+            background:white; color:#ff5722; border-radius:5px;
+            cursor:pointer; font-weight:bold;
+          ">Reload</button>
+        </div>
+      `;
+      const button = banner.querySelector('button');
+      button.addEventListener('click', () => {
+        worker.postMessage({ action: 'skipWaiting' });
+      });
+      document.body.appendChild(banner);
+    }
+
+    if (reg.waiting) showUpdate(reg.waiting);
+
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          showUpdate(newWorker);
+        }
+      });
+    });
+
+  }).catch(err => console.error("SW registration failed:", err));
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+}
 // ------------------- FETCH DATA -------------------
 fetch('data.json')
   .then(res => res.json())
@@ -295,50 +334,4 @@ importFile.addEventListener('change', e => {
     }
   };
   reader.readAsText(file);
-});
-//------------------- SERVICE WORKER POP-UP --------
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
-    // Listen for updates
-    if (reg.waiting) {
-      notifyUpdate(reg.waiting);
-    }
-
-    reg.addEventListener('updatefound', () => {
-      const newWorker = reg.installing;
-      newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          notifyUpdate(newWorker);
-        }
-      });
-    });
-  });
-}
-
-// Show popup to reload
-function notifyUpdate(worker) {
-  const banner = document.createElement('div');
-  banner.innerHTML = `
-    <div style="position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
-                background:#ff5722;color:white;padding:10px 20px;
-                border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.3);
-                font-family:sans-serif;z-index:9999;">
-      🔄 A new version is available.
-      <button style="margin-left:10px;padding:5px 10px;border:none;
-                     background:white;color:#ff5722;border-radius:5px;
-                     cursor:pointer;font-weight:bold;">
-        Reload
-      </button>
-    </div>
-  `;
-  const button = banner.querySelector('button');
-  button.addEventListener('click', () => {
-    worker.postMessage({ action: 'skipWaiting' });
-  });
-  document.body.appendChild(banner);
-}
-
-// When the SW activates, reload page
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-  window.location.reload();
 });
