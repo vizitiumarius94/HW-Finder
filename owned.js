@@ -1,5 +1,16 @@
-let ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
-let wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+// Helpers
+function getOwnedCars() {
+  return JSON.parse(localStorage.getItem('ownedCars') || '[]');
+}
+function setOwnedCars(cars) {
+  localStorage.setItem('ownedCars', JSON.stringify(cars));
+}
+function getWantedCars() {
+  return JSON.parse(localStorage.getItem('wantedCars') || '[]');
+}
+function setWantedCars(cars) {
+  localStorage.setItem('wantedCars', JSON.stringify(cars));
+}
 
 const ownedCarsContainer = document.getElementById('ownedCarsContainer');
 const groupSelect = document.getElementById('groupSelect');
@@ -22,6 +33,8 @@ function renderOwnedCars(groupBy) {
 
   // Group cars
   const groups = {};
+  const ownedCars = getOwnedCars();
+  const wantedCars = getWantedCars();
 
   ownedCars.forEach(item => {
     let key;
@@ -69,8 +82,8 @@ function renderOwnedCars(groupBy) {
       // Unmark owned
       const unownedBtn = div.querySelector('.unowned-btn');
       unownedBtn.addEventListener('click', () => {
-        ownedCars = ownedCars.filter(o => o.car.image !== item.car.image);
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+        let ownedCars = getOwnedCars().filter(o => o.car.image !== item.car.image);
+        setOwnedCars(ownedCars);
         renderOwnedCars(groupBy);
       });
 
@@ -78,8 +91,9 @@ function renderOwnedCars(groupBy) {
       const addWantedBtn = div.querySelector('.add-wanted-btn');
       if (addWantedBtn) {
         addWantedBtn.addEventListener('click', () => {
+          let wantedCars = getWantedCars();
           wantedCars.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
-          localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+          setWantedCars(wantedCars);
           addWantedBtn.style.display = 'none';
         });
       }
