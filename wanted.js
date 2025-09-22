@@ -1,6 +1,13 @@
 const wantedListDiv = document.getElementById('wantedList');
 const backBtn = document.getElementById('backBtn');
 
+// Helpers
+function getWantedCars() {
+  return JSON.parse(localStorage.getItem('wantedCars') || '[]');
+}
+function setWantedCars(cars) {
+  localStorage.setItem('wantedCars', JSON.stringify(cars));
+}
 
 // Back to main search page
 backBtn.addEventListener('click', () => {
@@ -9,7 +16,7 @@ backBtn.addEventListener('click', () => {
 
 // Load wanted cars as full cards
 function loadWantedCars() {
-  const wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+  const wanted = getWantedCars();
   wantedListDiv.innerHTML = '';
 
   if (!wanted.length) {
@@ -34,9 +41,8 @@ function loadWantedCars() {
     `;
 
     card.querySelector('.remove-btn').addEventListener('click', () => {
-      let wanted = JSON.parse(localStorage.getItem('wantedCars') || '[]');
-      wanted = wanted.filter(w => w.car.image !== item.car.image);
-      localStorage.setItem('wantedCars', JSON.stringify(wanted));
+      let wanted = getWantedCars().filter(w => w.car.image !== item.car.image);
+      setWantedCars(wanted);
       loadWantedCars(); // refresh list
     });
 
