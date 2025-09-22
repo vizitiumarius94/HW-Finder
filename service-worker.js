@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v5";
+const CACHE_NAME = "garage-cache-v6";
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -15,25 +15,25 @@ const CORE_ASSETS = [
 ];
 
 // Install
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS))
   );
-  self.skipWaiting(); // install immediately
+  // Do NOT call skipWaiting here – we want the new SW to enter "waiting"
 });
 
-// Activate + cleanup
-self.addEventListener("activate", event => {
+// Activate
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
-  return self.clients.claim(); // take control of open pages
+  return self.clients.claim();
 });
 
-// Fetch strategy
-self.addEventListener("fetch", event => {
+// Fetch
+self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
   // Network-first for data.json
@@ -69,7 +69,9 @@ self.addEventListener("fetch", event => {
   );
 });
 
-// 🔔 Notify clients when a new SW is ready
-self.addEventListener("install", () => {
-  self.skipWaiting();
+// Listen for skipWaiting from the page
+self.addEventListener("message", (event) => {
+  if (event.data.action === "skipWaiting") {
+    self.skipWaiting();
+  }
 });
