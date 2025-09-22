@@ -17,6 +17,12 @@ const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
 
+// ------------------- SERVICE WORKER -----------------
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("Service Worker registered"));
+}
+
 // ------------------- FETCH DATA -------------------
 fetch('data.json')
   .then(res => res.json())
