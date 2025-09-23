@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Add Car to JSON (Preserve Order)</title>
+<title>Add Car to JSON (Preserve Original Order)</title>
 <style>
   body { font-family: sans-serif; padding: 20px; }
   input, button { display: block; margin: 10px 0; padding: 5px; width: 300px; }
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<h1>Import JSON & Add Car (Order Preserved)</h1>
+<h1>Import JSON & Add Car (Preserve Order)</h1>
 
 <label for="importFile">Import JSON File</label>
 <input type="file" id="importFile">
@@ -50,7 +50,8 @@
 <textarea id="dataOutput" readonly></textarea>
 
 <script>
-let carsDataArray = []; // Array of { year: "2025", cases: [...] }
+let carsData = {};  // Original JSON object
+let yearOrder = []; // Preserves original year order
 
 const importFile = document.getElementById('importFile');
 const yearInput = document.getElementById('year');
@@ -70,13 +71,10 @@ importFile.addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = evt => {
     try {
-      const imported = JSON.parse(evt.target.result);
+      carsData = JSON.parse(evt.target.result);
 
-      // Convert object with years as keys into ordered array
-      carsDataArray = Object.keys(imported).map(year => ({
-        year: year,
-        cases: imported[year].cases || []
-      }));
+      // Store original year order
+      yearOrder = Object.keys(carsData);
 
       updateOutput();
       alert('JSON imported successfully!');
@@ -87,14 +85,13 @@ importFile.addEventListener('change', e => {
   reader.readAsText(file);
 });
 
-// Update live JSON preview
+// Update preview/output
 function updateOutput() {
-  // Convert array back to object for compatibility if needed
-  const obj = {};
-  carsDataArray.forEach(entry => {
-    obj[entry.year] = { cases: entry.cases };
+  const orderedObj = {};
+  yearOrder.forEach(y => {
+    if (carsData[y]) orderedObj[y] = carsData[y];
   });
-  dataOutput.value = JSON.stringify(obj, null, 2);
+  dataOutput.value = JSON.stringify(orderedObj, null, 2);
 }
 
 // Add new car
@@ -114,23 +111,20 @@ document.getElementById('addCarBtn').addEventListener('click', () => {
     return alert('Please fill in all required fields.');
   }
 
-  // Find or create year
-  let yearEntry = carsDataArray.find(y => y.year === year);
-  if (!yearEntry) {
-    yearEntry = { year: year, cases: [] };
-    carsDataArray.push(yearEntry); // Append at end to preserve order
+  // If year doesn't exist, create it at the end
+  if (!carsData[year]) {
+    carsData[year] = { cases: [] };
+    yearOrder.push(year); // preserve insertion order
   }
 
-  // Find or create case
-  let hwCase = yearEntry.cases.find(c => c.letter === caseLetter);
+  // Find existing case
+  let hwCase = carsData[year].cases.find(c => c.letter === caseLetter);
   if (!hwCase) {
     hwCase = { letter: caseLetter, cars: [] };
-    yearEntry.cases.push(hwCase); // Append at end
+    carsData[year].cases.push(hwCase);
   }
 
-  // Add the car
   hwCase.cars.push(car);
-
   updateOutput();
 
   // Clear inputs
@@ -144,14 +138,14 @@ document.getElementById('addCarBtn').addEventListener('click', () => {
   alert('Car added successfully!');
 });
 
-// Export updated JSON
+// Export updated JSON while preserving original year order
 document.getElementById('exportBtn').addEventListener('click', () => {
-  const obj = {};
-  carsDataArray.forEach(entry => {
-    obj[entry.year] = { cases: entry.cases };
+  const orderedObj = {};
+  yearOrder.forEach(y => {
+    if (carsData[y]) orderedObj[y] = carsData[y];
   });
 
-  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(orderedObj, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
