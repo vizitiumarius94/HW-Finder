@@ -166,7 +166,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: auto;              /* allow scroll if popup taller than screen */
   background-color: rgba(0,0,0,0.5);
   z-index: 9999;
   padding: 10px;
@@ -182,18 +182,29 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 90vh;
   box-sizing: border-box;
   position: relative;
+  /* removed max-height so it grows with content */
 }
 
 .popup-close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
+  position: sticky;
+  top: 0;
+  align-self: flex-end;
+  background: #fff;
+  padding: 5px 10px;
   font-size: 28px;
   color: #e2231a;
   cursor: pointer;
+  border-radius: 6px;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* optional for visibility */
+}
+
+/* Lock background scroll when popup is open */
+body.popup-open {
+  overflow: hidden;
+  height: 100vh;
 }
 
 /* ------------------- ALL CARS GRID ------------------- */
@@ -238,6 +249,7 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 /* ------------------- ACTION BUTTONS ------------------- */
 .action-btn {
   padding: 10px 16px;
