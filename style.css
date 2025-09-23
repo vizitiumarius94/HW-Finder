@@ -238,3 +238,25 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* ------------------- ACTION BUTTONS ------------------- */
+.action-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1a4fa0; /* Hot Wheels blue */
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #143974; /* darker blue on hover */
+}
+
+/* Optional: smaller variant for inline buttons */
+.action-btn-small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
