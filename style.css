@@ -260,3 +260,46 @@ h1 {
   padding: 6px 12px;
   font-size: 12px;
 }
+
+/* ------------------- DROPDOWNS ------------------- */
+.select-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #1a4fa0; /* Hot Wheels blue border */
+  background-color: #fff;
+  color: #1a4fa0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  appearance: none; /* remove default arrow styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select-btn:hover {
+  background-color: #1a4fa0;
+  color: #fff;
+  border-color: #143974; /* darker blue border on hover */
+}
+
+/* Optional: add a custom arrow using a pseudo-element */
+.select-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select-btn-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 12px;
+  color: #1a4fa0;
+}
+
+.select-btn-wrapper select.select-btn {
+  padding-right: 30px; /* space for custom arrow */
+}
