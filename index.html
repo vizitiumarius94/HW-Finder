@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hot Wheels Case Finder</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-</head>
 <body>
   <div class="container">
+
+    <!-- Menu bar -->
+    <nav class="menu-bar">
+      <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="menu-btn">Series Collection</button>
+      <button id="ownedPageBtn" class="menu-btn">Owned Cars</button>
+      <button id="exportBtn" class="menu-btn">Export</button>
+      <input type="file" id="importFile" style="display:none;">
+      <button id="importBtn" class="menu-btn">Import</button>
+    </nav>
+
+    <!-- Page title -->
     <h1>Hot Wheels Case Finder</h1>
 
-    <!-- Action buttons -->
-    <div class="button-row">
-      <button id="wantedPageBtn" class="action-btn">Wanted Cars</button>
-      <button id="seriesPageBtn" class="action-btn">Series Collection</button>
-      <button id="ownedPageBtn" class="action-btn">Owned Cars</button>
-      <button id="exportBtn" class="action-btn">Export Data</button>
-      <input type="file" id="importFile" style="display:none;">
-      <button id="importBtn" class="action-btn">Import Data</button>
-    </div>
-	  <div class="checkbox-container">
+    <!-- Checkbox -->
+    <div class="checkbox-container">
       <input type="checkbox" id="searchOldCases">
       <label for="searchOldCases">Search Old Cases</label>
     </div>
+
     <!-- Search bar -->
     <input type="text" id="searchBar" placeholder="Search for a car...">
+
     <!-- Search results -->
     <div id="results" class="results-grid"></div>
 
@@ -37,8 +34,7 @@
         <div id="allCars" class="results-grid"></div>
       </div>
     </div>
-  </div>
 
+  </div>
   <script src="script.js"></script>
 </body>
-</html>
