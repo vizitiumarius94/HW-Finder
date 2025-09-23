@@ -89,7 +89,7 @@ function showSeriesPopup(selectedYear, seriesName) {
               <h4>${car.name}</h4>
               <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
               <p>Year: ${year} | Case: ${hwCase.letter}</p>
-              <p>${c.series} (#${c.series_number})</p>
+              <p>${car.series} (#${car.series_number})</p>
               <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
                 ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
               </button>
