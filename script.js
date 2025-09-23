@@ -226,7 +226,6 @@ function showDetails(year, hwCase, car) {
     </div>
   `;
 
-  // Add to wanted
   const addBtn = document.getElementById('addWantedBtn');
   if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
   else addBtn.addEventListener('click', () => {
@@ -237,50 +236,52 @@ function showDetails(year, hwCase, car) {
 
   const allCarsGrid = document.getElementById('allCarsGrid');
 
+  // Helper: extract first numeric part from series_number
+  const extractSeriesNumber = val => {
+    if (!val) return 0;
+    const m = String(val).match(/\d+/);
+    return m ? parseInt(m[0], 10) : 0;
+  };
+
   // Show all cars from this case
-  document.getElementById('showAllCaseBtn').addEventListener('click', () => {
+  document.getElementById('showAllCaseBtn').addEventListener('click', e => {
+    e.stopPropagation();
     allCarsGrid.innerHTML = '';
     hwCase.cars.forEach(c => renderCarCard(year, hwCase.letter, c, allCarsGrid));
   });
 
-  // Show all cars from this series (same year)
-  document.getElementById('showAllSeriesBtn').addEventListener('click', () => {
-  allCarsGrid.innerHTML = '';
+  // Show all cars from this series (across all cases)
+  document.getElementById('showAllSeriesBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    allCarsGrid.innerHTML = '';
 
-  // Collect all cars from all cases of this series
-  const collected = [];
-  carsData[year].cases.forEach(cse => {
-    cse.cars
-      .filter(c => c.series === car.series)
-      .forEach(c => collected.push({ year, caseLetter: cse.letter, car: c }));
+    // Collect all cars from all cases of this series
+    const collected = carsData[year].cases.flatMap(hwCaseItem =>
+      hwCaseItem.cars
+        .filter(c => c.series === car.series)
+        .map(c => ({ year, caseLetter: hwCaseItem.letter, car: c }))
+    );
+
+    // Sort cars by series_number, then HW number, then color
+    collected.sort((a, b) => {
+      const numA = extractSeriesNumber(a.car.series_number);
+      const numB = extractSeriesNumber(b.car.series_number);
+      if (numA !== numB) return numA - numB;
+
+      const hwA = parseInt(String(a.car.hw_number).match(/\d+/)?.[0] || '0', 10);
+      const hwB = parseInt(String(b.car.hw_number).match(/\d+/)?.[0] || '0', 10);
+      if (hwA !== hwB) return hwA - hwB;
+
+      return (a.car.color || '').localeCompare(b.car.color || '');
+    });
+
+    collected.forEach(entry => renderCarCard(entry.year, entry.caseLetter, entry.car, allCarsGrid));
   });
 
-  // Helper to extract first numeric part from series_number
-  const extractSeriesNumber = val => {
-    if (val == null) return 0;
-    const m = String(val).match(/(\d+)/);
-    return m ? parseInt(m[1], 10) : 0;
-  };
-
-  // Sort the collected cars
-  collected.sort((a, b) => {
-    const numA = extractSeriesNumber(a.car.series_number);
-    const numB = extractSeriesNumber(b.car.series_number);
-    if (numA !== numB) return numA - numB;
-
-    const hwA = parseInt(String(a.car.hw_number).match(/(\d+)/)?.[1] || '0', 10);
-    const hwB = parseInt(String(b.car.hw_number).match(/(\d+)/)?.[1] || '0', 10);
-    if (hwA !== hwB) return hwA - hwB;
-
-    return (a.car.color || '').localeCompare(b.car.color || '');
-  });
-
-  // Render sorted cars
-  collected.forEach(entry => {
-    renderCarCard(entry.year, entry.caseLetter, entry.car, allCarsGrid);
-  });
-});
-
+  popup.style.display = 'block';
+  document.body.classList.add('popup-open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 // ------------------- RENDER CAR CARD HELPER -------------------
 function renderCarCard(year, caseLetter, c, container) {
   const div = document.createElement('div');
