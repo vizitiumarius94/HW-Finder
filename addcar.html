@@ -5,9 +5,9 @@
 <title>Add Car to JSON</title>
 <style>
   body { font-family: sans-serif; padding: 20px; }
-  input, select, button { display: block; margin: 10px 0; padding: 5px; width: 300px; }
+  input, button { display: block; margin: 10px 0; padding: 5px; width: 300px; }
   label { font-weight: bold; margin-top: 15px; }
-  textarea { width: 500px; height: 300px; margin-top: 20px; }
+  textarea { width: 600px; height: 400px; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -51,6 +51,7 @@
 
 <script>
 let carsData = {};
+let yearOrder = []; // preserves original year order
 
 const importFile = document.getElementById('importFile');
 const yearInput = document.getElementById('year');
@@ -71,6 +72,10 @@ importFile.addEventListener('change', e => {
   reader.onload = evt => {
     try {
       carsData = JSON.parse(evt.target.result);
+
+      // Capture original year order
+      yearOrder = Object.keys(carsData);
+
       updateOutput();
       alert('JSON imported successfully!');
     } catch(err) {
@@ -102,14 +107,16 @@ document.getElementById('addCarBtn').addEventListener('click', () => {
     return alert('Please fill in all required fields.');
   }
 
-  // Ensure year exists
+  // If new year, add it at the end
   if (!carsData[year]) {
     carsData[year] = { cases: [] };
+    yearOrder.push(year); // preserve insertion order
   }
 
-  // Find or create case
+  // Find existing case
   let hwCase = carsData[year].cases.find(c => c.letter === caseLetter);
   if (!hwCase) {
+    // If case does not exist, create it
     hwCase = { letter: caseLetter, cars: [] };
     carsData[year].cases.push(hwCase);
   }
@@ -117,7 +124,6 @@ document.getElementById('addCarBtn').addEventListener('click', () => {
   // Add the car
   hwCase.cars.push(car);
 
-  // Update preview
   updateOutput();
 
   // Clear inputs
@@ -131,9 +137,14 @@ document.getElementById('addCarBtn').addEventListener('click', () => {
   alert('Car added successfully!');
 });
 
-// Export updated JSON
+// Export updated JSON while preserving year order
 document.getElementById('exportBtn').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(carsData, null, 2)], { type: 'application/json' });
+  const orderedData = {};
+  yearOrder.forEach(y => {
+    if (carsData[y]) orderedData[y] = carsData[y];
+  });
+
+  const blob = new Blob([JSON.stringify(orderedData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
