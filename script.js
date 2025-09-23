@@ -217,7 +217,11 @@ function showDetails(year, hwCase, car) {
         <p>
         </p>
         <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+        <p>
+        </p>
         <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
+        <p>
+        </p>
         <div id="allCarsGrid" class="results-grid"></div>
       </div>
     </div>
