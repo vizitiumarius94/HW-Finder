@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v15";
+const CACHE_NAME = "garage-cache-v17";
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -19,7 +19,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS))
   );
-  // Do NOT call skipWaiting here – we want the new SW to enter "waiting"
+  self.skipWaiting(); // activate immediately
 });
 
 // Activate
@@ -36,30 +36,26 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
-  // Network-first for data.json
-  if (url.endsWith("data.json")) {
+  // Network-first for data.json, style.css, script.js
+  if (url.endsWith("data.json") || url.endsWith("style.css") || url.endsWith("script.js")) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          return caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+          return response;
         })
         .catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // Cache-first for others
+  // Cache-first for other assets
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, response.clone());
-          return response;
-        });
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+        return response;
       }).catch(() => {
         if (event.request.destination === "image") {
           return caches.match("images/placeholder.png");
