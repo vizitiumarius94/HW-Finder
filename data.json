@@ -5519,6 +5519,14 @@
             "color": "White",
             "series": "HW Exotics",
             "series_number": "4"
+          },
+          {
+            "name": "2020 Koenigsegg Jesko",
+            "image": "images\\HWJESKO.jpg",
+            "hw_number": "184",
+            "color": "Iris Purple",
+            "series": "HW Exotics",
+            "series_number": "2"
           }
         ]
       },
