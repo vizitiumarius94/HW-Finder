@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v25";
+const CACHE_NAME = "garage-cache-v27";
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -10,8 +10,7 @@ const CORE_ASSETS = [
   "series.js",
   "wanted.js",
   "data.json",
-  "data.jsonbak",
-  "dataBAK.json"
+  "images/images-coming-soon.png" // fallback image
 ];
 
 // Install
@@ -19,7 +18,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS))
   );
-  self.skipWaiting(); // activate immediately
+  self.skipWaiting();
 });
 
 // Activate
@@ -29,39 +28,50 @@ self.addEventListener("activate", (event) => {
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
-  return self.clients.claim();
+  self.clients.claim();
 });
 
 // Fetch
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
-  // Network-first for data.json, style.css, script.js
-  if (url.endsWith("data.json") || url.endsWith("style.css") || url.endsWith("script.js")) {
+  // Network-first for .js, .css, .json
+  if (url.match(/\.(js|css|json)$/)) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
+          // update cache
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(event.request)) // fallback to cache
     );
     return;
   }
 
-  // Cache-first for other assets
+  // Cache-first for HTML + images
+  if (url.match(/\.(html|png|jpg|jpeg|gif|webp|svg)$/)) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request)
+          .then(response => {
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+            return response;
+          })
+          .catch(() => {
+            if (event.request.destination === "image") {
+              return caches.match("images/placeholder.png");
+            }
+          });
+      })
+    );
+    return;
+  }
+
+  // Default: try network, fallback to cache
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-        return response;
-      }).catch(() => {
-        if (event.request.destination === "image") {
-          return caches.match("images/placeholder.png");
-        }
-      });
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
 
