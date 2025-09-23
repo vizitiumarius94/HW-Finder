@@ -216,7 +216,7 @@ function showDetails(year, hwCase, car) {
         ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
         <p>
         </p>
-        button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+        <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
         <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
         <div id="allCarsGrid" class="results-grid"></div>
       </div>
