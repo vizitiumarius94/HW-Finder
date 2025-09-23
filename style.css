@@ -1,7 +1,7 @@
 /* Reset and body */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5; /* light neutral background */
+  background-color: #f5f5f5;
   margin: 0;
   padding: 0;
   color: #333;
@@ -17,29 +17,39 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Menu bar with yellow racing stripe */
+/* Menu bar */
 .menu-bar {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding-bottom: 5px;
+  overflow-x: auto; /* horizontal scroll on small screens */
+  padding: 5px 10px;
   border-bottom: 4px solid #ffcc00; /* yellow racing stripe */
   background-color: #e2231a; /* Hot Wheels red */
+  white-space: nowrap; /* prevent wrapping */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar */
+.menu-bar::-webkit-scrollbar {
+  display: none;
+}
+.menu-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Menu buttons */
 .menu-btn {
-  padding: 10px 15px;
+  flex: 0 0 auto; /* prevent shrinking */
+  padding: 10px 16px;
   font-size: 14px;
   border: none;
   border-radius: 6px;
   background-color: #fff;
   color: #e2231a;
+  font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
-  font-weight: bold;
 }
 
 .menu-btn:hover {
@@ -47,25 +57,12 @@ body {
   color: #111;
 }
 
-/* Responsive: stack buttons on small screens */
-@media (max-width: 500px) {
-  .menu-bar {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .menu-btn {
-    width: 90%;
-    text-align: center;
-  }
-}
-
-/* Title */
+/* Page title */
 h1 {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #e2231a; /* Hot Wheels red */
+  color: #e2231a;
 }
 
 /* Checkbox */
@@ -77,7 +74,7 @@ h1 {
 }
 
 .checkbox-container input {
-  accent-color: #ffcc00; /* Hot Wheels yellow */
+  accent-color: #ffcc00;
   margin-right: 8px;
 }
 
