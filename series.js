@@ -77,10 +77,11 @@ function showSeriesPopup(selectedYear, seriesName) {
       // Collect cars for this series
       let carsForSeries = hwCase.cars.filter(car => car.series === seriesName);
 
-      // Sort by series_number (numerical), then color as tie-breaker
+      // Sort by series_number (numerical after stripping "#"), then color
       carsForSeries.sort((a, b) => {
-        let numA = parseInt(a.series_number) || 0;
-        let numB = parseInt(b.series_number) || 0;
+        const numA = parseInt(String(a.series_number).replace(/[^0-9]/g, ""), 10) || 0;
+        const numB = parseInt(String(b.series_number).replace(/[^0-9]/g, ""), 10) || 0;
+
         if (numA === numB) {
           return (a.color || '').localeCompare(b.color || '');
         }
