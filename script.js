@@ -214,7 +214,9 @@ function showDetails(year, hwCase, car) {
         <h3>Super Treasure Hunt:</h3>
         <p>${hwCase.sth?.name || 'N/A'}</p>
         ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
-        <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+        <p>
+        </p>
+        button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
         <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
         <div id="allCarsGrid" class="results-grid"></div>
       </div>
