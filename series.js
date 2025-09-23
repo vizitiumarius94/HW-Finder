@@ -74,59 +74,71 @@ function showSeriesPopup(selectedYear, seriesName) {
 
   yearsToCheck.forEach(year => {
     carsData[year].cases.forEach(hwCase => {
-      hwCase.cars
-        .filter(car => car.series === seriesName)
-        .forEach(car => {
-          const div = document.createElement('div');
-          div.classList.add('result-card');
+      // Collect cars for this series
+      let carsForSeries = hwCase.cars.filter(car => car.series === seriesName);
 
-          let isOwned = ownedCars.some(o => o.car.image === car.image);
-          let isWanted = wantedCars.some(w => w.car.image === car.image);
+      // Sort by series_number (numerical), then color as tie-breaker
+      carsForSeries.sort((a, b) => {
+        let numA = parseInt(a.series_number) || 0;
+        let numB = parseInt(b.series_number) || 0;
+        if (numA === numB) {
+          return (a.color || '').localeCompare(b.color || '');
+        }
+        return numA - numB;
+      });
 
-          div.innerHTML = `
-            <img src="${car.image}" alt="${car.name}">
-            <div class="card-info">
-              <h4>${car.name}</h4>
-              <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
-              <p>Year: ${year} | Case: ${hwCase.letter}</p>
-              <p>${car.series} (#${car.series_number})</p>
-              <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
-                ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
-              </button>
-              ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
-            </div>
-          `;
+      // Render cars
+      carsForSeries.forEach(car => {
+        const div = document.createElement('div');
+        div.classList.add('result-card');
 
-          // Owned/unowned toggle
-          const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
-          ownedBtn.addEventListener('click', () => {
-            if (isOwned) {
-              ownedCars = ownedCars.filter(o => o.car.image !== car.image);
-              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-              ownedBtn.textContent = 'Mark Owned';
-              ownedBtn.className = 'owned-btn';
-              isOwned = false;
-            } else {
-              ownedCars.push({ year, caseLetter: hwCase.letter, car });
-              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-              ownedBtn.textContent = 'Unmark Owned';
-              ownedBtn.className = 'unowned-btn';
-              isOwned = true;
-            }
-          });
+        let isOwned = ownedCars.some(o => o.car.image === car.image);
+        let isWanted = wantedCars.some(w => w.car.image === car.image);
 
-          // Add to wanted button
-          const addWantedBtn = div.querySelector('.add-wanted-btn');
-          if (addWantedBtn) {
-            addWantedBtn.addEventListener('click', () => {
-              wantedCars.push({ year, caseLetter: hwCase.letter, car });
-              localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-              addWantedBtn.style.display = 'none';
-            });
+        div.innerHTML = `
+          <img src="${car.image}" alt="${car.name}">
+          <div class="card-info">
+            <h4>${car.name}</h4>
+            <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
+            <p>Year: ${year} | Case: ${hwCase.letter}</p>
+            <p>${car.series} (#${car.series_number})</p>
+            <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+              ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+            </button>
+            ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+          </div>
+        `;
+
+        // Owned/unowned toggle
+        const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
+        ownedBtn.addEventListener('click', () => {
+          if (isOwned) {
+            ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+            ownedBtn.textContent = 'Mark Owned';
+            ownedBtn.className = 'owned-btn';
+            isOwned = false;
+          } else {
+            ownedCars.push({ year, caseLetter: hwCase.letter, car });
+            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+            ownedBtn.textContent = 'Unmark Owned';
+            ownedBtn.className = 'unowned-btn';
+            isOwned = true;
           }
-
-          seriesCarsGrid.appendChild(div);
         });
+
+        // Add to wanted button
+        const addWantedBtn = div.querySelector('.add-wanted-btn');
+        if (addWantedBtn) {
+          addWantedBtn.addEventListener('click', () => {
+            wantedCars.push({ year, caseLetter: hwCase.letter, car });
+            localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+            addWantedBtn.style.display = 'none';
+          });
+        }
+
+        seriesCarsGrid.appendChild(div);
+      });
     });
   });
 
