@@ -17,48 +17,55 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* Menu bar with yellow racing stripe */
+.menu-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 4px solid #ffcc00; /* yellow racing stripe */
+  background-color: #e2231a; /* Hot Wheels red */
+}
+
+/* Menu buttons */
+.menu-btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #e2231a;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
+}
+
+.menu-btn:hover {
+  background-color: #ffcc00;
+  color: #111;
+}
+
+/* Responsive: stack buttons on small screens */
+@media (max-width: 500px) {
+  .menu-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-btn {
+    width: 90%;
+    text-align: center;
+  }
+}
+
 /* Title */
 h1 {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 20px;
   color: #e2231a; /* Hot Wheels red */
-}
-
-/* Search bar */
-#searchBar {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Buttons row */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-  justify-content: center;
-}
-
-.action-btn {
-  flex: 1 1 45%;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  background-color: #e2231a; /* Hot Wheels red */
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.action-btn:hover {
-  background-color: #b11a14;
 }
 
 /* Checkbox */
@@ -72,6 +79,17 @@ h1 {
 .checkbox-container input {
   accent-color: #ffcc00; /* Hot Wheels yellow */
   margin-right: 8px;
+}
+
+/* Search bar */
+#searchBar {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 /* Grid layout for results */
@@ -131,13 +149,14 @@ h1 {
   font-size: 14px;
   border: none;
   border-radius: 5px;
-  color: #fff;
   cursor: pointer;
   width: 100%;
+  font-weight: bold;
 }
 
 .add-btn, .add-btn-small, .owned-btn {
   background-color: #1a4fa0; /* blue */
+  color: #fff;
 }
 
 .add-btn:hover, .add-btn-small:hover, .owned-btn:hover {
