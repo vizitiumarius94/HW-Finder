@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Hot Wheels Car</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; }
+  input, select, button { display: block; margin: 10px 0; padding: 5px; width: 300px; }
+  label { margin-top: 15px; font-weight: bold; }
+  textarea { width: 500px; height: 200px; }
+</style>
+</head>
+<body>
+
+<h1>Add a Hot Wheels Car</h1>
+
+<label for="year">Year</label>
+<input type="number" id="year" placeholder="2025">
+
+<label for="caseLetter">Case Letter</label>
+<input type="text" id="caseLetter" placeholder="A">
+
+<label for="carName">Car Name</label>
+<input type="text" id="carName">
+
+<label for="carImage">Car Image Path</label>
+<input type="text" id="carImage" placeholder="images\\HW1234th.jpg">
+
+<label for="hwNumber">HW Number</label>
+<input type="text" id="hwNumber">
+
+<label for="color">Color</label>
+<input type="text" id="color">
+
+<label for="series">Series</label>
+<input type="text" id="series">
+
+<label for="seriesNumber">Series Number</label>
+<input type="text" id="seriesNumber">
+
+<button id="addCarBtn">Add Car</button>
+<button id="exportBtn">Export JSON</button>
+
+<h2>Current Data</h2>
+<textarea id="dataOutput" readonly></textarea>
+
+<script>
+// Load or initialize data
+let carsData = JSON.parse(localStorage.getItem('carsData') || '{}');
+
+const yearInput = document.getElementById('year');
+const caseInput = document.getElementById('caseLetter');
+const nameInput = document.getElementById('carName');
+const imageInput = document.getElementById('carImage');
+const hwNumberInput = document.getElementById('hwNumber');
+const colorInput = document.getElementById('color');
+const seriesInput = document.getElementById('series');
+const seriesNumberInput = document.getElementById('seriesNumber');
+const dataOutput = document.getElementById('dataOutput');
+
+function updateOutput() {
+  dataOutput.value = JSON.stringify(carsData, null, 2);
+}
+
+document.getElementById('addCarBtn').addEventListener('click', () => {
+  const year = yearInput.value.trim();
+  const caseLetter = caseInput.value.trim().toUpperCase();
+  const car = {
+    name: nameInput.value.trim(),
+    image: imageInput.value.trim(),
+    hw_number: hwNumberInput.value.trim(),
+    color: colorInput.value.trim(),
+    series: seriesInput.value.trim(),
+    series_number: seriesNumberInput.value.trim()
+  };
+
+  if (!year || !caseLetter || !car.name || !car.image || !car.hw_number) {
+    return alert('Please fill in all required fields.');
+  }
+
+  // Ensure year exists
+  if (!carsData[year]) {
+    carsData[year] = { cases: [] };
+  }
+
+  // Find or create case
+  let hwCase = carsData[year].cases.find(c => c.letter === caseLetter);
+  if (!hwCase) {
+    hwCase = { letter: caseLetter, cars: [] };
+    carsData[year].cases.push(hwCase);
+  }
+
+  // Add the car
+  hwCase.cars.push(car);
+
+  // Save to localStorage and update textarea
+  localStorage.setItem('carsData', JSON.stringify(carsData));
+  updateOutput();
+
+  // Clear inputs
+  nameInput.value = '';
+  imageInput.value = '';
+  hwNumberInput.value = '';
+  colorInput.value = '';
+  seriesInput.value = '';
+  seriesNumberInput.value = '';
+
+  alert('Car added successfully!');
+});
+
+// Export JSON
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(carsData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Initial display
+updateOutput();
+</script>
+</body>
+</html>
