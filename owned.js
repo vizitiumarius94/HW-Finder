@@ -38,15 +38,26 @@ function renderOwnedCars(groupBy) {
 
   ownedCars.forEach(item => {
     let key;
-    if (groupBy === 'case') key = item.caseLetter;
-    else key = item.car.series;
+    if (groupBy === 'case') {
+      key = item.caseLetter;
+    } else {
+      // Group by series + year, e.g. "Factory Fresh (2025)"
+      key = `${item.car.series} (${item.year})`;
+    }
     if (!groups[key]) groups[key] = [];
     groups[key].push(item);
   });
 
+  // Helper to safely parse series_number
+  const extractSeriesNum = (val) => {
+    if (!val) return 0;
+    const m = String(val).match(/(\d+)/);
+    return m ? parseInt(m[1], 10) : 0;
+  };
+
   // Sort each group by series number
   for (let group in groups) {
-    groups[group].sort((a, b) => Number(a.car.series_number) - Number(b.car.series_number));
+    groups[group].sort((a, b) => extractSeriesNum(a.car.series_number) - extractSeriesNum(b.car.series_number));
   }
 
   // Render groups
