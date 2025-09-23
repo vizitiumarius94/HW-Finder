@@ -14,33 +14,23 @@ body {
   padding: 20px;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 }
 
-/* Menu bar */
+/* ------------------- MENU BAR ------------------- */
 .menu-bar {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  overflow-x: auto; /* horizontal scroll on small screens */
   padding: 5px 10px;
   border-bottom: 4px solid #ffcc00; /* yellow racing stripe */
-  background-color: #e2231a; /* Hot Wheels red */
-  white-space: nowrap; /* prevent wrapping */
-  -webkit-overflow-scrolling: touch;
+  background-color: #e2231a; /* red */
 }
 
-/* Hide scrollbar */
-.menu-bar::-webkit-scrollbar {
-  display: none;
-}
-.menu-bar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Menu buttons */
 .menu-btn {
-  flex: 0 0 auto; /* prevent shrinking */
+  flex: 1 1 auto;
+  min-width: 120px;
   padding: 10px 16px;
   font-size: 14px;
   border: none;
@@ -50,6 +40,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
+  text-align: center;
 }
 
 .menu-btn:hover {
@@ -57,7 +48,7 @@ body {
   color: #111;
 }
 
-/* Page title */
+/* ------------------- TITLE ------------------- */
 h1 {
   text-align: center;
   font-size: 2.5rem;
@@ -65,7 +56,7 @@ h1 {
   color: #e2231a;
 }
 
-/* Checkbox */
+/* ------------------- CHECKBOX ------------------- */
 .checkbox-container {
   display: flex;
   align-items: center;
@@ -78,7 +69,7 @@ h1 {
   margin-right: 8px;
 }
 
-/* Search bar */
+/* ------------------- SEARCH BAR ------------------- */
 #searchBar {
   width: 100%;
   padding: 10px;
@@ -89,14 +80,14 @@ h1 {
   box-sizing: border-box;
 }
 
-/* Grid layout for results */
+/* ------------------- RESULTS GRID ------------------- */
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 15px;
 }
 
-/* Cards */
+/* ------------------- CAR CARDS ------------------- */
 .result-card, .car-item, .card-detail {
   display: flex;
   flex-direction: column;
@@ -112,7 +103,6 @@ h1 {
   background-color: #fff2f0;
 }
 
-/* Images inside cards */
 .result-card img, .car-item img, .card-detail img {
   width: 100%;
   max-width: 200px;
@@ -121,7 +111,6 @@ h1 {
   align-self: center;
 }
 
-/* Card info */
 .card-info {
   margin-top: 5px;
   text-align: center;
@@ -130,7 +119,7 @@ h1 {
 .card-info h2, .card-info h3, .card-info h4 {
   margin: 5px 0;
   font-size: 16px;
-  color: #1a4fa0; /* Hot Wheels blue */
+  color: #1a4fa0; /* blue */
 }
 
 .card-info p {
@@ -139,7 +128,7 @@ h1 {
   color: #333;
 }
 
-/* Add / Owned / Unowned buttons */
+/* ------------------- ADD/OWNED/UNOWNED BUTTONS ------------------- */
 .add-btn, .add-btn-small, .owned-btn, .unowned-btn {
   margin-top: 8px;
   padding: 6px;
@@ -169,7 +158,7 @@ h1 {
   background-color: #e6b800;
 }
 
-/* Popup */
+/* ------------------- POPUP ------------------- */
 .popup {
   display: none;
   position: fixed;
@@ -198,7 +187,6 @@ h1 {
   position: relative;
 }
 
-/* Close button */
 .popup-close {
   position: absolute;
   top: 10px;
@@ -208,7 +196,7 @@ h1 {
   cursor: pointer;
 }
 
-/* All Cars grid */
+/* ------------------- ALL CARS GRID ------------------- */
 #allCars {
   margin-top: 10px;
   display: grid;
@@ -237,7 +225,14 @@ h1 {
   text-align: center;
 }
 
-/* Small screen fixes */
+/* ------------------- MEDIA QUERIES ------------------- */
+@media (max-width: 500px) {
+  .menu-btn {
+    flex: 1 1 45%;
+    min-width: auto;
+  }
+}
+
 @media (max-width: 400px) {
   #allCars {
     grid-template-columns: repeat(2, 1fr);
