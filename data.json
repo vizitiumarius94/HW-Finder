@@ -16614,20 +16614,7 @@
             "series_number": "5"
           }
         ]
-      },
-      {
-        "letter": "I",
-        "th": null,
-        "sth": null,
-        "cars": [
-          {
-            "name": "Test",
-            "hw_number": "Test",
-            "color": "Test",
-            "series": "Test",
-            "series_number": "Test",
-            "image": "images/image.jpg"
-          }
+      }
         ]
       }
     ]
