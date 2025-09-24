@@ -13724,6 +13724,14 @@
             "color": "Black",
             "series": "Fast Foodies",
             "series_number": "1"
+          },
+          {
+            "name": "Haulerback",
+            "series": "HW Hot Trucks",
+            "series_number": "3",
+            "hw_number": "42",
+            "color": "Yellow",
+            "image": "images/1758747258888-IMG_9199.jpeg"
           }
         ]
       },
