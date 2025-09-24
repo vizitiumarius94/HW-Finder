@@ -13369,14 +13369,6 @@
             "series_number": "1"
           },
           {
-            "name": "Haulerback",
-            "image": "images\\HW8905th.jpg",
-            "hw_number": "42",
-            "color": "Yellow",
-            "series": "HW: Hot Trucks",
-            "series_number": "3"
-          },
-          {
             "name": "'80 El Camino",
             "image": "images\\HW8152th.jpg",
             "hw_number": "43",
@@ -13447,6 +13439,14 @@
             "color": "Teal",
             "series": "HW Modified",
             "series_number": "2"
+          },
+          {
+            "name": "Haulerback",
+            "series": "HW Hot Trucks",
+            "series_number": "3",
+            "hw_number": "42",
+            "color": "Yellow",
+            "image": "images/1758747258888-IMG_9199.jpeg"
           }
         ]
       },
@@ -13724,14 +13724,6 @@
             "color": "Black",
             "series": "Fast Foodies",
             "series_number": "1"
-          },
-          {
-            "name": "Haulerback",
-            "series": "HW Hot Trucks",
-            "series_number": "3",
-            "hw_number": "42",
-            "color": "Yellow",
-            "image": "images/1758747258888-IMG_9199.jpeg"
           }
         ]
       },
@@ -14708,14 +14700,6 @@
             "hw_number": "35",
             "color": "Red",
             "series": "HW Art Cars",
-            "series_number": "3"
-          },
-          {
-            "name": "Haulerback",
-            "image": "images\\HW8881th.jpg",
-            "hw_number": "42",
-            "color": "Light Blue",
-            "series": "HW: Hot Trucks",
             "series_number": "3"
           },
           {
