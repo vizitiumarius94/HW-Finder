@@ -12973,6 +12973,14 @@
             "color": "Slate Blue",
             "series": "Then and Now",
             "series_number": "10"
+          },
+          {
+            "name": "Rally Speciale",
+            "series": "HW Dirt",
+            "series_number": "2",
+            "hw_number": "179",
+            "color": "Blue",
+            "image": "images/1758732843511-IMG_9196.jpeg"
           }
         ]
       },
