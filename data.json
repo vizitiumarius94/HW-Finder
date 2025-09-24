@@ -14909,6 +14909,14 @@
             "color": "Metalflake Purple",
             "series": "Experimotors",
             "series_number": "7"
+          },
+          {
+            "name": "Haulerback",
+            "series": "HW Hot Trucks",
+            "series_number": "3",
+            "hw_number": "42",
+            "color": "Turqoise",
+            "image": "images/1758747319510-IMG_9197.jpeg"
           }
         ]
       },
