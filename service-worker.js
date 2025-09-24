@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v17" ;
+const CACHE_NAME = "garage-cache-v18" ;
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
