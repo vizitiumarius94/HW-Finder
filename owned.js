@@ -39,7 +39,8 @@ function renderOwnedCars(groupBy) {
   ownedCars.forEach(item => {
     let key;
     if (groupBy === 'case') {
-      key = item.caseLetter;
+      // Group by year + case, e.g. "2025 - A"
+      key = `${item.year} - ${item.caseLetter}`;
     } else {
       // Group by series + year, e.g. "Factory Fresh (2025)"
       key = `${item.car.series} (${item.year})`;
