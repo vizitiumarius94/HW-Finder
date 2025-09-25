@@ -16624,6 +16624,14 @@
             "color": "Flat Gray",
             "series": "HW Track Champs",
             "series_number": "5"
+          },
+          {
+            "name": "Land Rover Defender 90",
+            "series": "Then and Now",
+            "series_number": "5",
+            "hw_number": "210",
+            "color": "Green",
+            "image": "images/1758788473255-DefenderGreen.png"
           }
         ]
       }
