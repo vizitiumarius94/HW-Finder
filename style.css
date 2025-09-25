@@ -73,13 +73,32 @@ h1 {
 #searchBar {
   width: 100%;
   padding: 10px;
+  padding-right: 30px;
   font-size: 16px;
   margin-bottom: 20px;
   border-radius: 6px;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+  display: none; /* hidden by default */
+}
+
+.clear-btn:hover {
+  color: #333;
+}
 /* ------------------- RESULTS GRID ------------------- */
 .results-grid {
   display: grid;
