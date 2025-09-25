@@ -81,18 +81,20 @@ h1 {
 }
 .search-wrapper {
   position: relative;
-  display: inline-block;
+  display: block;
+  width: 100%;
 }
 
 .clear-btn {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%);  /* centers perfectly */
   cursor: pointer;
   font-size: 18px;
   color: #999;
-  display: none; /* hidden by default */
+  display: none;
+  line-height: 1;               /* prevents extra offset */
 }
 
 .clear-btn:hover {
