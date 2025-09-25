@@ -13218,6 +13218,14 @@
             "color": "Blue",
             "series": "HW: '70s vs '90s",
             "series_number": "1"
+          },
+          {
+            "name": "Test",
+            "series": "Test",
+            "series_number": "Test",
+            "hw_number": "Test",
+            "color": "Test",
+            "image": "images/1758783691668-IMG_9201.jpeg"
           }
         ]
       },
