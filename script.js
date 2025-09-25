@@ -193,19 +193,23 @@ function performSearch() {
   });
 }
 
-// Trigger search on input and checkbox change
+// ------------------- SEARCH BAR + CLEAR BUTTON ------------------
+// Trigger search on input
 searchBar.addEventListener('input', () => {
   performSearch();
   clearBtn.style.display = searchBar.value ? 'block' : 'none';
 });
 
+// Trigger search on checkbox change
 searchOldCases.addEventListener('change', performSearch);
 
 // Clear button logic
-clearBtn.addEventListener('click', () => {
+clearBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
   searchBar.value = '';
   clearBtn.style.display = 'none';
-  performSearch(); // reset results
+  performSearch();
+  searchBar.focus(); // keep typing immediately
 });
 // ------------------- SHOW DETAILS POPUP -------------------
 function showDetails(year, hwCase, car) {
