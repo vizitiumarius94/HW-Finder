@@ -61,7 +61,7 @@ self.addEventListener("fetch", (event) => {
           })
           .catch(() => {
             if (event.request.destination === "image") {
-              return caches.match("images/placeholder.png");
+              return caches.match("images/images-coming-soon.png");
             }
           });
       })
