@@ -4,6 +4,7 @@ let wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 let ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
 
 const searchBar = document.getElementById('searchBar');
+const clearBtn = document.getElementById('clearSearch');
 const resultsDiv = document.getElementById('results');
 const popup = document.getElementById('popup');
 const detailsDiv = document.getElementById('details');
@@ -193,9 +194,19 @@ function performSearch() {
 }
 
 // Trigger search on input and checkbox change
-searchBar.addEventListener('input', performSearch);
+searchBar.addEventListener('input', () => {
+  performSearch();
+  clearBtn.style.display = searchBar.value ? 'block' : 'none';
+});
+
 searchOldCases.addEventListener('change', performSearch);
 
+// Clear button logic
+clearBtn.addEventListener('click', () => {
+  searchBar.value = '';
+  clearBtn.style.display = 'none';
+  performSearch(); // reset results
+});
 // ------------------- SHOW DETAILS POPUP -------------------
 function showDetails(year, hwCase, car) {
   detailsDiv.innerHTML = `
