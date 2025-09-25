@@ -38,12 +38,12 @@ self.addEventListener("fetch", (event) => {
   // Network-first for .js, .css, .json
   if (url.match(/\.(js|css|json)$/)) {
     event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // update cache
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-          return response;
-        })
+     .then(response => {
+        if (!response || !response.ok) return response;
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      })
         .catch(() => caches.match(event.request)) // fallback to cache
     );
     return;
