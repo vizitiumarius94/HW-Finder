@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v24";
+const CACHE_NAME = "garage-cache-v25";
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -9,7 +9,6 @@ const CORE_ASSETS = [
   "owned.js",
   "series.js",
   "wanted.js",
-  "data.json",
   "images/images-coming-soon.png" // fallback image
 ];
 
@@ -37,8 +36,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
-  // Network-first for .js, .css, .json
-  if (url.match(/\.(js|css|json)$/)) {
+  // 🔥 Special rule for data.json (always network-first, always updated)
+  if (url.endsWith("data.json")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.ok) {
+            const clone = response.clone();
+            caches.open("dynamic-data").then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request)) // fallback to last cached version
+    );
+    return;
+  }
+
+  // Network-first for .js, .css
+  if (url.match(/\.(js|css)$/)) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -66,7 +81,7 @@ self.addEventListener("fetch", (event) => {
           })
           .catch(() => {
             if (event.request.destination === "image") {
-              return caches.match("images/images-coming-soon.png"); // ✅ fixed
+              return caches.match("images/images-coming-soon.png");
             }
           });
       })
