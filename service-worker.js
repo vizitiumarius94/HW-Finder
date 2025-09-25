@@ -1,4 +1,5 @@
-const CACHE_NAME = "garage-cache-v25";
+const CACHE_NAME = "garage-cache-v26";
+const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -25,7 +26,9 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+        keys
+          .filter((k) => k !== CACHE_NAME && k !== DATA_CACHE)
+          .map((k) => caches.delete(k))
       )
     )
   );
@@ -36,14 +39,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
-  // 🔥 Special rule for data.json (always network-first, always updated)
+  // 🔥 Special rule for data.json (always fresh, replace old cache)
   if (url.endsWith("data.json")) {
+    // Append timestamp to force network fetch
+    const fetchUrl = new URL(event.request.url);
+    fetchUrl.searchParams.set("_ts", Date.now());
+
     event.respondWith(
-      fetch(event.request)
+      fetch(fetchUrl.toString())
         .then((response) => {
           if (response && response.ok) {
+            // Save latest version in cache
             const clone = response.clone();
-            caches.open("dynamic-data").then((cache) => cache.put(event.request, clone));
+            caches.open(DATA_CACHE).then(async (cache) => {
+              // Clear previous cached entries
+              const keys = await cache.keys();
+              await Promise.all(keys.map((key) => cache.delete(key)));
+              await cache.put(event.request, clone);
+            });
           }
           return response;
         })
