@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v23" ;
+const CACHE_NAME = "garage-cache-v24";
 const CORE_ASSETS = [
   "index.html",
   "owned.html",
@@ -16,7 +16,7 @@ const CORE_ASSETS = [
 // Install
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
   );
   self.skipWaiting();
 });
@@ -24,8 +24,10 @@ self.addEventListener("install", (event) => {
 // Activate
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+      )
     )
   );
   self.clients.claim();
@@ -38,13 +40,14 @@ self.addEventListener("fetch", (event) => {
   // Network-first for .js, .css, .json
   if (url.match(/\.(js|css|json)$/)) {
     event.respondWith(
-     .then(response => {
-        if (!response || !response.ok) return response;
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        return response;
-      })
-        .catch(() => caches.match(event.request)) // fallback to cache
+      fetch(event.request)
+        .then((response) => {
+          if (!response || !response.ok) return response;
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
@@ -52,16 +55,18 @@ self.addEventListener("fetch", (event) => {
   // Cache-first for HTML + images
   if (url.match(/\.(html|png|jpg|jpeg|gif|webp|svg)$/)) {
     event.respondWith(
-      caches.match(event.request).then(cached => {
+      caches.match(event.request).then((cached) => {
         if (cached) return cached;
         return fetch(event.request)
-          .then(response => {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+          .then((response) => {
+            if (!response || !response.ok) return response;
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
             return response;
           })
           .catch(() => {
             if (event.request.destination === "image") {
-              return caches.match("images/images-coming-soon.png");
+              return caches.match("images/images-coming-soon.png"); // ✅ fixed
             }
           });
       })
