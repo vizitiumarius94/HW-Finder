@@ -8921,7 +8921,7 @@
           },
           {
             "name": "Porsche Taycan Turbo S",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797073978-PorscheTaycanGreen.png",
             "hw_number": "149",
             "color": "Green",
             "series": "Factory Fresh",
@@ -8958,7 +8958,7 @@
           },
           {
             "name": "1988 Jeep Wagoneer",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797074917-JeepWagoneer.png",
             "hw_number": "52",
             "color": "Flat Black",
             "series": "HW: The '80s",
@@ -9030,15 +9030,7 @@
           },
           {
             "name": "'70 Dodge Charger",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "153",
-            "color": "Black",
-            "series": "Tooned",
-            "series_number": "2"
-          },
-          {
-            "name": "'70 Dodge Charger",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797075754-DodgeCharger.png",
             "hw_number": "153",
             "color": "Black",
             "series": "Tooned",
@@ -9061,12 +9053,12 @@
             "series_number": "1"
           },
           {
-            "name": "Ducati 1199 Panigale",
-            "image": "images/HW5430th.jpg",
-            "hw_number": "164",
-            "color": "White",
-            "series": "Factory Fresh",
-            "series_number": "5"
+            "name": "Lamborghini Sian FKP 37",
+            "image": "images/1758797076639-LamborghiniSian.png",
+            "hw_number": "163",
+            "color": "Orange",
+            "series": "HW Exotics",
+            "series_number": "1"
           },
           {
             "name": "'71 Plymouth GTX",
@@ -9091,7 +9083,7 @@
         "cars": [
           {
             "name": "'70 Dodge Power Wagon",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797077737-DodgeWagon.png",
             "hw_number": "n/a",
             "color": "Light Blue",
             "series": "Mud Studs",
@@ -9208,7 +9200,7 @@
         "cars": [
           {
             "name": "Sweet Driver",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797078581-SweetDriver.png",
             "hw_number": "9",
             "color": "Brown",
             "series": "Sweet Riders",
@@ -9232,7 +9224,7 @@
           },
           {
             "name": "HW Braille Racer - Twin Mill",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797079334-BrailleRacer.png",
             "hw_number": "85",
             "color": "Silver",
             "series": "Experimotors",
@@ -9264,7 +9256,7 @@
           },
           {
             "name": "Tooned Twin Mill",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1758797080056-TwinMill.png",
             "hw_number": "127",
             "color": "Green",
             "series": "Tooned",
