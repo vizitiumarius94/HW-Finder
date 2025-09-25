@@ -13218,14 +13218,6 @@
             "color": "Blue",
             "series": "HW: '70s vs '90s",
             "series_number": "1"
-          },
-          {
-            "name": "T",
-            "series": "T",
-            "series_number": "R",
-            "hw_number": "TR",
-            "color": "R",
-            "image": "images/1758789652007-DefenderGreen.png"
           }
         ]
       },
