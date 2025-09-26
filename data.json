@@ -10428,6 +10428,14 @@
             "color": "Teal",
             "series": "HW Turbo",
             "series_number": "1"
+          },
+          {
+            "name": "Audi RS e-tron GT",
+            "series": "HW Green Speed",
+            "series_number": "4",
+            "hw_number": "36",
+            "color": "Ibis White",
+            "image": "images/1758925788927-IMG_9251.jpeg"
           }
         ]
       },
