@@ -10129,11 +10129,15 @@
         "letter": "A",
         "th": {
           "name": "'47 Chevy Fleetline",
-          "image": "images/HW5861th.jpg"
+          "image": "images/HW5861th.jpg",
+          "hw_number": "8",
+          "color": "Black"
         },
         "sth": {
           "name": "Ford Escort RS2000",
-          "image": "images/HW5856th.jpg"
+          "image": "images/HW5856th.jpg",
+          "hw_number": "23",
+          "color": "Spectraflame Green"
         },
         "cars": [
           {
@@ -10254,11 +10258,15 @@
         "letter": "B",
         "th": {
           "name": "Ain't Fare",
-          "image": "images/HW5950th.jpg"
+          "image": "images/HW5950th.jpg",
+          "hw_number": "31",
+          "color": "Black"
         },
         "sth": {
           "name": "'18 Camaro SS",
-          "image": "images/HW5857th.jpg"
+          "image": "images/HW5857th.jpg",
+          "hw_number": "32",
+          "color": "Spectraflame Black"
         },
         "cars": [
           {
@@ -10451,11 +10459,15 @@
         "letter": "C",
         "th": {
           "name": "Tooligan",
-          "image": "images/HW5987th.jpg"
+          "image": "images/HW5987th.jpg",
+          "hw_number": "72",
+          "color": "Pink"
         },
         "sth": {
           "name": "BMW 507",
-          "image": "images/HW5858th.jpg"
+          "image": "images/HW5858th.jpg",
+          "hw_number": "67",
+          "color": "Spectraflame Yellow"
         },
         "cars": [
           {
@@ -10624,11 +10636,15 @@
         "letter": "D",
         "th": {
           "name": "Custom '53 Chevy",
-          "image": "images/HW5988th.jpg"
+          "image": "images/HW5988th.jpg",
+          "hw_number": "100",
+          "color": "Purple"
         },
         "sth": {
           "name": "'89 Mercedes-Benz 560 SEC AMG",
-          "image": "images/HW5859th.jpg"
+          "image": "images/HW5859th.jpg",
+          "hw_number": "82",
+          "color": "Spectraflame Red"
         },
         "cars": [
           {
@@ -10837,11 +10853,15 @@
         "letter": "E",
         "th": {
           "name": "Batman Forever Batmobile",
-          "image": "images/HW5989th.jpg"
+          "image": "images/HW5989th.jpg",
+          "hw_number": "106",
+          "color": "Black"
         },
         "sth": {
           "name": "'60s Fiat 500D Modificado",
-          "image": "images/HW5860th.jpg"
+          "image": "images/HW5860th.jpg",
+          "hw_number": "117",
+          "color": "Spectraflame Yellow"
         },
         "cars": [
           {
@@ -11034,11 +11054,15 @@
         "letter": "F",
         "th": {
           "name": "Ford Mustang Mach-E 1400",
-          "image": "images/HW6003th.jpg"
+          "image": "images/HW6003th.jpg",
+          "hw_number": "129",
+          "color": "Blue"
         },
         "sth": {
           "name": "'71 El Camino",
-          "image": "images/HW5990th.jpg"
+          "image": "images/HW5990th.jpg",
+          "hw_number": "132",
+          "color": "Purple"
         },
         "cars": [
           {
@@ -11239,11 +11263,15 @@
         "letter": "G",
         "th": {
           "name": "Draggin' Wagon",
-          "image": "images/HW6028th.jpg"
+          "image": "images/HW6028th.jpg",
+          "hw_number": "141",
+          "color": "Yellow"
         },
         "sth": {
           "name": "Audi 90 Quattro",
-          "image": "images/HW5991th.jpg"
+          "image": "images/HW5991th.jpg",
+          "hw_number": "144",
+          "color": "Spectraflame Blue"
         },
         "cars": [
           {
@@ -11460,11 +11488,15 @@
         "letter": "H",
         "th": {
           "name": "Purple Passion",
-          "image": "images/HW6282th.jpg"
+          "image": "images/HW6282th.jpg",
+          "hw_number": "151",
+          "color": "Blue"
         },
         "sth": {
           "name": "Volvo P1800 Gasser",
-          "image": "images/HW5992th.jpg"
+          "image": "images/HW5992th.jpg",
+          "hw_number": "153",
+          "color": "Spectraflame Aqua"
         },
         "cars": [
           {
@@ -11657,11 +11689,15 @@
         "letter": "J",
         "th": {
           "name": "Honda Super Cub Custom",
-          "image": "images/HW6694th.jpg"
+          "image": "images/HW6694th.jpg",
+          "hw_number": "159",
+          "color": "Gray"
         },
         "sth": {
           "name": "Mitsubishi Pajero Evolution",
-          "image": "images/HW6101th.jpg"
+          "image": "images/HW6101th.jpg",
+          "hw_number": "169",
+          "color": "Spectraflame Brown"
         },
         "cars": [
           {
@@ -11822,11 +11858,15 @@
         "letter": "K",
         "th": {
           "name": "Bone Shaker",
-          "image": "images/HW6689th.jpg"
+          "image": "images/HW6689th.jpg",
+          "hw_number": "183",
+          "color": "White"
         },
         "sth": {
           "name": "Mazda 787B",
-          "image": "images/HW6102th.jpg"
+          "image": "images/HW6102th.jpg",
+          "hw_number": "145",
+          "color": "Spectraflame Orange"
         },
         "cars": [
           {
@@ -12027,11 +12067,15 @@
         "letter": "L",
         "th": {
           "name": "Car-de-Asada",
-          "image": "images/HW6695th.jpg"
+          "image": "images/HW6695th.jpg",
+          "hw_number": "200",
+          "color": "Blue"
         },
         "sth": {
           "name": "'77 Pontiac Firebird",
-          "image": "images/HW6688th.jpg"
+          "image": "images/HW6688th.jpg",
+          "hw_number": "206",
+          "color": "Black"
         },
         "cars": [
           {
@@ -12208,11 +12252,15 @@
         "letter": "M",
         "th": {
           "name": "Hot Wheels Ford Transit Connect",
-          "image": "images/HW6696th.jpg"
+          "image": "images/HW6696th.jpg",
+          "hw_number": "216",
+          "color": "White"
         },
         "sth": {
           "name": "'96 Nissan 180SX Type X",
-          "image": "images/HW6690th.jpg"
+          "image": "images/HW6690th.jpg",
+          "hw_number": "211",
+          "color": "Spectraflame Blue"
         },
         "cars": [
           {
@@ -12405,11 +12453,15 @@
         "letter": "N",
         "th": {
           "name": "DMC DeLorean",
-          "image": "images/HW6697th.jpg"
+          "image": "images/HW6697th.jpg",
+          "hw_number": "236",
+          "color": "ZAMAC"
         },
         "sth": {
           "name": "Celero GT",
-          "image": "images/HW6691th.jpg"
+          "image": "images/HW6691th.jpg",
+          "hw_number": "231",
+          "color": "Purple"
         },
         "cars": [
           {
@@ -12594,11 +12646,15 @@
         "letter": "P",
         "th": {
           "name": "'59 Chevy Impala",
-          "image": "images/HW6698th.jpg"
+          "image": "images/HW6698th.jpg",
+          "hw_number": "230",
+          "color": "Black"
         },
         "sth": {
           "name": "Lamborghini Huracan LP 620-2 Super Trofeo",
-          "image": "images/HW6692th.jpg"
+          "image": "images/HW6692th.jpg",
+          "hw_number": "239",
+          "color": "Spectraflame Maroon"
         },
         "cars": [
           {
@@ -12775,11 +12831,15 @@
         "letter": "Q",
         "th": {
           "name": "Porsche 928 Safari",
-          "image": "images/HW6699th.jpg"
+          "image": "images/HW6699th.jpg",
+          "hw_number": "245",
+          "color": "Red"
         },
         "sth": {
           "name": "'83 Chevy Silverado",
-          "image": "images/HW6693th.jpg"
+          "image": "images/HW6693th.jpg",
+          "hw_number": "249",
+          "color": "Spectraflame Blue"
         },
         "cars": [
           {
@@ -13004,11 +13064,15 @@
         "letter": "A",
         "th": {
           "name": "Ford Performance Supervan 4",
-          "image": "images/HW8084th.jpg"
+          "image": "images/HW8084th.jpg",
+          "hw_number": "17",
+          "color": "Red"
         },
         "sth": {
           "name": "'87 Audi quattro",
-          "image": "images/HW7226th.jpg"
+          "image": "images/HW7226th.jpg",
+          "hw_number": "16",
+          "color": "Spectraflame Aqua"
         },
         "cars": [
           {
@@ -13233,11 +13297,15 @@
         "letter": "B",
         "th": {
           "name": "Fish'd & Chip'd",
-          "image": "images/HW8108th.jpg"
+          "image": "images/HW8108th.jpg",
+          "hw_number": "32",
+          "color": "Brown and Cream"
         },
         "sth": {
           "name": "Hirohata Merc",
-          "image": "images/HW7477th.jpg"
+          "image": "images/HW7477th.jpg",
+          "hw_number": "46",
+          "color": "Spectraflame purple"
         },
         "cars": [
           {
@@ -13462,11 +13530,15 @@
         "letter": "C",
         "th": {
           "name": "Mailed It!",
-          "image": "images/HW8288th.jpg"
+          "image": "images/HW8288th.jpg",
+          "hw_number": "57",
+          "color": "Purple"
         },
         "sth": {
           "name": "Hi-Roller ll",
-          "image": "images/HW7521th.jpg"
+          "image": "images/HW7521th.jpg",
+          "hw_number": "61",
+          "color": "Spectraflame Black"
         },
         "cars": [
           {
@@ -13739,11 +13811,15 @@
         "letter": "D",
         "th": {
           "name": "Pedal Driver",
-          "image": "images/HW8364th.jpg"
+          "image": "images/HW8364th.jpg",
+          "hw_number": "95",
+          "color": "Red"
         },
         "sth": {
           "name": "1975 Datsun Sunny Truck B120",
-          "image": "images/HW8109th.jpg"
+          "image": "images/HW8109th.jpg",
+          "hw_number": "93",
+          "color": "Spectraflame Blue"
         },
         "cars": [
           {
@@ -13960,11 +14036,15 @@
         "letter": "E",
         "th": {
           "name": "Rig Storm",
-          "image": "images/HW8482th.jpg"
+          "image": "images/HW8482th.jpg",
+          "hw_number": "110",
+          "color": "Purple"
         },
         "sth": {
           "name": "Aston Martin DB4GT High-Speed Edition",
-          "image": "images/HW8293th.jpg"
+          "image": "images/HW8293th.jpg",
+          "hw_number": "107",
+          "color": "Spectraflame Yellow"
         },
         "cars": [
           {
@@ -14205,11 +14285,15 @@
         "letter": "F",
         "th": {
           "name": "'85 Honda City Turbo II",
-          "image": "images/HW8488th.jpg"
+          "image": "images/HW8488th.jpg",
+          "hw_number": "141",
+          "color": "Teal"
         },
         "sth": {
           "name": "'20 Jeep Gladiator",
-          "image": "images/HW8490th.jpg"
+          "image": "images/HW8490th.jpg",
+          "hw_number": "130",
+          "color": "Spectraflame Smoke"
         },
         "cars": [
           {
@@ -14450,11 +14534,15 @@
         "letter": "G",
         "th": {
           "name": "Birthday Burner",
-          "image": "images/HW8687th.jpg"
+          "image": "images/HW8687th.jpg",
+          "hw_number": "143",
+          "color": "White"
         },
         "sth": {
           "name": "Porsche 911 Rallye",
-          "image": "images/HW8493th.jpg"
+          "image": "images/HW8493th.jpg",
+          "hw_number": "154",
+          "color": "Spectraflame Green"
         },
         "cars": [
           {
@@ -14671,11 +14759,15 @@
         "letter": "H",
         "th": {
           "name": "Chill Mill",
-          "image": "images/HW8711th.jpg"
+          "image": "images/HW8711th.jpg",
+          "hw_number": "180",
+          "color": "Purple"
         },
         "sth": {
           "name": "'71 Mustang Funny Car",
-          "image": "images/HW8492th.jpg"
+          "image": "images/HW8492th.jpg",
+          "hw_number": "175",
+          "color": "Spectraflame Red"
         },
         "cars": [
           {
@@ -14916,7 +15008,9 @@
         "letter": "J",
         "th": {
           "name": "Nissan Leaf Nismo RC 02",
-          "image": "images/HW8713th.jpg"
+          "image": "images/HW8713th.jpg",
+          "hw_number": "168",
+          "color": "Lime Green"
         },
         "sth": {
           "name": "'62 Corvette Gasser",
@@ -15170,11 +15264,15 @@
         "letter": "K",
         "th": {
           "name": "Chevroletor",
-          "image": "images/HW8712th.jpg"
+          "image": "images/HW8712th.jpg",
+          "hw_number": "202",
+          "color": "Blue and White"
         },
         "sth": {
           "name": "McLaren Speedtail",
-          "image": "images/HW8583th.jpg"
+          "image": "images/HW8583th.jpg",
+          "hw_number": "209",
+          "color": "Spectraflame Orange"
         },
         "cars": [
           {
@@ -15423,11 +15521,15 @@
         "letter": "L",
         "th": {
           "name": "Honda S800 Racing",
-          "image": "images/HW8714th.jpg"
+          "image": "images/HW8714th.jpg",
+          "hw_number": "212",
+          "color": "Orange"
         },
         "sth": {
           "name": "'94 Bugatti EB110 SS",
-          "image": "images/HW8699th.jpg"
+          "image": "images/HW8699th.jpg",
+          "hw_number": "221",
+          "color": "Spectraflame Purple"
         },
         "cars": [
           {
@@ -15644,11 +15746,15 @@
         "letter": "M",
         "th": {
           "name": "Shark Bite",
-          "image": "images/HW8715th.jpg"
+          "image": "images/HW8715th.jpg",
+          "hw_number": "229",
+          "color": "Metalflake Green"
         },
         "sth": {
           "name": "'73 Honda Civic Custom",
-          "image": "images/HW8719th.jpg"
+          "image": "images/HW8719th.jpg",
+          "hw_number": "231",
+          "color": "Spectraflame Red"
         },
         "cars": [
           {
@@ -15913,11 +16019,15 @@
         "letter": "N",
         "th": {
           "name": "1966 Triumph Tiger 100",
-          "image": "images/HW8716th.jpg"
+          "image": "images/HW8716th.jpg",
+          "hw_number": "231",
+          "color": "Green"
         },
         "sth": {
           "name": "'20 Dodge Charger Hellcat",
-          "image": "images/HW8718th.jpg"
+          "image": "images/HW8718th.jpg",
+          "hw_number": "240",
+          "color": "Spectraflame Pink"
         },
         "cars": [
           {
@@ -16174,11 +16284,15 @@
         "letter": "P",
         "th": {
           "name": "'84 Audi Sport quattro",
-          "image": "images/HW8717th.jpg"
+          "image": "images/HW8717th.jpg",
+          "hw_number": "246",
+          "color": "Silver"
         },
         "sth": {
           "name": "BMW M3 Wagon",
-          "image": "images/HW8814th.jpg"
+          "image": "images/HW8814th.jpg",
+          "hw_number": "245",
+          "color": "Spectraflame Green"
         },
         "cars": [
           {
@@ -16395,11 +16509,15 @@
         "letter": "Q",
         "th": {
           "name": "Triumph TR6",
-          "image": "images/HW8815th.jpg"
+          "image": "images/HW8815th.jpg",
+          "hw_number": "249",
+          "color": "Flat Gray"
         },
         "sth": {
           "name": "Ford RS200",
-          "image": "images/HW8720th.jpg"
+          "image": "images/HW8720th.jpg",
+          "hw_number": "247",
+          "color": "Spectraflame Gulf Blue"
         },
         "cars": [
           {
