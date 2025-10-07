@@ -94,11 +94,20 @@ function performSearch() {
     const parts = query.split('-');
     if (parts[1]) yearFilter = parts[1].trim();
   } else if (query.startsWith('c-')) { // case search
-    searchType = 'case';
-    const parts = query.slice(2).split(' ');
-    caseFilter = parts[0].trim();
-    if (parts[1]) yearFilter = parts[1].trim();
-  } else { // default: name search
+  searchType = 'case';
+  const parts = query.slice(2).trim().split(' ');
+  const first = parts[0]?.trim();
+  const second = parts[1]?.trim();
+
+  // Check if the first part is a year (all digits, 4 characters)
+  if (/^\d{4}$/.test(first)) {
+    yearFilter = first;           // e.g. 2025
+    if (second) caseFilter = second; // e.g. "a"
+  } else {
+    caseFilter = first;
+    if (second && /^\d{4}$/.test(second)) yearFilter = second;
+  }
+} else { // default: name search
     searchType = 'name';
   }
 
