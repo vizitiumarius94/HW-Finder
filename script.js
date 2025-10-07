@@ -96,8 +96,8 @@ function performSearch() {
   } else if (query.startsWith('c-')) { // case search
     searchType = 'case';
     const parts = query.slice(2).split(' ');
-    yearFilter = parts[0].trim();
-    if (parts[1]) caseFilter = parts[1].trim();
+    caseFilter = parts[0].trim();
+    if (parts[1]) yearFilter = parts[1].trim();
   } else { // default: name search
     searchType = 'name';
   }
