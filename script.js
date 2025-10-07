@@ -85,25 +85,38 @@ function performSearch() {
     const parts = query.slice(2).split(' ');
     seriesFilter = parts[0].trim();
     if (parts[1]) yearFilter = parts[1].trim();
+
   } else if (query.startsWith('sth')) { // super treasure hunt
     searchType = 'sth';
     const parts = query.split('-');
     if (parts[1]) yearFilter = parts[1].trim();
+
   } else if (query.startsWith('th')) { // treasure hunt
     searchType = 'th';
     const parts = query.split('-');
     if (parts[1]) yearFilter = parts[1].trim();
+
   } else if (query.startsWith('c-')) { // case search
     searchType = 'case';
-    const parts = query.slice(2).split(' ');
-    caseFilter = parts[0].trim();
-    if (parts[1]) yearFilter = parts[1].trim();
+    const parts = query.slice(2).trim().split(/\s+/);
+    const first = parts[0]?.trim();
+    const second = parts[1]?.trim();
+
+    // Detect if first part is a year
+    if (/^\d{4}$/.test(first)) {
+      yearFilter = first;
+      if (second) caseFilter = second;
+    } else {
+      caseFilter = first;
+      if (second && /^\d{4}$/.test(second)) yearFilter = second;
+    }
+
   } else { // default: name search
     searchType = 'name';
   }
 
   Object.keys(carsData).forEach(yearKey => {
-    // Skip years <2023 if checkbox is unchecked
+    // Skip old years if checkbox unchecked
     if (!searchOldCases.checked && parseInt(yearKey) < 2024) return;
     if (yearFilter && yearFilter !== yearKey) return;
 
@@ -115,15 +128,25 @@ function performSearch() {
           case 'series':
             if (car.series.toLowerCase().includes(seriesFilter)) show = true;
             break;
+
           case 'sth':
             if (hwCase.sth && car.hw_number === hwCase.sth.hw_number) show = true;
             break;
+
           case 'th':
             if (hwCase.th && car.hw_number === hwCase.th.hw_number) show = true;
             break;
+
           case 'case':
-            if (hwCase.letter.toLowerCase() === caseFilter) show = true;
+            if (!caseFilter) {
+              // c-2025 → show all cases from 2025
+              show = true;
+            } else if (hwCase.letter.toLowerCase() === caseFilter.toLowerCase()) {
+              // c-2025 a → show only case A
+              show = true;
+            }
             break;
+
           case 'name':
             if (car.name.toLowerCase().includes(query)) show = true;
             break;
