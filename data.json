@@ -10129,11 +10129,11 @@
         "letter": "A",
         "th": {
           "name": "'47 Chevy Fleetline",
-          "image": "images\\HW5861th.jpg"
+          "image": "images/HW5861th.jpg"
         },
         "sth": {
           "name": "Ford Escort RS2000",
-          "image": "images\\HW5856th.jpg"
+          "image": "images/HW5856th.jpg"
         },
         "cars": [
           {
@@ -10254,11 +10254,11 @@
         "letter": "B",
         "th": {
           "name": "Ain't Fare",
-          "image": "images\\HW5950th.jpg"
+          "image": "images/HW5950th.jpg"
         },
         "sth": {
           "name": "'18 Camaro SS",
-          "image": "images\\HW5857th.jpg"
+          "image": "images/HW5857th.jpg"
         },
         "cars": [
           {
@@ -10451,11 +10451,11 @@
         "letter": "C",
         "th": {
           "name": "Tooligan",
-          "image": "images\\HW5987th.jpg"
+          "image": "images/HW5987th.jpg"
         },
         "sth": {
           "name": "BMW 507",
-          "image": "images\\HW5858th.jpg"
+          "image": "images/HW5858th.jpg"
         },
         "cars": [
           {
@@ -10624,11 +10624,11 @@
         "letter": "D",
         "th": {
           "name": "Custom '53 Chevy",
-          "image": "images\\HW5988th.jpg"
+          "image": "images/HW5988th.jpg"
         },
         "sth": {
           "name": "'89 Mercedes-Benz 560 SEC AMG",
-          "image": "images\\HW5859th.jpg"
+          "image": "images/HW5859th.jpg"
         },
         "cars": [
           {
@@ -10837,11 +10837,11 @@
         "letter": "E",
         "th": {
           "name": "Batman Forever Batmobile",
-          "image": "images\\HW5989th.jpg"
+          "image": "images/HW5989th.jpg"
         },
         "sth": {
           "name": "'60s Fiat 500D Modificado",
-          "image": "images\\HW5860th.jpg"
+          "image": "images/HW5860th.jpg"
         },
         "cars": [
           {
@@ -11034,11 +11034,11 @@
         "letter": "F",
         "th": {
           "name": "Ford Mustang Mach-E 1400",
-          "image": "images\\HW6003th.jpg"
+          "image": "images/HW6003th.jpg"
         },
         "sth": {
           "name": "'71 El Camino",
-          "image": "images\\HW5990th.jpg"
+          "image": "images/HW5990th.jpg"
         },
         "cars": [
           {
@@ -11239,11 +11239,11 @@
         "letter": "G",
         "th": {
           "name": "Draggin' Wagon",
-          "image": "images\\HW6028th.jpg"
+          "image": "images/HW6028th.jpg"
         },
         "sth": {
           "name": "Audi 90 Quattro",
-          "image": "images\\HW5991th.jpg"
+          "image": "images/HW5991th.jpg"
         },
         "cars": [
           {
@@ -11460,11 +11460,11 @@
         "letter": "H",
         "th": {
           "name": "Purple Passion",
-          "image": "images\\HW6282th.jpg"
+          "image": "images/HW6282th.jpg"
         },
         "sth": {
           "name": "Volvo P1800 Gasser",
-          "image": "images\\HW5992th.jpg"
+          "image": "images/HW5992th.jpg"
         },
         "cars": [
           {
@@ -11657,11 +11657,11 @@
         "letter": "J",
         "th": {
           "name": "Honda Super Cub Custom",
-          "image": "images\\HW6694th.jpg"
+          "image": "images/HW6694th.jpg"
         },
         "sth": {
           "name": "Mitsubishi Pajero Evolution",
-          "image": "images\\HW6101th.jpg"
+          "image": "images/HW6101th.jpg"
         },
         "cars": [
           {
@@ -11822,11 +11822,11 @@
         "letter": "K",
         "th": {
           "name": "Bone Shaker",
-          "image": "images\\HW6689th.jpg"
+          "image": "images/HW6689th.jpg"
         },
         "sth": {
           "name": "Mazda 787B",
-          "image": "images\\HW6102th.jpg"
+          "image": "images/HW6102th.jpg"
         },
         "cars": [
           {
@@ -12027,11 +12027,11 @@
         "letter": "L",
         "th": {
           "name": "Car-de-Asada",
-          "image": "images\\HW6695th.jpg"
+          "image": "images/HW6695th.jpg"
         },
         "sth": {
           "name": "'77 Pontiac Firebird",
-          "image": "images\\HW6688th.jpg"
+          "image": "images/HW6688th.jpg"
         },
         "cars": [
           {
@@ -12208,11 +12208,11 @@
         "letter": "M",
         "th": {
           "name": "Hot Wheels Ford Transit Connect",
-          "image": "images\\HW6696th.jpg"
+          "image": "images/HW6696th.jpg"
         },
         "sth": {
           "name": "'96 Nissan 180SX Type X",
-          "image": "images\\HW6690th.jpg"
+          "image": "images/HW6690th.jpg"
         },
         "cars": [
           {
@@ -12405,11 +12405,11 @@
         "letter": "N",
         "th": {
           "name": "DMC DeLorean",
-          "image": "images\\HW6697th.jpg"
+          "image": "images/HW6697th.jpg"
         },
         "sth": {
           "name": "Celero GT",
-          "image": "images\\HW6691th.jpg"
+          "image": "images/HW6691th.jpg"
         },
         "cars": [
           {
@@ -12594,11 +12594,11 @@
         "letter": "P",
         "th": {
           "name": "'59 Chevy Impala",
-          "image": "images\\HW6698th.jpg"
+          "image": "images/HW6698th.jpg"
         },
         "sth": {
           "name": "Lamborghini Huracan LP 620-2 Super Trofeo",
-          "image": "images\\HW6692th.jpg"
+          "image": "images/HW6692th.jpg"
         },
         "cars": [
           {
@@ -12775,11 +12775,11 @@
         "letter": "Q",
         "th": {
           "name": "Porsche 928 Safari",
-          "image": "images\\HW6699th.jpg"
+          "image": "images/HW6699th.jpg"
         },
         "sth": {
           "name": "'83 Chevy Silverado",
-          "image": "images\\HW6693th.jpg"
+          "image": "images/HW6693th.jpg"
         },
         "cars": [
           {
@@ -13004,11 +13004,11 @@
         "letter": "A",
         "th": {
           "name": "Ford Performance Supervan 4",
-          "image": "images\\HW8084th.jpg"
+          "image": "images/HW8084th.jpg"
         },
         "sth": {
           "name": "'87 Audi quattro",
-          "image": "images\\HW7226th.jpg"
+          "image": "images/HW7226th.jpg"
         },
         "cars": [
           {
@@ -13233,11 +13233,11 @@
         "letter": "B",
         "th": {
           "name": "Fish'd & Chip'd",
-          "image": "images\\HW8108th.jpg"
+          "image": "images/HW8108th.jpg"
         },
         "sth": {
           "name": "Hirohata Merc",
-          "image": "images\\HW7477th.jpg"
+          "image": "images/HW7477th.jpg"
         },
         "cars": [
           {
@@ -13462,11 +13462,11 @@
         "letter": "C",
         "th": {
           "name": "Mailed It!",
-          "image": "images\\HW8288th.jpg"
+          "image": "images/HW8288th.jpg"
         },
         "sth": {
           "name": "Hi-Roller ll",
-          "image": "images\\HW7521th.jpg"
+          "image": "images/HW7521th.jpg"
         },
         "cars": [
           {
@@ -13739,11 +13739,11 @@
         "letter": "D",
         "th": {
           "name": "Pedal Driver",
-          "image": "images\\HW8364th.jpg"
+          "image": "images/HW8364th.jpg"
         },
         "sth": {
           "name": "1975 Datsun Sunny Truck B120",
-          "image": "images\\HW8109th.jpg"
+          "image": "images/HW8109th.jpg"
         },
         "cars": [
           {
@@ -13960,11 +13960,11 @@
         "letter": "E",
         "th": {
           "name": "Rig Storm",
-          "image": "images\\HW8482th.jpg"
+          "image": "images/HW8482th.jpg"
         },
         "sth": {
           "name": "Aston Martin DB4GT High-Speed Edition",
-          "image": "images\\HW8293th.jpg"
+          "image": "images/HW8293th.jpg"
         },
         "cars": [
           {
@@ -14205,11 +14205,11 @@
         "letter": "F",
         "th": {
           "name": "'85 Honda City Turbo II",
-          "image": "images\\HW8488th.jpg"
+          "image": "images/HW8488th.jpg"
         },
         "sth": {
           "name": "'20 Jeep Gladiator",
-          "image": "images\\HW8490th.jpg"
+          "image": "images/HW8490th.jpg"
         },
         "cars": [
           {
@@ -14450,11 +14450,11 @@
         "letter": "G",
         "th": {
           "name": "Birthday Burner",
-          "image": "images\\HW8687th.jpg"
+          "image": "images/HW8687th.jpg"
         },
         "sth": {
           "name": "Porsche 911 Rallye",
-          "image": "images\\HW8493th.jpg"
+          "image": "images/HW8493th.jpg"
         },
         "cars": [
           {
@@ -14671,11 +14671,11 @@
         "letter": "H",
         "th": {
           "name": "Chill Mill",
-          "image": "images\\HW8711th.jpg"
+          "image": "images/HW8711th.jpg"
         },
         "sth": {
           "name": "'71 Mustang Funny Car",
-          "image": "images\\HW8492th.jpg"
+          "image": "images/HW8492th.jpg"
         },
         "cars": [
           {
@@ -14916,7 +14916,7 @@
         "letter": "J",
         "th": {
           "name": "Nissan Leaf Nismo RC 02",
-          "image": "images\\HW8713th.jpg"
+          "image": "images/HW8713th.jpg"
         },
         "sth": {
           "name": "'62 Corvette Gasser",
@@ -15170,11 +15170,11 @@
         "letter": "K",
         "th": {
           "name": "Chevroletor",
-          "image": "images\\HW8712th.jpg"
+          "image": "images/HW8712th.jpg"
         },
         "sth": {
           "name": "McLaren Speedtail",
-          "image": "images\\HW8583th.jpg"
+          "image": "images/HW8583th.jpg"
         },
         "cars": [
           {
@@ -15423,11 +15423,11 @@
         "letter": "L",
         "th": {
           "name": "Honda S800 Racing",
-          "image": "images\\HW8714th.jpg"
+          "image": "images/HW8714th.jpg"
         },
         "sth": {
           "name": "'94 Bugatti EB110 SS",
-          "image": "images\\HW8699th.jpg"
+          "image": "images/HW8699th.jpg"
         },
         "cars": [
           {
@@ -15644,11 +15644,11 @@
         "letter": "M",
         "th": {
           "name": "Shark Bite",
-          "image": "images\\HW8715th.jpg"
+          "image": "images/HW8715th.jpg"
         },
         "sth": {
           "name": "'73 Honda Civic Custom",
-          "image": "images\\HW8719th.jpg"
+          "image": "images/HW8719th.jpg"
         },
         "cars": [
           {
@@ -15913,11 +15913,11 @@
         "letter": "N",
         "th": {
           "name": "1966 Triumph Tiger 100",
-          "image": "images\\HW8716th.jpg"
+          "image": "images/HW8716th.jpg"
         },
         "sth": {
           "name": "'20 Dodge Charger Hellcat",
-          "image": "images\\HW8718th.jpg"
+          "image": "images/HW8718th.jpg"
         },
         "cars": [
           {
@@ -16174,11 +16174,11 @@
         "letter": "P",
         "th": {
           "name": "'84 Audi Sport quattro",
-          "image": "images\\HW8717th.jpg"
+          "image": "images/HW8717th.jpg"
         },
         "sth": {
           "name": "BMW M3 Wagon",
-          "image": "images\\HW8814th.jpg"
+          "image": "images/HW8814th.jpg"
         },
         "cars": [
           {
@@ -16395,11 +16395,11 @@
         "letter": "Q",
         "th": {
           "name": "Triumph TR6",
-          "image": "images\\HW8815th.jpg"
+          "image": "images/HW8815th.jpg"
         },
         "sth": {
           "name": "Ford RS200",
-          "image": "images\\HW8720th.jpg"
+          "image": "images/HW8720th.jpg"
         },
         "cars": [
           {
