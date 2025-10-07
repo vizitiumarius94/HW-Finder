@@ -9067,6 +9067,14 @@
             "color": "Orange",
             "series": "Muscle Mania",
             "series_number": "7"
+          },
+          {
+            "name": "'88 Honda CR-X",
+            "series": "HW J-Imports",
+            "series_number": "10",
+            "hw_number": "148",
+            "color": "Gray",
+            "image": "images/1759861146098-1759433047553-IMG_9342.jpeg"
           }
         ]
       },
