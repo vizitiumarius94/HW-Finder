@@ -87,6 +87,7 @@ function renderOwnedCars(groupBy) {
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
           <p>Quantity: ${item.quantity || 1}</p>
+          <p>Duplicates: ${(item.quantity || 1) - 1}</p>
           <button class="unowned-btn">Unmark Owned</button>
           ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
         </div>
@@ -128,3 +129,46 @@ function renderOwnedCars(groupBy) {
     ownedCarsContainer.appendChild(groupDiv);
   });
 }
+
+// Function to render duplicates page
+function renderDuplicatesPage() {
+  const duplicatesContainer = document.getElementById('duplicatesContainer');
+  duplicatesContainer.innerHTML = '';
+
+  const ownedCars = getOwnedCars();
+  const duplicates = ownedCars.filter(car => car.quantity > 1);
+
+  if (duplicates.length === 0) {
+    duplicatesContainer.innerHTML = '<p>No duplicates found.</p>';
+    return;
+  }
+
+  const duplicatesDiv = document.createElement('div');
+  duplicatesDiv.classList.add('duplicates-container');
+
+  duplicates.forEach(item => {
+    const div = document.createElement('div');
+    div.classList.add('duplicate-card');
+
+    div.innerHTML = `
+      <img src="${item.car.image}" alt="${item.car.name}">
+      <div class="card-info">
+        <h4>${item.car.name}</h4>
+        <p>${item.car.series} (#${item.car.series_number})</p>
+        <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
+        <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
+        <p>Quantity: ${item.quantity}</p>
+        <p>Duplicates: ${item.quantity - 1}</p>
+      </div>
+    `;
+
+    duplicatesDiv.appendChild(div);
+  });
+
+  duplicatesContainer.appendChild(duplicatesDiv);
+}
+
+// Event listener for the back button on the duplicates page
+document.getElementById('backToMainBtn').addEventListener('click', () => {
+  window.location.href = 'index.html'; // Change this to your main page URL
+});
