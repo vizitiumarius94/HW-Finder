@@ -339,7 +339,8 @@ function renderCarCard(year, caseLetter, c, container) {
   const div = document.createElement('div');
   div.classList.add('result-card');
 
-  let isOwned = ownedCars.some(o => o.car.image === c.image);
+  let ownedCar = ownedCars.find(o => o.car.image === c.image);
+  let isOwned = !!ownedCar;
   let isWanted = wantedCars.some(w => w.car.image === c.image);
 
   div.innerHTML = `
@@ -352,6 +353,7 @@ function renderCarCard(year, caseLetter, c, container) {
       <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
         ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
       </button>
+      ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
       ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
     </div>
   `;
@@ -362,17 +364,26 @@ function renderCarCard(year, caseLetter, c, container) {
     if (isOwned) {
       ownedCars = ownedCars.filter(o => o.car.image !== c.image);
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-      ownedBtn.textContent = 'Mark Owned';
-      ownedBtn.className = 'owned-btn';
       isOwned = false;
     } else {
-      ownedCars.push({ year, caseLetter, car: c });
+      ownedCars.push({ year, caseLetter, car: c, quantity: 1 });
       localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-      ownedBtn.textContent = 'Unmark Owned';
-      ownedBtn.className = 'unowned-btn';
       isOwned = true;
     }
+    renderCarCard(year, caseLetter, c, container); // Re-render the card to update UI
   });
+
+  // Increase quantity
+  const increaseBtn = div.querySelector('.increase-btn');
+  if (increaseBtn) {
+    increaseBtn.addEventListener('click', () => {
+      if (isOwned) {
+        ownedCar.quantity = (ownedCar.quantity || 1) + 1;
+        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+        div.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
+      }
+    });
+  }
 
   // Wanted toggle
   const addWantedBtn = div.querySelector('.add-wanted-btn');
