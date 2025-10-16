@@ -157,7 +157,8 @@ function performSearch() {
           const card = document.createElement('div');
           card.classList.add('result-card');
 
-          let isOwned = ownedCars.some(o => o.car.image === car.image);
+          let ownedCar = ownedCars.find(o => o.car.image === car.image);
+          let isOwned = !!ownedCar;
           let isWanted = wantedCars.some(w => w.car.image === car.image);
 
           card.innerHTML = `
@@ -170,6 +171,7 @@ function performSearch() {
               <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
                 ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
               </button>
+              ${isOwned ? `<p>Quantity: ${ownedCar.quantity}</p><button class="increase-btn">+</button>` : ''}
               ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
             </div>
           `;
@@ -180,7 +182,7 @@ function performSearch() {
             showDetails(yearKey, hwCase, car);
           });
 
-          // Owned toggle
+            // Owned toggle
           const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
           ownedBtn.addEventListener('click', e => {
             e.stopPropagation();
@@ -190,14 +192,31 @@ function performSearch() {
               ownedBtn.textContent = 'Mark Owned';
               ownedBtn.className = 'owned-btn';
               isOwned = false;
+              card.querySelector('.increase-btn').style.display = 'none';
+              card.querySelector('p').style.display = 'none';
             } else {
-              ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
+              ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
               ownedBtn.textContent = 'Unmark Owned';
               ownedBtn.className = 'unowned-btn';
               isOwned = true;
+              card.querySelector('.increase-btn').style.display = 'inline';
+              card.querySelector('p').style.display = 'block';
             }
           });
+
+          // Increase quantity
+          const increaseBtn = card.querySelector('.increase-btn');
+          if (increaseBtn) {
+            increaseBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              if (isOwned) {
+                ownedCar.quantity += 1;
+                localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+                card.querySelector('p').textContent = `Quantity: ${ownedCar.quantity}`;
+              }
+            });
+          }
 
           // Add to wanted
           const addWantedBtn = card.querySelector('.add-wanted-btn');
@@ -216,7 +235,6 @@ function performSearch() {
     });
   });
 }
-
 // ------------------- SEARCH BAR + CLEAR BUTTON ------------------
 // Trigger search on input
 searchBar.addEventListener('input', () => {
