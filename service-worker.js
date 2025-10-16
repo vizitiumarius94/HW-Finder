@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v13";
+const CACHE_NAME = "garage-cache-v14";
 const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 const CORE_ASSETS = [
   "index.html",
