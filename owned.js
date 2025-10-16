@@ -86,6 +86,7 @@ function renderOwnedCars(groupBy) {
           <p>${item.car.series} (#${item.car.series_number})</p>
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
+          <p>Quantity: ${item.quantity || 1}</p>
           <button class="unowned-btn">Unmark Owned</button>
           ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
         </div>
@@ -109,6 +110,16 @@ function renderOwnedCars(groupBy) {
           addWantedBtn.style.display = 'none';
         });
       }
+
+      // Add click event to update quantity
+      div.addEventListener('click', () => {
+        const quantity = prompt('Enter the quantity of this car:', item.quantity || 1);
+        if (quantity !== null) {
+          item.quantity = parseInt(quantity, 10);
+          setOwnedCars(ownedCars);
+          renderOwnedCars(groupBy);
+        }
+      });
 
       grid.appendChild(div);
     });
