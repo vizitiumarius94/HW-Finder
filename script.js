@@ -163,7 +163,7 @@ function performSearch() {
             let isOwned = !!ownedCar;
             let isWanted = wantedCars.some(w => w.car.image === car.image);
 
-            card.innerHTML = `
+            div.innerHTML = `
               <img src="${car.image}" alt="${car.name}">
               <div class="card-info">
                 <h3>${car.name}</h3>
