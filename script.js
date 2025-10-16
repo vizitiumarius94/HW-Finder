@@ -153,8 +153,8 @@ function performSearch() {
         }
 
        if (show) {
-          const card = document.createElement('div');
-          card.classList.add('result-card');
+          const div = document.createElement('div');
+          div.classList.add('result-card');
 
           // Nested function to render/re-render the card
           function renderCard() {
@@ -179,7 +179,7 @@ function performSearch() {
             `;
 
             // Re-attach event listeners
-            const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
+            const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
             ownedBtn.addEventListener('click', e => {
               e.stopPropagation();
               
@@ -205,12 +205,12 @@ function performSearch() {
                 if (carToUpdate) {
                   carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
                   localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                  card.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
+                  div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
                 }
               });
             }
 
-            const addWantedBtn = card.querySelector('.add-wanted-btn');
+            const addWantedBtn = div.querySelector('.add-wanted-btn');
             if (addWantedBtn) {
               addWantedBtn.addEventListener('click', e => {
                 e.stopPropagation();
@@ -224,12 +224,12 @@ function performSearch() {
           renderCard(); // Initial render of the card
 
           // Popup click
-          card.addEventListener('click', e => {
+          div.addEventListener('click', e => {
             if (e.target.tagName.toLowerCase() === 'button') return;
             showDetails(yearKey, hwCase, car);
           });
 
-          resultsDiv.appendChild(card);
+          resultsDiv.appendChild(div);
         }
       });
     });
