@@ -153,84 +153,85 @@ function performSearch() {
         }
 
        if (show) {
-          const div = document.createElement('div');
-          div.classList.add('result-card');
+          const div = document.createElement('div');
+          div.classList.add('result-card');
 
-          // Nested function to render/re-render the card
-          function renderCard() {
-            // **RE-EVALUATE STATE LOCALLY FOR RENDERING**
-            let ownedCar = ownedCars.find(o => o.car.image === car.image);
-            let isOwned = !!ownedCar;
-            let isWanted = wantedCars.some(w => w.car.image === car.image);
+          // Nested function to render/re-render the card
+          function renderCard() {
+            // **RE-EVALUATE STATE LOCALLY FOR RENDERING**
+            let ownedCar = ownedCars.find(o => o.car.image === car.image);
+            let isOwned = !!ownedCar;
+            let isWanted = wantedCars.some(w => w.car.image === car.image);
 
-            div.innerHTML = `
-              <img src="${car.image}" alt="${car.name}">
-              <div class="card-info">
-                <h3>${car.name}</h3>
-                <p>${yearKey} - ${hwCase.letter}</p>
-                <p>${car.series} (#${car.series_number})</p>
-                <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
-                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
-                  ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
-                </button>
-                ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
-                ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
-              </div>
-            `;
+            div.innerHTML = `
+              <img src="${car.image}" alt="${car.name}">
+              <div class="card-info">
+                <h3>${car.name}</h3>
+                <p>${yearKey} - ${hwCase.letter}</p>
+                <p>${car.series} (#${car.series_number})</p>
+                <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
+                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+                  ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+                </button>
+                ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p>
+                <button class="increase-btn">+</button>` : ''}
+                ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+              </div>
+            `;
 
-            // Re-attach event listeners
-            const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
-            ownedBtn.addEventListener('click', e => {
-              e.stopPropagation();
-              
-              // **CRITICAL FIX: Check the *current* state of ownership from the global array**
-              const currentlyOwned = ownedCars.find(o => o.car.image === car.image);
+            // Re-attach event listeners
+            const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
+            ownedBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              
+              // **CRITICAL FIX: Check the *current* state of ownership from the global array**
+              const currentlyOwned = ownedCars.find(o => o.car.image === car.image);
 
-              if (currentlyOwned) { // If currently owned, unmark it
-                ownedCars = ownedCars.filter(o => o.car.image !== car.image);
-              } else { // If not owned, mark it
-                ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
-              }
-              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-              
-              renderCard(); // Re-render the card to update UI
-            });
+              if (currentlyOwned) { // If currently owned, unmark it
+                ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+              } else { // If not owned, mark it
+                ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
+              }
+              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+              
+              renderCard(); // Re-render the card to update UI
+            });
 
-            const increaseBtn = div.querySelector('.increase-btn');
-            if (increaseBtn) {
-              increaseBtn.addEventListener('click', e => {
-                e.stopPropagation();
-                // Find the car again for quantity update
-                let carToUpdate = ownedCars.find(o => o.car.image === car.image);
-                if (carToUpdate) {
-                  carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
-                  localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                  div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
-                }
-              });
-            }
+            const increaseBtn = div.querySelector('.increase-btn');
+            if (increaseBtn) {
+              increaseBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                // Find the car again for quantity update
+                let carToUpdate = ownedCars.find(o => o.car.image === car.image);
+                if (carToUpdate) {
+                  carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
+                  localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+                  div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
+                }
+              });
+            }
 
-            const addWantedBtn = div.querySelector('.add-wanted-btn');
-            if (addWantedBtn) {
-              addWantedBtn.addEventListener('click', e => {
-                e.stopPropagation();
-                wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
-                localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-                addWantedBtn.style.display = 'none';
-              });
-            }
-          }
+            const addWantedBtn = div.querySelector('.add-wanted-btn');
+            if (addWantedBtn) {
+              addWantedBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
+                localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+                addWantedBtn.style.display = 'none';
+              });
+            }
+          }
 
-          renderCard(); // Initial render of the card
+          renderCard(); // Initial render of the card
 
-          // Popup click
-          div.addEventListener('click', e => {
-            if (e.target.tagName.toLowerCase() === 'button') return;
-            showDetails(yearKey, hwCase, car);
-          });
+          // Popup click
+          div.addEventListener('click', e => {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            showDetails(yearKey, hwCase, car);
+          });
 
-          resultsDiv.appendChild(div);
-        }
+          resultsDiv.appendChild(div);
+        }
       });
     });
   });
@@ -374,7 +375,7 @@ function renderCarCard(year, caseLetter, c, container) {
     const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
     if (ownedBtn) {
       ownedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation(); 
         
         // **CRITICAL FIX: Check the *current* state of ownership from the global array**
         const currentlyOwned = ownedCars.find(o => o.car.image === c.image);
@@ -387,7 +388,7 @@ function renderCarCard(year, caseLetter, c, container) {
         localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
         
         // This instantly updates the UI by running the render function again
-        updateCardUI(); 
+        updateCardUI(); 
       });
     }
 
@@ -395,7 +396,7 @@ function renderCarCard(year, caseLetter, c, container) {
     const increaseBtn = div.querySelector('.increase-btn');
     if (increaseBtn) {
       increaseBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation(); 
         let carToUpdate = ownedCars.find(o => o.car.image === c.image);
         if (carToUpdate) {
           carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
@@ -409,10 +410,10 @@ function renderCarCard(year, caseLetter, c, container) {
     const addWantedBtn = div.querySelector('.add-wanted-btn');
     if (addWantedBtn) {
       addWantedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation(); 
         wantedCars.push({ year, caseLetter, car: c });
         localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        addWantedBtn.style.display = 'none'; 
+        addWantedBtn.style.display = 'none'; 
       });
     }
   }
