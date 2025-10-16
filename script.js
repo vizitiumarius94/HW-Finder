@@ -171,8 +171,8 @@ function performSearch() {
               <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
                 ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
               </button>
-              ${isOwned ? `<p>Quantity: ${ownedCar.quantity}</p><button class="increase-btn">+</button>` : ''}
-              ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+              ${isOwned ? `<p>Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
+                            ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
             </div>
           `;
 
@@ -202,20 +202,19 @@ function performSearch() {
               card.querySelector('p.quantity').style.display = 'block';
             }
           });
-          
+
           // Increase quantity
           const increaseBtn = card.querySelector('.increase-btn');
           if (increaseBtn) {
             increaseBtn.addEventListener('click', e => {
               e.stopPropagation();
               if (isOwned) {
-                ownedCar.quantity += 1;
+                ownedCar.quantity = (ownedCar.quantity || 1) + 1;
                 localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
                 card.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
               }
             });
           }
-
 
           // Add to wanted
           const addWantedBtn = card.querySelector('.add-wanted-btn');
@@ -234,6 +233,7 @@ function performSearch() {
     });
   });
 }
+
 // ------------------- SEARCH BAR + CLEAR BUTTON ------------------
 // Trigger search on input
 searchBar.addEventListener('input', () => {
