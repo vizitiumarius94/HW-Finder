@@ -14,6 +14,7 @@ const searchOldCases = document.getElementById('searchOldCases');
 const wantedPageBtn = document.getElementById('wantedPageBtn');
 const seriesPageBtn = document.getElementById('seriesPageBtn');
 const ownedPageBtn = document.getElementById('ownedPageBtn');
+const duplicatesPageBtn = document.getElementById('duplicatesPageBtn');
 const exportBtn = document.getElementById('exportBtn');
 const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
@@ -382,6 +383,7 @@ popupClose.addEventListener('click', () => {
 wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
 seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
 ownedPageBtn.addEventListener('click', () => window.location.href = 'owned.html');
+duplicatesPageBtn.addEventListener('click', () => window.location.href = 'duplicates.html');
 
 // ------------------- EXPORT -------------------
 exportBtn.addEventListener('click', () => {
