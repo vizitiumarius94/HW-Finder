@@ -182,7 +182,7 @@ function performSearch() {
             showDetails(yearKey, hwCase, car);
           });
 
-            // Owned toggle
+          // Owned toggle
           const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
           ownedBtn.addEventListener('click', e => {
             e.stopPropagation();
@@ -191,20 +191,18 @@ function performSearch() {
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
               ownedBtn.textContent = 'Mark Owned';
               ownedBtn.className = 'owned-btn';
-              isOwned = false;
               card.querySelector('.increase-btn').style.display = 'none';
-              card.querySelector('p').style.display = 'none';
+              card.querySelector('p.quantity').style.display = 'none';
             } else {
               ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
               ownedBtn.textContent = 'Unmark Owned';
               ownedBtn.className = 'unowned-btn';
-              isOwned = true;
               card.querySelector('.increase-btn').style.display = 'inline';
-              card.querySelector('p').style.display = 'block';
+              card.querySelector('p.quantity').style.display = 'block';
             }
           });
-
+          
           // Increase quantity
           const increaseBtn = card.querySelector('.increase-btn');
           if (increaseBtn) {
@@ -213,10 +211,11 @@ function performSearch() {
               if (isOwned) {
                 ownedCar.quantity += 1;
                 localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                card.querySelector('p').textContent = `Quantity: ${ownedCar.quantity}`;
+                card.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
               }
             });
           }
+
 
           // Add to wanted
           const addWantedBtn = card.querySelector('.add-wanted-btn');
