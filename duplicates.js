@@ -2,6 +2,9 @@
 function getOwnedCars() {
   return JSON.parse(localStorage.getItem('ownedCars') || '[]');
 }
+function setOwnedCars(cars) {
+  localStorage.setItem('ownedCars', JSON.stringify(cars));
+}
 
 const duplicatesContainer = document.getElementById('duplicatesContainer');
 const groupSelect = document.getElementById('groupSelect');
@@ -79,6 +82,16 @@ function renderDuplicates(groupBy) {
           <p>Duplicates: ${item.quantity - 1}</p>
         </div>
       `;
+
+      // Add click event to update quantity
+      div.addEventListener('click', () => {
+        const newQuantity = prompt('Enter the new quantity for this car:', item.quantity);
+        if (newQuantity !== null && !isNaN(newQuantity) && newQuantity > 0) {
+          item.quantity = parseInt(newQuantity, 10);
+          setOwnedCars(ownedCars);
+          renderDuplicates(groupBy);
+        }
+      });
 
       grid.appendChild(div);
     });
