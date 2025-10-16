@@ -160,7 +160,7 @@ function performSearch() {
           let ownedCar = ownedCars.find(o => o.car.image === car.image);
           let isOwned = !!ownedCar;
           let isWanted = wantedCars.some(w => w.car.image === car.image);
-
+          
           card.innerHTML = `
             <img src="${car.image}" alt="${car.name}">
             <div class="card-info">
@@ -171,10 +171,11 @@ function performSearch() {
               <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
                 ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
               </button>
-              ${isOwned ? `<p>Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
-                            ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+              ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
+              ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
             </div>
           `;
+
 
           // Popup click
           card.addEventListener('click', e => {
@@ -182,39 +183,41 @@ function performSearch() {
             showDetails(yearKey, hwCase, car);
           });
 
-          // Owned toggle
-          const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
-          ownedBtn.addEventListener('click', e => {
+        // Owned toggle
+        const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
+        ownedBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          if (isOwned) {
+            ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+            ownedBtn.textContent = 'Mark Owned';
+            ownedBtn.className = 'owned-btn';
+            card.querySelector('.increase-btn').style.display = 'none';
+            card.querySelector('p.quantity').style.display = 'none';
+          } else {
+            ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
+            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+            ownedBtn.textContent = 'Unmark Owned';
+            ownedBtn.className = 'unowned-btn';
+            card.querySelector('.increase-btn').style.display = 'inline';
+            card.querySelector('p.quantity').style.display = 'block';
+            card.querySelector('p.quantity').textContent = 'Quantity: 1'; // Update UI immediately
+          }
+        });
+        
+        // Increase quantity
+        const increaseBtn = card.querySelector('.increase-btn');
+        if (increaseBtn) {
+          increaseBtn.addEventListener('click', e => {
             e.stopPropagation();
             if (isOwned) {
-              ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+              ownedCar.quantity = (ownedCar.quantity || 1) + 1;
               localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-              ownedBtn.textContent = 'Mark Owned';
-              ownedBtn.className = 'owned-btn';
-              card.querySelector('.increase-btn').style.display = 'none';
-              card.querySelector('p.quantity').style.display = 'none';
-            } else {
-              ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
-              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-              ownedBtn.textContent = 'Unmark Owned';
-              ownedBtn.className = 'unowned-btn';
-              card.querySelector('.increase-btn').style.display = 'inline';
-              card.querySelector('p.quantity').style.display = 'block';
+              card.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
             }
           });
+        }
 
-          // Increase quantity
-          const increaseBtn = card.querySelector('.increase-btn');
-          if (increaseBtn) {
-            increaseBtn.addEventListener('click', e => {
-              e.stopPropagation();
-              if (isOwned) {
-                ownedCar.quantity = (ownedCar.quantity || 1) + 1;
-                localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                card.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
-              }
-            });
-          }
 
           // Add to wanted
           const addWantedBtn = card.querySelector('.add-wanted-btn');
