@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v14";
+const CACHE_NAME = "garage-cache-v15";
 const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 const CORE_ASSETS = [
   "index.html",
@@ -6,7 +6,7 @@ const CORE_ASSETS = [
   "series.html",
   "wanted.html",
   "style.css",
-  "script.js?v=12",
+  "script.js?v=15",
   "owned.js",
   "series.js",
   "wanted.js",
