@@ -334,21 +334,20 @@ function showDetails(year, hwCase, car) {
   document.body.classList.add('popup-open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-// ------------------- RENDER CAR CARD HELPER (UPDATED) -------------------
+// ------------------- RENDER CAR CARD HELPER (FINAL FIX) -------------------
 function renderCarCard(year, caseLetter, c, container) {
-  // Use a unique ID or class if needed, but for simplicity, 
-  // we'll rely on the function to create and manage the single element.
   const div = document.createElement('div');
   div.classList.add('result-card');
 
-  // Nested function to render/re-render the card's content and attach listeners
+  // Function to perform the full update of the card's content and listeners
   function updateCardUI() {
-    // Re-check state from local storage and in-memory arrays
+    // 1. RE-EVALUATE STATE
+    // Always get the most current state from the global arrays
     let ownedCar = ownedCars.find(o => o.car.image === c.image);
     let isOwned = !!ownedCar;
     let isWanted = wantedCars.some(w => w.car.image === c.image);
-    
-    // 1. RENDER HTML
+
+    // 2. RENDER HTML (This clears old listeners)
     div.innerHTML = `
       <img src="${c.image}" alt="${c.name}">
       <div class="card-info">
@@ -364,38 +363,41 @@ function renderCarCard(year, caseLetter, c, container) {
       </div>
     `;
 
-    // 2. ATTACH LISTENERS
+    // 3. RE-ATTACH LISTENERS
 
     // Owned toggle
     const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
-    ownedBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Stop propagation to prevent popup opening
-      if (isOwned) {
-        ownedCars = ownedCars.filter(o => o.car.image !== c.image);
-      } else {
-        // Find the ownedCar object reference again for consistent quantity update later
-        const newOwnedCar = { year, caseLetter, car: c, quantity: 1 };
-        ownedCars.push(newOwnedCar);
-        // ownedCar = newOwnedCar; // Update the reference if needed outside, but not necessary here
-      }
-      localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-      
-      // Crucial Fix: Re-render the existing element to update the UI immediately
-      updateCardUI(); 
-    });
+    if (ownedBtn) {
+      ownedBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        
+        if (isOwned) {
+          ownedCars = ownedCars.filter(o => o.car.image !== c.image);
+        } else {
+          ownedCars.push({ year, caseLetter, car: c, quantity: 1 });
+        }
+        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+        
+        // Critical: Re-render the existing element to update the UI instantly
+        updateCardUI(); 
+      });
+    }
+
 
     // Increase quantity
     const increaseBtn = div.querySelector('.increase-btn');
     if (increaseBtn) {
       increaseBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stop propagation to prevent popup opening
-        // Re-find the ownedCar object to ensure the quantity is updated on the correct item
-        let currentOwnedCar = ownedCars.find(o => o.car.image === c.image); 
-        if (currentOwnedCar) {
-          currentOwnedCar.quantity = (currentOwnedCar.quantity || 1) + 1;
+        e.stopPropagation(); 
+        
+        // Find the car again to ensure we modify the *latest* object in the array
+        let carToUpdate = ownedCars.find(o => o.car.image === c.image);
+        if (carToUpdate) {
+          carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
           localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-          // Direct DOM update is faster here than full re-render
-          div.querySelector('p.quantity').textContent = `Quantity: ${currentOwnedCar.quantity}`;
+          
+          // Direct DOM update (fastest way to update quantity text)
+          div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
         }
       });
     }
@@ -404,11 +406,11 @@ function renderCarCard(year, caseLetter, c, container) {
     const addWantedBtn = div.querySelector('.add-wanted-btn');
     if (addWantedBtn) {
       addWantedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stop propagation to prevent popup opening
+        e.stopPropagation(); 
         wantedCars.push({ year, caseLetter, car: c });
         localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        // You can directly hide the button without a full re-render
-        addWantedBtn.style.display = 'none';
+        // Simple UI update: just hide the button
+        addWantedBtn.style.display = 'none'; 
       });
     }
   }
@@ -416,7 +418,7 @@ function renderCarCard(year, caseLetter, c, container) {
   // Initial call to render the card content and attach listeners
   updateCardUI();
 
-  // Append the card only once
+  // Append the card only once to the container
   container.appendChild(div);
 }
 // ------------------- POPUP CLOSE -------------------
