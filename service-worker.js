@@ -35,78 +35,61 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch
+// Fetch with timeout
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
-  // 🔥 Special rule for data.json (always fresh, replace old cache)
-  if (url.endsWith("data.json")) {
-    // Append timestamp to force network fetch
-    const fetchUrl = new URL(event.request.url);
-    fetchUrl.searchParams.set("_ts", Date.now());
+  // Function to create a timeout promise
+  const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms));
 
-    event.respondWith(
-      fetch(fetchUrl.toString())
-        .then((response) => {
-          if (response && response.ok) {
-            // Save latest version in cache
-            const clone = response.clone();
-            caches.open(DATA_CACHE).then(async (cache) => {
-              // Clear previous cached entries
-              const keys = await cache.keys();
-              await Promise.all(keys.map((key) => cache.delete(key)));
-              await cache.put(event.request, clone);
-            });
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request)) // fallback to last cached version
-    );
-    return;
-  }
-
-  // Network-first for .js, .css
+  // Network-first for .js, .css with timeout
   if (url.match(/\.(js|css)$/)) {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
+      Promise.race([
+        fetch(event.request).then((response) => {
           if (!response || !response.ok) return response;
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
-        })
-        .catch(() => caches.match(event.request))
+        }),
+        timeout(10000) // 10 seconds timeout
+      ]).catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // Cache-first for HTML + images
+  // Cache-first for HTML + images with timeout
   if (url.match(/\.(html|png|jpg|jpeg|gif|webp|svg)$/)) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
-        return fetch(event.request)
-          .then((response) => {
+        return Promise.race([
+          fetch(event.request).then((response) => {
             if (!response || !response.ok) return response;
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
             return response;
-          })
-          .catch(() => {
-            if (event.request.destination === "image") {
-              return caches.match("images/images-coming-soon.png");
-            }
-          });
+          }),
+          timeout(10000) // 10 seconds timeout
+        ]).catch(() => {
+          if (event.request.destination === "image") {
+            return caches.match("images/images-coming-soon.png");
+          }
+        });
       })
     );
     return;
   }
 
-  // Default: try network, fallback to cache
+  // Default: try network with timeout, fallback to cache
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+    Promise.race([
+      fetch(event.request),
+      timeout(10000) // 10 seconds timeout
+    ]).catch(() => caches.match(event.request))
   );
 });
+
 
 // Listen for skipWaiting from the page
 self.addEventListener("message", (event) => {
