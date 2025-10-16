@@ -1,6 +1,13 @@
 // Helpers
 function getOwnedCars() {
-  return JSON.parse(localStorage.getItem('ownedCars') || '[]');
+  const cars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
+  // Ensure each car has a quantity property
+  cars.forEach(car => {
+    if (typeof car.quantity === 'undefined') {
+      car.quantity = 1; // Set default quantity to 1 if undefined
+    }
+  });
+  return cars;
 }
 function setOwnedCars(cars) {
   localStorage.setItem('ownedCars', JSON.stringify(cars));
