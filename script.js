@@ -196,7 +196,7 @@ function performSearch() {
               renderCard(); // Re-render the card to update UI
             });
 
-            const increaseBtn = card.querySelector('.increase-btn');
+            const increaseBtn = div.querySelector('.increase-btn');
             if (increaseBtn) {
               increaseBtn.addEventListener('click', e => {
                 e.stopPropagation();
