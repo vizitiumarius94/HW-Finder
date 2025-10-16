@@ -13,14 +13,17 @@
     <!-- Back to Search button -->
     <button id="backToSearchBtn" class="action-btn">← Back to Search</button>
 
-    <!-- Duplicates container -->
+    <!-- Grouping option -->
+    <label for="groupSelect">Group By:</label>
+    <select id="groupSelect" class="select-btn">
+      <option value="case">Case</option>
+      <option value="series">Series</option>
+    </select>
+
+    <!-- Duplicates cars container -->
     <div id="duplicatesContainer" class="results-grid"></div>
   </div>
 
-  <script src="owned.js"></script> <!-- Ensure this script contains the renderDuplicatesPage function -->
-  <script>
-    // Call the function to render duplicates when the page loads
-    renderDuplicatesPage();
-  </script>
+  <script src="duplicates.js"></script> <!-- Link to your duplicates script -->
 </body>
 </html>
