@@ -334,12 +334,6 @@ function showDetails(year, hwCase, car) {
   document.body.classList.add('popup-open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-Yes, here is the updated code for the renderCarCard function, which fixes the issue by updating the card's content in-place instead of creating and appending a new, duplicate card.
-
-I've replaced the original renderCarCard function with the one below. The rest of your script remains unchanged.
-
-JavaScript
-
 // ------------------- RENDER CAR CARD HELPER (UPDATED) -------------------
 function renderCarCard(year, caseLetter, c, container) {
   // Use a unique ID or class if needed, but for simplicity, 
