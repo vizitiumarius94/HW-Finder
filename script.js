@@ -152,79 +152,85 @@ function performSearch() {
             break;
         }
 
-        if (show) {
-          const card = document.createElement('div');
-          card.classList.add('result-card');
+       if (show) {
+          const card = document.createElement('div');
+          card.classList.add('result-card');
 
-          let ownedCar = ownedCars.find(o => o.car.image === car.image);
-          let isOwned = !!ownedCar;
-          let isWanted = wantedCars.some(w => w.car.image === car.image);
+          // Nested function to render/re-render the card
+          function renderCard() {
+            // **RE-EVALUATE STATE LOCALLY FOR RENDERING**
+            let ownedCar = ownedCars.find(o => o.car.image === car.image);
+            let isOwned = !!ownedCar;
+            let isWanted = wantedCars.some(w => w.car.image === car.image);
 
-          function renderCard() {
-            card.innerHTML = `
-              <img src="${car.image}" alt="${car.name}">
-              <div class="card-info">
-                <h3>${car.name}</h3>
-                <p>${yearKey} - ${hwCase.letter}</p>
-                <p>${car.series} (#${car.series_number})</p>
-                <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
-                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
-                  ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
-                </button>
-                ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
-                ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
-              </div>
-            `;
+            card.innerHTML = `
+              <img src="${car.image}" alt="${car.name}">
+              <div class="card-info">
+                <h3>${car.name}</h3>
+                <p>${yearKey} - ${hwCase.letter}</p>
+                <p>${car.series} (#${car.series_number})</p>
+                <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
+                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+                  ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+                </button>
+                ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
+                ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+              </div>
+            `;
 
-            // Re-attach event listeners
-            const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
-            ownedBtn.addEventListener('click', e => {
-              e.stopPropagation();
-              if (isOwned) {
-                ownedCars = ownedCars.filter(o => o.car.image !== car.image);
-                localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                isOwned = false;
-              } else {
-                ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
-                localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                isOwned = true;
-              }
-                            renderCard(); // Re-render the card to update UI
-            });
+            // Re-attach event listeners
+            const ownedBtn = card.querySelector('.owned-btn, .unowned-btn');
+            ownedBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              
+              // **CRITICAL FIX: Check the *current* state of ownership from the global array**
+              const currentlyOwned = ownedCars.find(o => o.car.image === car.image);
 
-            const increaseBtn = card.querySelector('.increase-btn');
-            if (increaseBtn) {
-              increaseBtn.addEventListener('click', e => {
-                e.stopPropagation();
-                if (isOwned) {
-                  ownedCar.quantity = (ownedCar.quantity || 1) + 1;
-                  localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-                  card.querySelector('p.quantity').textContent = `Quantity: ${ownedCar.quantity}`;
-                }
-              });
-            }
+              if (currentlyOwned) { // If currently owned, unmark it
+                ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+              } else { // If not owned, mark it
+                ownedCars.push({ year: yearKey, caseLetter: hwCase.letter, car, quantity: 1 });
+              }
+              localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+              
+              renderCard(); // Re-render the card to update UI
+            });
 
-            const addWantedBtn = card.querySelector('.add-wanted-btn');
-            if (addWantedBtn) {
-              addWantedBtn.addEventListener('click', e => {
-                e.stopPropagation();
-                wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
-                localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-                addWantedBtn.style.display = 'none';
-              });
-            }
-          }
+            const increaseBtn = card.querySelector('.increase-btn');
+            if (increaseBtn) {
+              increaseBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                // Find the car again for quantity update
+                let carToUpdate = ownedCars.find(o => o.car.image === car.image);
+                if (carToUpdate) {
+                  carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
+                  localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+                  card.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
+                }
+              });
+            }
 
-          renderCard(); // Initial render of the card
+            const addWantedBtn = card.querySelector('.add-wanted-btn');
+            if (addWantedBtn) {
+              addWantedBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                wantedCars.push({ year: yearKey, caseLetter: hwCase.letter, car });
+                localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+                addWantedBtn.style.display = 'none';
+              });
+            }
+          }
 
-          // Popup click
-          card.addEventListener('click', e => {
-            if (e.target.tagName.toLowerCase() === 'button') return;
-            showDetails(yearKey, hwCase, car);
-          });
+          renderCard(); // Initial render of the card
 
-          resultsDiv.appendChild(card);
-        }
+          // Popup click
+          card.addEventListener('click', e => {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            showDetails(yearKey, hwCase, car);
+          });
+
+          resultsDiv.appendChild(card);
+        }
       });
     });
   });
@@ -339,10 +345,9 @@ function renderCarCard(year, caseLetter, c, container) {
   const div = document.createElement('div');
   div.classList.add('result-card');
 
-  // Function to perform the full update of the card's content and listeners
   function updateCardUI() {
     // 1. RE-EVALUATE STATE
-    // Always get the most current state from the global arrays
+    // This defines the initial state for rendering the HTML
     let ownedCar = ownedCars.find(o => o.car.image === c.image);
     let isOwned = !!ownedCar;
     let isWanted = wantedCars.some(w => w.car.image === c.image);
@@ -369,56 +374,50 @@ function renderCarCard(year, caseLetter, c, container) {
     const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
     if (ownedBtn) {
       ownedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation(); 
         
-        if (isOwned) {
+        // **CRITICAL FIX: Check the *current* state of ownership from the global array**
+        const currentlyOwned = ownedCars.find(o => o.car.image === c.image);
+        
+        if (currentlyOwned) { // If currently owned, unmark it
           ownedCars = ownedCars.filter(o => o.car.image !== c.image);
-        } else {
+        } else { // If not owned, mark it
           ownedCars.push({ year, caseLetter, car: c, quantity: 1 });
         }
         localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
         
-        // Critical: Re-render the existing element to update the UI instantly
-        updateCardUI(); 
+        // This instantly updates the UI by running the render function again
+        updateCardUI(); 
       });
     }
 
-
-    // Increase quantity
+    // Increase quantity (This logic was fine)
     const increaseBtn = div.querySelector('.increase-btn');
     if (increaseBtn) {
       increaseBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
-        
-        // Find the car again to ensure we modify the *latest* object in the array
+        e.stopPropagation(); 
         let carToUpdate = ownedCars.find(o => o.car.image === c.image);
         if (carToUpdate) {
           carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
           localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-          
-          // Direct DOM update (fastest way to update quantity text)
           div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
         }
       });
     }
 
-    // Wanted toggle
+    // Wanted toggle (This logic was fine)
     const addWantedBtn = div.querySelector('.add-wanted-btn');
     if (addWantedBtn) {
       addWantedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation(); 
         wantedCars.push({ year, caseLetter, car: c });
         localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        // Simple UI update: just hide the button
-        addWantedBtn.style.display = 'none'; 
+        addWantedBtn.style.display = 'none'; 
       });
     }
   }
 
-  // Initial call to render the card content and attach listeners
   updateCardUI();
-
-  // Append the card only once to the container
   container.appendChild(div);
 }
 // ------------------- POPUP CLOSE -------------------
