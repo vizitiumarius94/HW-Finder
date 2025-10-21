@@ -30,6 +30,7 @@ const filterState = {
     unownedOnly: false,
     th: false,
     sth: false,
+    showDuds: false, // NEW STATE VARIABLE
 };
 
 // CRITICAL: These MUST match the IDs in your HTML structure.
@@ -47,10 +48,14 @@ const unownedOnlyCheckbox = document.getElementById('unownedOnlyCheckbox');
 const thCheckbox = document.getElementById('thCheckbox');
 const sthCheckbox = document.getElementById('sthCheckbox');
 
+// NEW ELEMENTS
+const dudsCheckboxWrapper = document.getElementById('dudsCheckboxWrapper');
+const showDudsCheckbox = document.getElementById('showDudsCheckbox');
+
 
 // ------------------- SERVICE WORKER + UPDATE POPUP -------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js').then(reg => {
+  navigator.serviceWorker.register('service-worker.js').then(reg => {
     function showUpdate(worker) {
         const banner = document.createElement('div');
         banner.innerHTML = `
@@ -74,11 +79,11 @@ if ('serviceWorker' in navigator) {
             }
         });
     });
-  }).catch(err => console.error("SW registration failed:", err));
+  }).catch(err => console.error("SW registration failed:", err));
 
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
-  });
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
 }
 
 
@@ -142,6 +147,9 @@ function renderActiveChips() {
     if (filterState.unownedOnly) addFilterChip('checkbox', 'Unowned Only', 'unownedOnly');
     if (filterState.th) addFilterChip('checkbox', 'Treasure Hunts', 'th');
     if (filterState.sth) addFilterChip('checkbox', 'Super TH', 'sth');
+    
+    // NEW: Render the Show Duds chip
+    if (filterState.showDuds) addFilterChip('checkbox', 'Show Duds', 'showDuds');
 }
 
 function addFilterChip(field, value, stateKey = null) {
@@ -175,6 +183,17 @@ function removeFilterChip(chipElement) {
         filterState[stateKey] = false;
         const checkbox = document.getElementById(stateKey + 'Checkbox');
         if (checkbox) checkbox.checked = false;
+        
+        // NEW: If removing STH, hide and reset the Duds filter
+        if (stateKey === 'sth') {
+            dudsCheckboxWrapper.style.display = 'none'; 
+            filterState.showDuds = false;
+            if (showDudsCheckbox) showDudsCheckbox.checked = false;
+            
+            // Also remove the duds chip if it exists (redundant but safe)
+            document.querySelector('[data-state-key="showDuds"]')?.remove();
+        }
+        
     } else {
         // Multi-select removal: filter out the specific value
         filterState[field] = filterState[field].filter(v => v !== value);
@@ -200,14 +219,11 @@ function getAvailableOptionsForFiltering(targetField) {
     const options = new Set();
     
     // --- 1. Handle Non-Cascading Fields (Year & Case) ---
-    // If the target field is 'year' or 'caseLetter', we ignore all filters and return all options.
     if (targetField === 'year' || targetField === 'caseLetter') {
         const allCars = getAllCarsForInitialLoad();
         
         allCars.forEach(item => {
             let value;
-
-            // 🔥 FIX: Apply 'Search Old Cases' check here for the year filter list
             if (targetField === 'year') {
                 if (!searchOldCases.checked && parseInt(item.year) < 2024) return;
                 value = item.year;
@@ -232,7 +248,6 @@ function getAvailableOptionsForFiltering(targetField) {
         }
     }
 
-    // Now, iterate through ALL cars, and filter them using ALL active filters EXCEPT the target field.
     allCars.forEach(item => {
         let passesOtherFilters = true;
         const yearKey = item.year;
@@ -242,7 +257,7 @@ function getAvailableOptionsForFiltering(targetField) {
         // Apply 'Search Old Cases' check here
         if (!searchOldCases.checked && parseInt(yearKey) < 2024) return;
 
-        // 🔥 Check if the car matches the search query first
+        // Check if the car matches the search query first
         if (query.length > 0 && !car.name.toLowerCase().includes(query)) {
              passesOtherFilters = false;
         }
@@ -275,17 +290,10 @@ function getAvailableOptionsForFiltering(targetField) {
         if (!checkFilter('color', car.color)) passesOtherFilters = false;
         
         // Check Checkboxes (These apply regardless of the target field)
+        // We skip TH/STH logic here since we only want to generate options based on ALL possible cars
         if (filterState.unownedOnly) {
             const isOwned = ownedCars.some(o => o.car.image === car.image);
             if (isOwned) passesOtherFilters = false;
-        }
-        if (filterState.th) {
-            const isTH = hwCase.th && car.hw_number === hwCase.th.hw_number;
-            if (!isTH) passesOtherFilters = false;
-        }
-        if (filterState.sth) {
-            const isSTH = hwCase.sth && car.hw_number === hwCase.sth.hw_number;
-            if (!isSTH) passesOtherFilters = false;
         }
 
 
@@ -340,8 +348,8 @@ function updateFilterOptionsUI() {
 
 // ------------------- FETCH DATA & INITIALIZE FILTERS -------------------
 fetch('data.json')
-  .then(res => res.json())
-  .then(data => {
+  .then(res => res.json())
+  .then(data => {
       carsData = data;
       // Initialize filter options based on all data
       updateFilterOptionsUI();
@@ -367,14 +375,29 @@ function handleFilterChange(e) {
         }
         
     } else if (target.id === 'searchOldCases') { // Handle 'Search Old Cases' checkbox change
-        // Trigger a re-search/re-filter on this checkbox click
         performSearch();
-        return; // Exit early as performSearch is called
+        return; 
     } else {
-        // Handle other Checkboxes
+        // Handle Checkboxes
         if (target.id === 'unownedOnlyCheckbox') filterState.unownedOnly = target.checked;
         if (target.id === 'thCheckbox') filterState.th = target.checked;
-        if (target.id === 'sthCheckbox') filterState.sth = target.checked;
+        
+        // NEW: Handle STH and control Duds visibility
+        if (target.id === 'sthCheckbox') {
+            filterState.sth = target.checked;
+            if (target.checked) {
+                dudsCheckboxWrapper.style.display = 'inline-block'; // Show Duds option
+            } else {
+                dudsCheckboxWrapper.style.display = 'none'; // Hide Duds option
+                filterState.showDuds = false; // Reset Duds state when STH is unchecked
+                if (showDudsCheckbox) showDudsCheckbox.checked = false; // Uncheck Duds UI
+            }
+        }
+
+        // NEW: Handle Show Duds checkbox
+        if (target.id === 'showDudsCheckbox') {
+            filterState.showDuds = target.checked;
+        }
     }
 
     renderActiveChips(); 
@@ -385,15 +408,14 @@ function handleFilterChange(e) {
 if (unownedOnlyCheckbox) unownedOnlyCheckbox.addEventListener('click', handleFilterChange);
 if (thCheckbox) thCheckbox.addEventListener('click', handleFilterChange);
 if (sthCheckbox) sthCheckbox.addEventListener('click', handleFilterChange);
+if (showDudsCheckbox) showDudsCheckbox.addEventListener('click', handleFilterChange); // NEW: Duds listener
 
 // ------------------- GLOBAL DROPDOWN CLOSE LOGIC -------------------
 
 function closeAllDropdowns(event) {
-    // Check if the click occurred inside any filter container OR on a chip
     const isClickInsideFilter = event.target.closest('.custom-dropdown-container') || event.target.closest('.filter-chip');
     
     if (!isClickInsideFilter) {
-        // If the click was outside, find all toggles and uncheck them
         document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
             toggle.checked = false;
         });
@@ -418,17 +440,16 @@ function performSearch() {
     }
     
     const isSearchActive = query.length > 0;
-    const isFilterActive = Object.keys(activeFilters).some(key => activeFilters[key].length > 0) || filterState.unownedOnly || filterState.th || filterState.sth;
+    const isFilterActive = Object.keys(activeFilters).some(key => activeFilters[key].length > 0) || filterState.unownedOnly || filterState.th || filterState.sth || filterState.showDuds; // NEW: Check showDuds
 
-    // 🔥 Show results ONLY if search or filter is active.
+    // Show results ONLY if search or filter is active.
     if (!isSearchActive && !isFilterActive) {
-        filteredCarsCache = []; // Clear cache
-        updateFilterOptionsUI(); // Update UI to reflect full options (as nothing is filtered)
+        filteredCarsCache = []; 
+        updateFilterOptionsUI(); 
         resultsDiv.innerHTML = '<p class="no-results">Start typing or select a filter to see results.</p>';
         return; 
     }
     
-    // Reset cache before running new search
     filteredCarsCache = []; 
 
     // --- 2. Iterate Over Data and Apply ALL Filters (AND Logic) ---
@@ -495,15 +516,32 @@ function performSearch() {
                     if (isOwned) passesAllFilters = false;
                 }
 
-                // 🔥 FIX: Combine TH and STH into a single OR logic check
-                if (filterState.th || filterState.sth) {
-                    const isTH = filterState.th && hwCase.th && car.hw_number === hwCase.th.hw_number;
-                    const isSTH = filterState.sth && hwCase.sth && car.hw_number === hwCase.sth.hw_number;
+                // 🔥 UPDATED HUNT/DUD LOGIC: Use OR logic for hunts, and INCLUDE duds if requested
+                if (filterState.th || filterState.sth || filterState.showDuds) {
                     
-                    // If either TH or STH filter is active, the car MUST satisfy at least one of them.
-                    if (!isTH && !isSTH) {
+                    // Definitions based on HW number AND image URL
+                    const isTH = filterState.th && hwCase.th && 
+                                 car.hw_number === hwCase.th.hw_number &&
+                                 car.image === hwCase.th.image;
+
+                    const isSTH = filterState.sth && hwCase.sth && 
+                                  car.hw_number === hwCase.sth.hw_number &&
+                                  car.image === hwCase.sth.image;
+
+                    // A car is a DUD if its HW number matches the STH number, but its image is NOT the STH image.
+                    const isDud = filterState.showDuds && hwCase.sth && 
+                                  car.hw_number === hwCase.sth.hw_number &&
+                                  car.image !== hwCase.sth.image;
+
+                    // If NO special hunt cars (TH or STH) are found, AND NO duds are requested, the car fails.
+                    // If duds are requested, check if it's a Dud, TH, or STH.
+                    if (!isTH && !isSTH && !isDud) {
+                        // This car is not a TH, STH, or a requested Dud, so it fails the special hunt filter group.
                         passesAllFilters = false;
                     }
+                    
+                    // Ensure that if STH is checked, Duds is ONLY possible if showDuds is also checked.
+                    // (This is implicitly handled by the isDud check being tied to filterState.showDuds)
                 }
                 
                 if (!passesAllFilters) return;
