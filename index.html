@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-
+    </div>
     <!-- Menu bar -->
     <nav class="menu-bar">
       <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
@@ -25,7 +25,7 @@
     <h1>Hot Wheels Case Finder</h1>
 
     <!-- Checkbox -->
-    <div class="checkbox-container">
+     <div class="checkbox-container">
       <input type="checkbox" id="searchOldCases">
       <label for="searchOldCases">Search Old Cases</label>
     </div>
@@ -33,6 +33,61 @@
     <div class="search-wrapper">
   <input type="text" id="searchBar" placeholder="Search car...">
   <span id="clearSearch" class="clear-btn">&times;</span>
+<div id="filterContainer">
+    <h3 style="margin-top: 0; margin-bottom: 10px;">Filter Options 🔎</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start;">
+        
+        <div id="yearFilterContainer" class="custom-dropdown-container">
+            <label class="dropdown-label" for="toggle-year" style="font-weight: bold;">Year</label>
+            <input type="checkbox" id="toggle-year" class="dropdown-toggle" hidden>
+            <div class="dropdown-content">
+                </div>
+        </div>
+        
+        <div id="caseLetterFilterContainer" class="custom-dropdown-container">
+            <label class="dropdown-label" for="toggle-case" style="font-weight: bold;">Case</label>
+            <input type="checkbox" id="toggle-case" class="dropdown-toggle" hidden>
+            <div class="dropdown-content"></div>
+        </div>
+        
+        <div id="seriesFilterContainer" class="custom-dropdown-container">
+            <label class="dropdown-label" for="toggle-series" style="font-weight: bold;">Series</label>
+            <input type="checkbox" id="toggle-series" class="dropdown-toggle" hidden>
+            <div class="dropdown-content"></div>
+        </div>
+        
+        <div id="hwNumberFilterContainer" class="custom-dropdown-container">
+            <label class="dropdown-label" for="toggle-hwnum" style="font-weight: bold;">HW#</label>
+            <input type="checkbox" id="toggle-hwnum" class="dropdown-toggle" hidden>
+            <div class="dropdown-content"></div>
+        </div>
+        
+        <div id="colorFilterContainer" class="custom-dropdown-container">
+            <label class="dropdown-label" for="toggle-color" style="font-weight: bold;">Color</label>
+            <input type="checkbox" id="toggle-color" class="dropdown-toggle" hidden>
+            <div class="dropdown-content"></div>
+        </div>
+
+        <label style="white-space: nowrap; margin-top: 5px;">
+            <input type="checkbox" id="unownedOnlyCheckbox"> Unowned Only
+        </label>
+        <label style="white-space: nowrap; margin-top: 5px;">
+            <input type="checkbox" id="thCheckbox"> TH
+        </label>
+        <label style="white-space: nowrap; margin-top: 5px;">
+            <input type="checkbox" id="sthCheckbox"> STH
+        </label>
+        </div>
+        <div id="activeFiltersBar" class="filter-chips-display" style="
+        margin-top: 5px; 
+        margin-bottom: 5px; 
+        min-height: 25px; 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 5px;
+    ">
+    </div>
+</div>
     </div>
     <!-- Search results -->
     <div id="results" class="results-grid"></div>

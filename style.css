@@ -74,7 +74,7 @@ h1 {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -334,4 +334,108 @@ body.popup-open {
 
 .select-btn-wrapper select.select-btn {
   padding-right: 30px; /* space for custom arrow */
+}
+
+/* Filters */
+/* --- Chip Styling (for the '2024 x' effect) --- */
+
+/* Ensures the bar itself is flexible and looks nice */
+.filter-chips-display {
+    min-height: 25px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 5px;
+    padding: 5px 0;
+    /* Adding a light border for visual separation from options */
+    border-bottom: 1px dashed #eee; 
+}
+
+.filter-chip {
+    background-color: #2196F3; /* Blue background */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px; /* Pill shape */
+    font-size: 0.9em;
+    cursor: default;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.filter-chip:hover {
+    background-color: #0b7dda;
+}
+
+.chip-close {
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- Custom Dropdown (List/Menu) Styling --- */
+.custom-dropdown-container {
+    position: relative; /* Crucial for positioning the content */
+    display: inline-block; /* Allows filters to sit next to each other */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+    user-select: none;
+}
+
+.dropdown-label {
+    display: block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 3px;
+    user-select: none; 
+}
+
+/* By default, hide the content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position right below the label */
+    left: -1px; /* Align to the left edge of the container */
+    z-index: 100; /* Ensure it's on top of other content */
+    min-width: 150px;
+    max-height: 200px; 
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #aaa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-top: none;
+    padding: 0;
+    margin-top: 1px;
+}
+
+/* When the hidden checkbox is checked, show the content */
+.dropdown-toggle:checked ~ .dropdown-content {
+    display: block;
+}
+
+/* List styles (these are the clickable options) */
+.dropdown-content ul.filter-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-content ul.filter-options li {
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap; 
+    border-bottom: 1px dotted #eee;
+}
+
+.dropdown-content ul.filter-options li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Highlight selected items for multi-select (e.g., Year 2024, 2025) */
+.dropdown-content ul.filter-options li.selected {
+    background-color: #4CAF50; /* Green for selected items */
+    color: white;
+    font-weight: bold;
 }
