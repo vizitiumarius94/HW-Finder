@@ -89,7 +89,7 @@ h1 {
   position: absolute;
   right: 10px;
   top: 35%;
-  transform: translateY(-50%);  /* centers perfectly */
+  transform: translateY(-30%);  /* centers perfectly */
   cursor: pointer;
   font-size: 18px;
   color: #999;
