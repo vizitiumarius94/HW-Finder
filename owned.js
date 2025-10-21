@@ -38,8 +38,13 @@ groupSelect.addEventListener('change', () => {
 function renderOwnedCars(groupBy) {
   ownedCarsContainer.innerHTML = '';
 
-  const groups = {};
+  // 🧮 Show total count
+  const ownedCountElem = document.getElementById('ownedCount');
   const ownedCars = getOwnedCars();
+  const totalOwned = ownedCars.reduce((sum, car) => sum + (car.quantity || 1), 0);
+  ownedCountElem.textContent = `You own ${totalOwned} Hot Wheels in your collection`;
+
+  const groups = {};
   const wantedCars = getWantedCars();
 
   ownedCars.forEach(item => {
