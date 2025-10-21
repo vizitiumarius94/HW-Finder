@@ -495,16 +495,15 @@ function performSearch() {
                     if (isOwned) passesAllFilters = false;
                 }
 
-                // TH Checkbox
-                if (filterState.th) {
-                    const isTH = hwCase.th && car.hw_number === hwCase.th.hw_number;
-                    if (!isTH) passesAllFilters = false;
-                }
-
-                // STH Checkbox
-                if (filterState.sth) {
-                    const isSTH = hwCase.sth && car.hw_number === hwCase.sth.hw_number;
-                    if (!isSTH) passesAllFilters = false;
+                // 🔥 FIX: Combine TH and STH into a single OR logic check
+                if (filterState.th || filterState.sth) {
+                    const isTH = filterState.th && hwCase.th && car.hw_number === hwCase.th.hw_number;
+                    const isSTH = filterState.sth && hwCase.sth && car.hw_number === hwCase.sth.hw_number;
+                    
+                    // If either TH or STH filter is active, the car MUST satisfy at least one of them.
+                    if (!isTH && !isSTH) {
+                        passesAllFilters = false;
+                    }
                 }
                 
                 if (!passesAllFilters) return;
@@ -531,7 +530,6 @@ function performSearch() {
         resultsDiv.innerHTML = '<p class="no-results">No cars found matching all criteria. Try broadening your filters!</p>';
     }
 }
-
 // ------------------- SEARCH BAR + CLEAR BUTTON ------------------
 searchBar.addEventListener('input', () => {
   performSearch();
