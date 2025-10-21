@@ -46,29 +46,24 @@ function renderOwnedCars(groupBy) {
   ownedCars.forEach(item => {
     let key;
     if (groupBy === 'case') {
-      // Group by year + case, e.g. "2025 - A"
       key = `${item.year} - ${item.caseLetter}`;
     } else {
-      // Group by series + year, e.g. "Factory Fresh (2025)"
       key = `${item.car.series} (${item.year})`;
     }
     if (!groups[key]) groups[key] = [];
     groups[key].push(item);
   });
 
-  // Helper to safely parse series_number
   const extractSeriesNum = (val) => {
     if (!val) return 0;
     const m = String(val).match(/(\d+)/);
     return m ? parseInt(m[1], 10) : 0;
   };
 
-  // Sort each group by series number
   for (let group in groups) {
     groups[group].sort((a, b) => extractSeriesNum(a.car.series_number) - extractSeriesNum(b.car.series_number));
   }
 
-  // Render groups
   Object.keys(groups).sort().forEach(groupName => {
     const groupDiv = document.createElement('div');
     groupDiv.classList.add('group-container');
@@ -84,7 +79,7 @@ function renderOwnedCars(groupBy) {
       const div = document.createElement('div');
       div.classList.add('result-card');
 
-      let isWanted = wantedCars.some(w => w.car.image === item.car.image);
+      const isWanted = wantedCars.some(w => w.car.image === item.car.image);
 
       div.innerHTML = `
         <img src="${item.car.image}" alt="${item.car.name}">
@@ -100,33 +95,54 @@ function renderOwnedCars(groupBy) {
         </div>
       `;
 
-      // Unmark owned
+      // Unmark owned — stop the click from bubbling to parent div
       const unownedBtn = div.querySelector('.unowned-btn');
-      unownedBtn.addEventListener('click', () => {
-        let ownedCars = getOwnedCars().filter(o => o.car.image !== item.car.image);
-        setOwnedCars(ownedCars);
-        renderOwnedCars(groupBy);
-      });
+      if (unownedBtn) {
+        unownedBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const updated = getOwnedCars().filter(o => o.car.image !== item.car.image);
+          setOwnedCars(updated);
+          renderOwnedCars(groupBy);
+        });
+      }
 
-      // Add to wanted
+      // Add to wanted — also stop propagation
       const addWantedBtn = div.querySelector('.add-wanted-btn');
       if (addWantedBtn) {
-        addWantedBtn.addEventListener('click', () => {
-          let wantedCars = getWantedCars();
-          wantedCars.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
-          setWantedCars(wantedCars);
+        addWantedBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          let wanted = getWantedCars();
+          wanted.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
+          setWantedCars(wanted);
           addWantedBtn.style.display = 'none';
         });
       }
 
-      // Add click event to update quantity
+      // Card click: update quantity (update the stored ownedCars array safely)
       div.addEventListener('click', () => {
-        const quantity = prompt('Enter the quantity of this car:', item.quantity || 1);
-        if (quantity !== null) {
-          item.quantity = parseInt(quantity, 10);
-          setOwnedCars(ownedCars);
-          renderOwnedCars(groupBy);
+        const currentQty = item.quantity || 1;
+        const quantityStr = prompt('Enter the quantity of this car:', currentQty);
+        if (quantityStr === null) return; // user cancelled
+        const quantity = parseInt(quantityStr, 10);
+        if (isNaN(quantity) || quantity < 0) {
+          alert('Please enter a valid non-negative integer.');
+          return;
         }
+
+        // Update stored ownedCars by matching on a stable key (image here)
+        const stored = getOwnedCars();
+        const idx = stored.findIndex(o => o.car.image === item.car.image);
+        if (idx !== -1) {
+          stored[idx].quantity = quantity;
+          setOwnedCars(stored);
+        } else {
+          // fallback: add the item (shouldn't usually happen)
+          const newItem = Object.assign({}, item, { quantity });
+          stored.push(newItem);
+          setOwnedCars(stored);
+        }
+
+        renderOwnedCars(groupBy);
       });
 
       grid.appendChild(div);
