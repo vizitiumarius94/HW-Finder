@@ -38,18 +38,14 @@ groupSelect.addEventListener('change', () => {
 function renderOwnedCars(groupBy) {
   ownedCarsContainer.innerHTML = '';
 
-  // Group cars
   const groups = {};
   const ownedCars = getOwnedCars();
   const wantedCars = getWantedCars();
 
   ownedCars.forEach(item => {
-    let key;
-    if (groupBy === 'case') {
-      key = `${item.year} - ${item.caseLetter}`;
-    } else {
-      key = `${item.car.series} (${item.year})`;
-    }
+    const key = groupBy === 'case'
+      ? `${item.year} - ${item.caseLetter}`
+      : `${item.car.series} (${item.year})`;
     if (!groups[key]) groups[key] = [];
     groups[key].push(item);
   });
@@ -76,76 +72,73 @@ function renderOwnedCars(groupBy) {
     grid.classList.add('results-grid');
 
     groups[groupName].forEach(item => {
-      const div = document.createElement('div');
-      div.classList.add('result-card');
+      const card = document.createElement('div');
+      card.classList.add('result-card');
 
       const isWanted = wantedCars.some(w => w.car.image === item.car.image);
 
-      div.innerHTML = `
-        <img src="${item.car.image}" alt="${item.car.name}">
+      card.innerHTML = `
+        <img class="car-image" src="${item.car.image}" alt="${item.car.name}">
         <div class="card-info">
           <h4>${item.car.name}</h4>
           <p>${item.car.series} (#${item.car.series_number})</p>
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
-          <p>Quantity: ${item.quantity || 1}</p>
+          <p class="quantity-line">
+            Quantity: <span class="quantity-value">${item.quantity || 1}</span>
+            <button class="add-qty-btn">+</button>
+          </p>
           <p>Duplicates: ${(item.quantity || 1) - 1}</p>
           <button class="unowned-btn">Unmark Owned</button>
           ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
         </div>
       `;
 
-      // Unmark owned — stop the click from bubbling to parent div
-      const unownedBtn = div.querySelector('.unowned-btn');
-      if (unownedBtn) {
-        unownedBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const updated = getOwnedCars().filter(o => o.car.image !== item.car.image);
-          setOwnedCars(updated);
-          renderOwnedCars(groupBy);
-        });
-      }
+      // Select buttons and elements
+      const unownedBtn = card.querySelector('.unowned-btn');
+      const addWantedBtn = card.querySelector('.add-wanted-btn');
+      const addQtyBtn = card.querySelector('.add-qty-btn');
 
-      // Add to wanted — also stop propagation
-      const addWantedBtn = div.querySelector('.add-wanted-btn');
+      // ✅ Unmark Owned
+      unownedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const updated = getOwnedCars().filter(o => o.car.image !== item.car.image);
+        setOwnedCars(updated);
+        renderOwnedCars(groupBy);
+      });
+
+      // ✅ Add to Wanted
       if (addWantedBtn) {
         addWantedBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          let wanted = getWantedCars();
+          const wanted = getWantedCars();
           wanted.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
           setWantedCars(wanted);
           addWantedBtn.style.display = 'none';
         });
       }
 
-      // Card click: update quantity (update the stored ownedCars array safely)
-      div.addEventListener('click', () => {
-        const currentQty = item.quantity || 1;
-        const quantityStr = prompt('Enter the quantity of this car:', currentQty);
-        if (quantityStr === null) return; // user cancelled
-        const quantity = parseInt(quantityStr, 10);
-        if (isNaN(quantity) || quantity < 0) {
-          alert('Please enter a valid non-negative integer.');
+      // ✅ Quantity + button
+      addQtyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newQtyStr = prompt('Enter new quantity:', item.quantity || 1);
+        if (newQtyStr === null) return;
+        const newQty = parseInt(newQtyStr, 10);
+        if (isNaN(newQty) || newQty < 0) {
+          alert('Please enter a valid number.');
           return;
         }
 
-        // Update stored ownedCars by matching on a stable key (image here)
-        const stored = getOwnedCars();
-        const idx = stored.findIndex(o => o.car.image === item.car.image);
+        const owned = getOwnedCars();
+        const idx = owned.findIndex(o => o.car.image === item.car.image);
         if (idx !== -1) {
-          stored[idx].quantity = quantity;
-          setOwnedCars(stored);
-        } else {
-          // fallback: add the item (shouldn't usually happen)
-          const newItem = Object.assign({}, item, { quantity });
-          stored.push(newItem);
-          setOwnedCars(stored);
+          owned[idx].quantity = newQty;
+          setOwnedCars(owned);
+          renderOwnedCars(groupBy);
         }
-
-        renderOwnedCars(groupBy);
       });
 
-      grid.appendChild(div);
+      grid.appendChild(card);
     });
 
     groupDiv.appendChild(grid);
