@@ -203,12 +203,15 @@ function getAvailableOptionsForFiltering(targetField) {
     // If the target field is 'year' or 'caseLetter', we ignore all filters and return all options.
     if (targetField === 'year' || targetField === 'caseLetter') {
         const allCars = getAllCarsForInitialLoad();
+        
         allCars.forEach(item => {
             let value;
+
+            // 🔥 FIX: Apply 'Search Old Cases' check here for the year filter list
             if (targetField === 'year') {
+                if (!searchOldCases.checked && parseInt(item.year) < 2024) return;
                 value = item.year;
             } else if (targetField === 'caseLetter') {
-                // Ensure we get the case letter from the initial load structure
                 value = item.caseLetter || (item.hwCase ? item.hwCase.letter : null);
             }
             if (value) options.add(value);
@@ -219,8 +222,9 @@ function getAvailableOptionsForFiltering(targetField) {
     // --- 2. Handle Cascading Fields (Series, HW#, Color) ---
     
     const allCars = getAllCarsForInitialLoad();
+    const query = searchBar.value.trim().toLowerCase(); 
 
-    // Prepare active filters (we don't need a temp state since we handle exclusion in the loop)
+    // Prepare active filters
     const activeFilters = {};
     for (const key in filterState) {
         if (Array.isArray(filterState[key]) && filterState[key].length > 0) {
@@ -235,11 +239,18 @@ function getAvailableOptionsForFiltering(targetField) {
         const car = item.car;
         const hwCase = item.hwCase;
 
+        // Apply 'Search Old Cases' check here
+        if (!searchOldCases.checked && parseInt(yearKey) < 2024) return;
+
+        // 🔥 Check if the car matches the search query first
+        if (query.length > 0 && !car.name.toLowerCase().includes(query)) {
+             passesOtherFilters = false;
+        }
+
+        if (!passesOtherFilters) return;
+
         // Helper to check if a filter is active and if the item does NOT match any selected value
         const checkFilter = (field, itemValue) => {
-            // Check if the current filter field is active AND
-            // if the field we are checking is NOT the target field, AND
-            // if the item value is NOT included in the active selections.
             if (activeFilters[field] && activeFilters[field].length > 0 && 
                 field !== targetField && 
                 !activeFilters[field].includes(String(itemValue).toLowerCase())) {
@@ -248,10 +259,10 @@ function getAvailableOptionsForFiltering(targetField) {
             return true;
         };
 
-        // Check Year (must pass unless we are generating the Year list)
+        // Check Year (must pass)
         if (!checkFilter('year', yearKey)) passesOtherFilters = false;
 
-        // Check Case Letter (must pass unless we are generating the Case list)
+        // Check Case Letter (must pass)
         if (!checkFilter('caseLetter', hwCase.letter)) passesOtherFilters = false;
         
         // Check Series
@@ -279,7 +290,7 @@ function getAvailableOptionsForFiltering(targetField) {
 
 
         if (passesOtherFilters) {
-            // If the car passes all *other* filters, extract the option for the target field
+            // If the car passes all *other* filters AND the search query, extract the option
             let value;
             switch (targetField) {
                 case 'series':
@@ -332,7 +343,8 @@ fetch('data.json')
   .then(res => res.json())
   .then(data => {
       carsData = data;
-      performSearch();
+      // Initialize filter options based on all data
+      updateFilterOptionsUI();
 });
 
 // ------------------- CORE FILTER CHANGE HANDLER -------------------
@@ -342,24 +354,24 @@ function handleFilterChange(e) {
 
     if (target.tagName.toLowerCase() === 'li') {
         
-        // **FIX: Stop the event from bubbling up and closing the parent dropdown.**
         e.stopPropagation(); 
         
-        // Handle list item (dropdown) selection
         const field = target.dataset.field;
         const value = target.dataset.value;
 
         // MULTI-SELECT LOGIC: Toggle the value in the filterState array
         if (filterState[field].includes(value)) {
-            // Deselect: remove value
             filterState[field] = filterState[field].filter(v => v !== value);
         } else {
-            // Select: add value
             filterState[field].push(value);
         }
         
+    } else if (target.id === 'searchOldCases') { // Handle 'Search Old Cases' checkbox change
+        // Trigger a re-search/re-filter on this checkbox click
+        performSearch();
+        return; // Exit early as performSearch is called
     } else {
-        // Handle Checkboxes
+        // Handle other Checkboxes
         if (target.id === 'unownedOnlyCheckbox') filterState.unownedOnly = target.checked;
         if (target.id === 'thCheckbox') filterState.th = target.checked;
         if (target.id === 'sthCheckbox') filterState.sth = target.checked;
@@ -373,6 +385,23 @@ function handleFilterChange(e) {
 if (unownedOnlyCheckbox) unownedOnlyCheckbox.addEventListener('click', handleFilterChange);
 if (thCheckbox) thCheckbox.addEventListener('click', handleFilterChange);
 if (sthCheckbox) sthCheckbox.addEventListener('click', handleFilterChange);
+
+// ------------------- GLOBAL DROPDOWN CLOSE LOGIC -------------------
+
+function closeAllDropdowns(event) {
+    // Check if the click occurred inside any filter container OR on a chip
+    const isClickInsideFilter = event.target.closest('.custom-dropdown-container') || event.target.closest('.filter-chip');
+    
+    if (!isClickInsideFilter) {
+        // If the click was outside, find all toggles and uncheck them
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.checked = false;
+        });
+    }
+}
+
+// Attach the global listener to the document
+document.addEventListener('click', closeAllDropdowns);
 
 
 // ------------------- UPDATED PERFORM SEARCH FUNCTION WITH FILTERS -------------------
@@ -389,6 +418,15 @@ function performSearch() {
     }
     
     const isSearchActive = query.length > 0;
+    const isFilterActive = Object.keys(activeFilters).some(key => activeFilters[key].length > 0) || filterState.unownedOnly || filterState.th || filterState.sth;
+
+    // 🔥 Show results ONLY if search or filter is active.
+    if (!isSearchActive && !isFilterActive) {
+        filteredCarsCache = []; // Clear cache
+        updateFilterOptionsUI(); // Update UI to reflect full options (as nothing is filtered)
+        resultsDiv.innerHTML = '<p class="no-results">Start typing or select a filter to see results.</p>';
+        return; 
+    }
     
     // Reset cache before running new search
     filteredCarsCache = []; 
@@ -399,7 +437,7 @@ function performSearch() {
         // Year Filter Check 
         if (activeFilters.year && activeFilters.year.length > 0 && !activeFilters.year.includes(yearKey)) return;
         
-        // Check "Search Old Cases"
+        // Check "Search Old Cases" (This is the primary data filter)
         if (!searchOldCases.checked && parseInt(yearKey) < 2024) return;
 
         carsData[yearKey].cases.forEach(hwCase => {
@@ -500,7 +538,8 @@ searchBar.addEventListener('input', () => {
   clearBtn.style.display = searchBar.value ? 'block' : 'none';
 });
 
-searchOldCases.addEventListener('change', performSearch);
+// 🔥 CRITICAL FIX: Add the direct listener for the checkbox
+searchOldCases.addEventListener('click', performSearch); // Use 'click' for immediate reaction
 
 clearBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -518,7 +557,7 @@ const extractSeriesNumber = val => {
   
 function showDetails(year, hwCase, car) {
   detailsDiv.innerHTML = `
-    <div class="card-detail">
+      <div class="card-detail">
       <img src="${car.image}" alt="${car.name}">
       <div class="card-info">
         <h2>${car.name}</h2>
