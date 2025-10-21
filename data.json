@@ -16762,18 +16762,22 @@
       {
         "letter": "A",
         "th": {
-          "name": "",
-          "image": ""
+          "name": "'87 Buick Regal GNX",
+          "image": "images/HW9856th.jpg",
+          "hw_number": "9",
+          "color": "Purple"
         },
         "sth": {
-          "name": "",
-          "image": ""
+          "name": "Drift Ender",
+          "image": "images/HW9684th.jpg",
+          "hw_number": "13",
+          "color": "Spectraflame Red"
         },
         "cars": [
           {
             "name": "'87 Buick Regal GNX",
             "image": "images/HW9856th.jpg",
-            "hw_number": "",
+            "hw_number": "9",
             "color": "Purple",
             "series": "Nightspeed",
             "series_number": "1"
