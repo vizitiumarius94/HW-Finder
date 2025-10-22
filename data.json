@@ -16978,17 +16978,12 @@
       },
       {
         "letter": "B",
-        "th": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
+        "th": null,
         "sth": {
-          "name": "",
-          "image": "",
+          "name": "Ford Mustang GTD",
+          "image": "images/HW-9683-th.jpg",
           "hw_number": "",
-          "color": ""
+          "color": "Spectraflame Blue"
         },
         "cars": [
           {
