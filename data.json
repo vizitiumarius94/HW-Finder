@@ -17514,22 +17514,17 @@
       },
       {
         "letter": "F",
-        "th": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
+        "th": null,
         "sth": {
-          "name": "",
-          "image": "",
+          "name": "Honda Civic Custom",
+          "image": "images/1761109247408_hondacivicsth.jpg",
           "hw_number": "",
-          "color": ""
+          "color": "Spectraflame Teal"
         },
         "cars": [
           {
             "name": "Honda Civic Custom",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1761109247408_hondacivicsth.jpg",
             "hw_number": "",
             "color": "Spectraflame Teal",
             "series": "Drag Racers",
