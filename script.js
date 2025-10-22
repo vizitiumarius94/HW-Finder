@@ -94,10 +94,24 @@ function manualHardRefresh() {
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
         console.log('Keyword detected. Requesting FULL hard cache refresh from Service Worker.');
         
-        // Use postMessage to tell the service worker to clear/re-fetch ALL assets
-        navigator.serviceWorker.controller.postMessage({
-            action: 'manualHardRefreshAll' 
+        // **FIX 1: Create a MessageChannel for bi-directional communication**
+        const messageChannel = new MessageChannel();
+        const port = messageChannel.port1;
+
+        // Listen for the response on the port we kept (port1)
+        port.addEventListener('message', function handler(event) {
+            if (event.data.action === 'cacheHardRefreshed') {
+                notification.innerHTML = '✅ **All Caches Refreshed!** Reloading page...';
+                
+                // Clean up the listener and reload the entire application
+                port.removeEventListener('message', handler);
+                setTimeout(() => {
+                    document.getElementById('refreshNotification')?.remove(); // Use optional chaining for safety
+                    window.location.reload(); 
+                }, 1000);
+            }
         });
+        port.start(); // Start the port to begin listening
 
         // Show a temporary message to the user
         const notification = document.createElement('div');
@@ -106,19 +120,10 @@ function manualHardRefresh() {
         notification.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#e91e63; color:white; padding:10px 20px; border-radius:5px; box-shadow:0 4px 6px rgba(0,0,0,0.2); z-index:10000; font-weight:bold;';
         document.body.appendChild(notification);
         
-        // Listen for the response from the service worker
-        navigator.serviceWorker.addEventListener('message', function handler(event) {
-            if (event.data.action === 'cacheHardRefreshed') {
-                notification.innerHTML = '✅ **All Caches Refreshed!** Reloading page...';
-                
-                // Clean up the listener and reload the entire application
-                navigator.serviceWorker.removeEventListener('message', handler);
-                setTimeout(() => {
-                    notification.remove();
-                    window.location.reload(); // Hard reload the entire page
-                }, 1000);
-            }
-        });
+        // **FIX 2: Send the port (port2) to the Service Worker**
+        navigator.serviceWorker.controller.postMessage({
+            action: 'manualHardRefreshAll' 
+        }, [messageChannel.port2]); // Pass port2 for the Service Worker to use for replies
 
     } else {
         alert("Service Worker not active. Cannot manually refresh cache.");
