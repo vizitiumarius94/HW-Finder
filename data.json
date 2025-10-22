@@ -17518,14 +17518,14 @@
         "sth": {
           "name": "Honda Civic Custom",
           "image": "images/1761109247408_hondacivicsth.jpg",
-          "hw_number": "",
+          "hw_number": "0",
           "color": "Spectraflame Teal"
         },
         "cars": [
           {
             "name": "Honda Civic Custom",
             "image": "images/1761109247408_hondacivicsth.jpg",
-            "hw_number": "",
+            "hw_number": "0",
             "color": "Spectraflame Teal",
             "series": "Drag Racers",
             "series_number": ""
