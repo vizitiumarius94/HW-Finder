@@ -17282,7 +17282,7 @@
         "sth": {
           "name": "Ferrari F40 Competizione",
           "image": "images/HW-9877-th.jpg",
-          "hw_number": "",
+          "hw_number": "63",
           "color": "Spectraflame Black"
         },
         "cars": [
@@ -17361,10 +17361,10 @@
           {
             "name": "Ferrari F40 Competizione",
             "image": "images/HW-9877-th.jpg",
-            "hw_number": "",
+            "hw_number": "63",
             "color": "Spectraflame Black",
             "series": "",
-            "series_number": ""
+            "series_number": "3"
           },
           {
             "name": "LA Leibre",
