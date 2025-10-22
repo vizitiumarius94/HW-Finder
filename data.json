@@ -17379,7 +17379,12 @@
       {
         "letter": "D",
         "th": null,
-        "sth": null,
+        "sth": {
+          "name": "'64 Impala",
+          "image": "images/1761108796455_imapalasth.jpg",
+          "hw_number": "",
+          "color": "Spectraflame Teal"
+        },
         "cars": [
           {
             "name": "'59 Chevy Impala",
@@ -17433,17 +17438,12 @@
       },
       {
         "letter": "E",
-        "th": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
+        "th": null,
         "sth": {
-          "name": "",
-          "image": "",
+          "name": "'87 Ford Sierra Cosworth",
+          "image": "images/1761109140794_fordcosworthsth.jpg",
           "hw_number": "",
-          "color": ""
+          "color": "Spectraflame Red"
         },
         "cars": [
           {
@@ -17504,7 +17504,7 @@
           },
           {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1761109140794_fordcosworthsth.jpg",
             "hw_number": "",
             "color": "Spectraflame Red",
             "series": "HW Euro",
