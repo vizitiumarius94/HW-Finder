@@ -43,28 +43,28 @@ function timeout(ms) {
   );
 }
 
-// ========== FETCH (UPDATED to include data.json cache-first-then-network) ==========
+// ========== FETCH ==========
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
   const path = new URL(url).pathname;
 
-  // ---- Cache-first-then-network for data.json ----
+  // ---- Cache-first-then-network for data.json (Stale-While-Revalidate pattern) ----
   if (path.endsWith('/data.json')) {
       event.respondWith(
           caches.open(DATA_CACHE).then(cache => {
               return cache.match(event.request).then(cachedResponse => {
                   const networkFetch = fetch(event.request).then(response => {
-                      // Cache the fresh copy regardless of whether we served a cached one
+                      // Cache the fresh copy
                       if (response.ok) {
                           cache.put(event.request, response.clone());
                       }
                       return response;
                   }).catch(() => {
-                      // If both network and cache fail, we fall back to the cached response if available
+                      // Fallback if both network and cache fail (should be handled by cachedResponse)
                       return cachedResponse || new Response('{"error": "data not available"}', { status: 503, headers: { 'Content-Type': 'application/json' } });
                   });
 
-                  // If we have a cached response, return it immediately, otherwise wait for network
+                  // Return cached data immediately if available, otherwise wait for network
                   return cachedResponse || networkFetch;
               });
           })
@@ -72,25 +72,8 @@ self.addEventListener("fetch", (event) => {
       return;
   }
 
-  // ---- Network-first for HTML ----
-  if (url.match(/\.html$/)) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (!response || !response.ok) return response;
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) =>
-            cache.put(event.request, clone)
-          );
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  // ---- Network-first for .js and .css (with timeout + cache update) ----
-  if (url.match(/\.(js|css)$/)) {
+  // ---- Network-first for HTML, JS, CSS (with cache update/timeout) ----
+  if (url.match(/\.(html|js|css)$/)) {
     event.respondWith(
       Promise.race([
         fetch(event.request).then((response) => {
@@ -136,7 +119,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// ========== MESSAGE LISTENER (UPDATED FOR FULL HARD REFRESH) ==========
+// ========== MESSAGE LISTENER (Hard Refresh Logic) ==========
 self.addEventListener("message", (event) => {
   if (event.data.action === "skipWaiting") {
     self.skipWaiting();
@@ -151,15 +134,14 @@ self.addEventListener("message", (event) => {
           ...CORE_ASSETS, 
           'data.json' // Include the data file
       ].map(asset => {
-          // *** FIX: Remove leading slash if present, to ensure correct relative pathing on GitHub Pages sub-directory ***
+          // FIX: Remove leading slash if present for relative pathing (GitHub Pages fix)
           return asset.startsWith('/') ? asset.substring(1) : asset; 
       });
 
       const refreshPromises = allAssets.map(assetUrl => {
           // Determine which cache to use
           const cacheToUse = assetUrl.endsWith('data.json') ? DATA_CACHE : CACHE_NAME;
-          // Use the raw, non-rooted URL for fetching (e.g., 'style.css' instead of '/style.css')
-          const request = assetUrl; 
+          const request = assetUrl; // Use the relative URL for fetching
 
           // Force network fetch, bypassing all caches
           return fetch(request, { cache: 'no-store' })
@@ -182,7 +164,8 @@ self.addEventListener("message", (event) => {
           Promise.allSettled(refreshPromises)
               .then(() => {
                   console.log("[SW] All core and data assets refresh attempts completed.");
-                  // Send a success message back to the client
+                  
+                  // CRITICAL FIX: Use the reply port to send the success message back to the client
                   if (event.ports && event.ports[0]) {
                       event.ports[0].postMessage({ action: 'cacheHardRefreshed' });
                   }
