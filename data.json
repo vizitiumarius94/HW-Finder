@@ -16982,7 +16982,7 @@
         "sth": {
           "name": "Ford Mustang GTD",
           "image": "images/HW-9683-th.jpg",
-          "hw_number": "",
+          "hw_number": "43",
           "color": "Spectraflame Blue"
         },
         "cars": [
@@ -17069,10 +17069,10 @@
           {
             "name": "Ford Mustang GTD",
             "image": "images/HW-9683-th.jpg",
-            "hw_number": "",
+            "hw_number": "43",
             "color": "Spectraflame Blue",
             "series": "Factory Fresh",
-            "series_number": ""
+            "series_number": "3"
           },
           {
             "name": "Mazda MX-5 Miata",
