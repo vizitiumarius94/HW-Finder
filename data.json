@@ -17442,7 +17442,7 @@
         "sth": {
           "name": "'87 Ford Sierra Cosworth",
           "image": "images/1761109140794_fordcosworthsth.jpg",
-          "hw_number": "",
+          "hw_number": "0",
           "color": "Spectraflame Red"
         },
         "cars": [
@@ -17505,7 +17505,7 @@
           {
             "name": "'87 Ford Sierra Cosworth",
             "image": "images/1761109140794_fordcosworthsth.jpg",
-            "hw_number": "",
+            "hw_number": "0",
             "color": "Spectraflame Red",
             "series": "HW Euro",
             "series_number": ""
