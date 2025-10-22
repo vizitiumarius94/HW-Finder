@@ -17378,18 +17378,8 @@
       },
       {
         "letter": "D",
-        "th": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
-        "sth": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
+        "th": null,
+        "sth": null,
         "cars": [
           {
             "name": "'59 Chevy Impala",
@@ -17433,7 +17423,7 @@
           },
           {
             "name": "'64 Impala",
-            "image": "images/images-coming-soon.png",
+            "image": "images/1761108796455_imapalasth.jpg",
             "hw_number": "",
             "color": "Spectraflame Teal",
             "series": "Layin' Low",
