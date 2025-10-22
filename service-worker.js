@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v34"; // bump version
+const CACHE_NAME = "garage-cache-v37"; // bump version
 const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 
 const CORE_ASSETS = [
@@ -151,14 +151,15 @@ self.addEventListener("message", (event) => {
           ...CORE_ASSETS, 
           'data.json' // Include the data file
       ].map(asset => {
-          // Add leading '/' for consistency with Request objects if missing (e.g., 'index.html' -> '/index.html')
-          return asset.startsWith('/') || asset.includes('.html') ? asset : '/' + asset; 
+          // *** FIX: Remove leading slash if present, to ensure correct relative pathing on GitHub Pages sub-directory ***
+          return asset.startsWith('/') ? asset.substring(1) : asset; 
       });
 
       const refreshPromises = allAssets.map(assetUrl => {
           // Determine which cache to use
           const cacheToUse = assetUrl.endsWith('data.json') ? DATA_CACHE : CACHE_NAME;
-          const request = new Request(assetUrl); 
+          // Use the raw, non-rooted URL for fetching (e.g., 'style.css' instead of '/style.css')
+          const request = assetUrl; 
 
           // Force network fetch, bypassing all caches
           return fetch(request, { cache: 'no-store' })
@@ -168,7 +169,7 @@ self.addEventListener("message", (event) => {
                   }
                   // Cache the fresh response
                   return caches.open(cacheToUse)
-                      .then(cache => cache.put(request, response.clone())); 
+                      .then(cache => cache.put(assetUrl, response.clone())); 
               })
               .catch(error => {
                   console.error(`[SW Hard Refresh] Failed to refresh ${assetUrl}:`, error);
