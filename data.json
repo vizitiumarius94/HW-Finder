@@ -17278,17 +17278,12 @@
       },
       {
         "letter": "C",
-        "th": {
-          "name": "",
-          "image": "",
-          "hw_number": "",
-          "color": ""
-        },
+        "th": null,
         "sth": {
-          "name": "",
-          "image": "",
+          "name": "Ferrari F40 Competizione",
+          "image": "images/HW-9877-th.jpg",
           "hw_number": "",
-          "color": ""
+          "color": "Spectraflame Black"
         },
         "cars": [
           {
