@@ -17382,7 +17382,7 @@
         "sth": {
           "name": "'64 Impala",
           "image": "images/1761108796455_imapalasth.jpg",
-          "hw_number": "",
+          "hw_number": "95",
           "color": "Spectraflame Teal"
         },
         "cars": [
@@ -17429,10 +17429,10 @@
           {
             "name": "'64 Impala",
             "image": "images/1761108796455_imapalasth.jpg",
-            "hw_number": "",
+            "hw_number": "95",
             "color": "Spectraflame Teal",
             "series": "Layin' Low",
-            "series_number": ""
+            "series_number": "4"
           }
         ]
       },
