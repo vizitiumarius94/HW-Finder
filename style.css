@@ -127,7 +127,6 @@ h1 {
   width: 100%;
   max-width: 200px;
   border-radius: 6px;
-  margin-bottom: 10px;
   align-self: center;
 }
 
@@ -147,6 +146,62 @@ h1 {
   font-size: 14px;
   color: #333;
 }
+
+/* --- Treasure Hunt Borders --- */
+.result-card.sth {
+  border: 3px solid gold !important;
+  box-shadow: 0 0 10px gold;
+}
+
+.result-card.th {
+  border: 3px solid silver !important;
+  box-shadow: 0 0 10px silver;
+}
+
+/* --- Optional: Dud Highlight (for testing or STH comparison) --- */
+.result-card.dud {
+  border: 3px solid red !important;
+  box-shadow: 0 0 10px red;
+}
+
+/* --- Labels for clarity --- */
+.card-info .sth-label {
+  color: rgb(201, 171, 0);
+  font-weight: bold;
+  text-shadow: 0 0 5px gold;
+}
+
+.card-info .th-label {
+  color: rgb(152, 152, 152);
+  font-weight: bold;
+  text-shadow: 0 0 5px silver;
+}
+
+/* --- 🟡 Label + Icon Styling (responsive scaling) --- */
+.card-info .sth-label,
+.card-info .th-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.card-info .label-icon {
+  width: 18px;             /* consistent icon size */
+  height: 18px;
+  display: inline-block;
+  object-fit: contain;     /* keep proportions inside the box */
+  object-position: center;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+
+
+
 
 /* ------------------- ADD/OWNED/UNOWNED BUTTONS ------------------- */
 .add-btn, .add-btn-small, .owned-btn, .unowned-btn {

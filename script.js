@@ -729,6 +729,29 @@ function renderCarCard(year, caseLetter, c, container) {
   const div = document.createElement('div');
   div.classList.add('result-card');
 
+  // 🟨 Detect if this car is a Treasure Hunt (TH) or Super Treasure Hunt (STH)
+  let isTH = false;
+  let isSTH = false;
+
+  const caseData = carsData[year]?.cases?.find(cs => cs.letter === caseLetter);
+  if (caseData) {
+    if (caseData.th && c.hw_number === caseData.th.hw_number && c.image === caseData.th.image) {
+      isTH = true;
+    }
+    if (caseData.sth && c.hw_number === caseData.sth.hw_number && c.image === caseData.sth.image) {
+      isSTH = true;
+    }
+  }
+
+  // 🟨 Apply gold/silver borders for special hunts
+  if (isSTH) {
+    div.style.border = '4px solid gold';
+    div.style.boxShadow = '0 0 10px gold';
+  } else if (isTH) {
+    div.style.border = '4px solid silver';
+    div.style.boxShadow = '0 0 10px silver';
+  }
+
   function updateCardUI() {
     let ownedCar = ownedCars.find(o => o.car.image === c.image);
     let isOwned = !!ownedCar;
@@ -741,6 +764,9 @@ function renderCarCard(year, caseLetter, c, container) {
         <p>${year} - ${caseLetter}</p>
         <p>${c.series} (#${c.series_number})</p>
         <p>HW#: ${c.hw_number} | Color: ${c.color}</p>
+        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" class="label-icon"> Super Treasure Hunt</p>' : ''}
+        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" class="label-icon"> Treasure Hunt</p>' : ''}
+
         <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
           ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
         </button>
@@ -752,23 +778,22 @@ function renderCarCard(year, caseLetter, c, container) {
     const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
     if (ownedBtn) {
       ownedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         const currentlyOwned = ownedCars.find(o => o.car.image === c.image);
-        
-        if (currentlyOwned) { 
+        if (currentlyOwned) {
           ownedCars = ownedCars.filter(o => o.car.image !== c.image);
-        } else { 
+        } else {
           ownedCars.push({ year, caseLetter, car: c, quantity: 1 });
         }
         localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        updateCardUI(); 
+        updateCardUI();
       });
     }
 
     const increaseBtn = div.querySelector('.increase-btn');
     if (increaseBtn) {
       increaseBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         let carToUpdate = ownedCars.find(o => o.car.image === c.image);
         if (carToUpdate) {
           carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
@@ -781,37 +806,37 @@ function renderCarCard(year, caseLetter, c, container) {
     const addWantedBtn = div.querySelector('.add-wanted-btn');
     if (addWantedBtn) {
       addWantedBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         wantedCars.push({ year, caseLetter, car: c });
         localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        addWantedBtn.style.display = 'none'; 
+        addWantedBtn.style.display = 'none';
       });
     }
-  
+
     div.addEventListener('click', e => {
       if (e.target.tagName.toLowerCase() === 'button') return;
-      
+
       let parentCase = null;
       if (carsData[year] && carsData[year].cases) {
-          carsData[year].cases.forEach(hCase => {
-              if (hCase.letter === caseLetter && hCase.cars.some(carInCase => carInCase.image === c.image)) {
-                  parentCase = hCase;
-              }
-          });
+        carsData[year].cases.forEach(hCase => {
+          if (hCase.letter === caseLetter && hCase.cars.some(carInCase => carInCase.image === c.image)) {
+            parentCase = hCase;
+          }
+        });
       }
-      
+
       if (parentCase) {
         showDetails(year, parentCase, c);
       } else {
         alert("Case details not immediately available. Try main search.");
       }
     });
-
   }
 
   updateCardUI();
   container.appendChild(div);
 }
+
 // ------------------- POPUP CLOSE -------------------
 popupClose.addEventListener('click', () => {
   popup.style.display = 'none';
