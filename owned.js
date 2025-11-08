@@ -1,32 +1,20 @@
-// ------------------- LOAD DATA -------------------
-let allCars = [];
-
-fetch('data.json')
-  .then(res => res.json())
-  .then(data => {
-    allCars = data;
-  })
-  .catch(err => console.error('Failed to load data.json:', err));
-
-// ------------------- HELPERS -------------------
+// Helpers
 function getOwnedCars() {
   const cars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
+  // Ensure each car has a quantity property
   cars.forEach(car => {
     if (typeof car.quantity === 'undefined') {
-      car.quantity = 1;
+      car.quantity = 1; // Set default quantity to 1 if undefined
     }
   });
   return cars;
 }
-
 function setOwnedCars(cars) {
   localStorage.setItem('ownedCars', JSON.stringify(cars));
 }
-
 function getWantedCars() {
   return JSON.parse(localStorage.getItem('wantedCars') || '[]');
 }
-
 function setWantedCars(cars) {
   localStorage.setItem('wantedCars', JSON.stringify(cars));
 }
@@ -50,6 +38,7 @@ groupSelect.addEventListener('change', () => {
 function renderOwnedCars(groupBy) {
   ownedCarsContainer.innerHTML = '';
 
+  // 🧮 Show total count
   const ownedCountElem = document.getElementById('ownedCount');
   const ownedCars = getOwnedCars();
   const totalOwned = ownedCars.reduce((sum, car) => sum + (car.quantity || 1), 0);
@@ -110,7 +99,7 @@ function renderOwnedCars(groupBy) {
         </div>
       `;
 
-      // Buttons
+      // Select buttons and elements
       const unownedBtn = card.querySelector('.unowned-btn');
       const addWantedBtn = card.querySelector('.add-wanted-btn');
       const addQtyBtn = card.querySelector('.add-qty-btn');
@@ -154,12 +143,6 @@ function renderOwnedCars(groupBy) {
         }
       });
 
-      // 🆕 Open details when clicking the card
-      card.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') return;
-        openCarDetails(item);
-      });
-
       grid.appendChild(card);
     });
 
@@ -168,36 +151,7 @@ function renderOwnedCars(groupBy) {
   });
 }
 
-// ------------------- DETAILS VIEW -------------------
-function openCarDetails(selectedCar) {
-  const ownedCars = getOwnedCars();
-
-  const detailsContainer = document.createElement('div');
-  detailsContainer.classList.add('car-details-container');
-  detailsContainer.innerHTML = `
-    <button class="close-details-btn">← Back</button>
-    <div class="car-details-content">
-      <img class="details-image" src="${selectedCar.car.image}" alt="${selectedCar.car.name}">
-      <div class="details-info">
-        <h2>${selectedCar.car.name}</h2>
-        <p><strong>Series:</strong> ${selectedCar.car.series} (#${selectedCar.car.series_number})</p>
-        <p><strong>HW#:</strong> ${selectedCar.car.hw_number}</p>
-        <p><strong>Color:</strong> ${selectedCar.car.color}</p>
-        <p><strong>Year:</strong> ${selectedCar.year}</p>
-        <p><strong>Case:</strong> ${selectedCar.caseLetter}</p>
-        <p><strong>Quantity:</strong> ${selectedCar.quantity || 1}</p>
-      </div>
-    </div>
-  `;
-
-  ownedCarsContainer.innerHTML = '';
-  ownedCarsContainer.appendChild(detailsContainer);
-
-  detailsContainer.querySelector('.close-details-btn').addEventListener('click', () => {
-    renderOwnedCars(groupSelect.value);
-  });
-}
-// ------------------- DUPLICATES PAGE -------------------
+// Function to render duplicates page
 function renderDuplicatesPage() {
   const duplicatesContainer = document.getElementById('duplicatesContainer');
   duplicatesContainer.innerHTML = '';
@@ -235,6 +189,7 @@ function renderDuplicatesPage() {
   duplicatesContainer.appendChild(duplicatesDiv);
 }
 
+// Event listener for the back button on the duplicates page
 document.getElementById('backToMainBtn').addEventListener('click', () => {
-  window.location.href = 'index.html';
+  window.location.href = 'index.html'; // Change this to your main page URL
 });
