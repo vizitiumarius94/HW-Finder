@@ -2367,7 +2367,7 @@
             "series_number": "1"
           },
           {
-            "name": "Audi RS 5 Coupé",
+            "name": "Audi RS 5 Coup\u00c3\u00a9",
             "image": "images/HW2897th.jpg",
             "hw_number": "118",
             "color": "Black",
@@ -5507,7 +5507,7 @@
             "series_number": "4"
           },
           {
-            "name": "1978 Dodge Li’l Red Express Truck",
+            "name": "1978 Dodge Li\u00e2\u20ac\u2122l Red Express Truck",
             "image": "images/HW3923th.jpg",
             "hw_number": "212",
             "color": "Green",
@@ -5869,7 +5869,7 @@
             "series_number": "6"
           },
           {
-            "name": "’65 Ford Galaxie",
+            "name": "\u00e2\u20ac\u212265 Ford Galaxie",
             "image": "images/HW3925th.jpg",
             "hw_number": "240",
             "color": "Yellow",
@@ -7530,7 +7530,7 @@
             "series_number": "4"
           },
           {
-            "name": "’84 Mustang SVO",
+            "name": "\u00e2\u20ac\u212284 Mustang SVO",
             "image": "images/HW4410th.jpg",
             "hw_number": "221",
             "color": "Spectraflame purple",
@@ -7727,7 +7727,7 @@
             "series_number": "5"
           },
           {
-            "name": "’94 Audi Avant RS2",
+            "name": "\u00e2\u20ac\u212294 Audi Avant RS2",
             "image": "images/HW4411th.jpg",
             "hw_number": "228",
             "color": "Black",
@@ -16978,12 +16978,21 @@
       },
       {
         "letter": "B",
-        "th": null,
+        "th": {
+          "name": "'92 Dodge Viper RT/10",
+          "image": "images/29.jpg",
+          "hw_number": "29",
+          "color": "White",
+          "series": "Drop Tops",
+          "series_number": "2"
+        },
         "sth": {
           "name": "Ford Mustang GTD",
           "image": "images/HW-9683-th.jpg",
           "hw_number": "43",
-          "color": "Spectraflame Blue"
+          "color": "Spectraflame Blue",
+          "series": "Factory Fresh",
+          "series_number": "3"
         },
         "cars": [
           {
@@ -16996,7 +17005,7 @@
           },
           {
             "name": "Porsche 911 Carrera T",
-            "image": "images/images-coming-soon.png",
+            "image": "images/911Zamac2026B.png",
             "hw_number": "",
             "color": "ZAMAC",
             "series": "Factory Fresh",
@@ -17036,11 +17045,11 @@
           },
           {
             "name": "'92 Dodge Viper RT/10",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "",
-            "series": "",
-            "series_number": ""
+            "image": "images/29.jpg",
+            "hw_number": "29",
+            "color": "White",
+            "series": "Drop Tops",
+            "series_number": "2"
           },
           {
             "name": "Volkswagen ID. Buzz Bomb",
@@ -17060,7 +17069,7 @@
           },
           {
             "name": "Ford Mustang GTD",
-            "image": "images/images-coming-soon.png",
+            "image": "images/43.jpg",
             "hw_number": "43",
             "color": "Blue",
             "series": "Factory Fresh",
@@ -17076,7 +17085,7 @@
           },
           {
             "name": "Mazda MX-5 Miata",
-            "image": "images/images-coming-soon.png",
+            "image": "images/MX52026B.png",
             "hw_number": "1",
             "color": "White",
             "series": "HW Dream Garage",
@@ -17084,7 +17093,7 @@
           },
           {
             "name": "La Liebre",
-            "image": "images/images-coming-soon.png",
+            "image": "images/LaLiebre2026B.png",
             "hw_number": "1",
             "color": "",
             "series": "HW Dream Garage",
@@ -17092,7 +17101,7 @@
           },
           {
             "name": "McLaren Formula 1 Team",
-            "image": "images/images-coming-soon.png",
+            "image": "images/MclarenF12026B.png",
             "hw_number": "20",
             "color": "Black",
             "series": "Formula 1",
@@ -17100,7 +17109,7 @@
           },
           {
             "name": "McMurtry Speirling",
-            "image": "images/images-coming-soon.png",
+            "image": "images/MCMurTry2026B.png",
             "hw_number": "25",
             "color": "Metalflake Blue",
             "series": "Exoticars",
@@ -17108,7 +17117,7 @@
           },
           {
             "name": "Pagani Zonda Cinque",
-            "image": "images/images-coming-soon.png",
+            "image": "images/PaganiZondaCinque2026B.png",
             "hw_number": "26",
             "color": "White",
             "series": "Exoticars",
@@ -17116,7 +17125,7 @@
           },
           {
             "name": "HW KITT Concept",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Kitt2026B.png",
             "hw_number": "28",
             "color": "Black",
             "series": "Screen Time",
@@ -17124,7 +17133,7 @@
           },
           {
             "name": "X-Steam",
-            "image": "images/images-coming-soon.png",
+            "image": "images/XSteam2026B.png",
             "hw_number": "30",
             "color": "Blue",
             "series": "X-Raycers",
@@ -17132,7 +17141,7 @@
           },
           {
             "name": "5 Alarm",
-            "image": "images/images-coming-soon.png",
+            "image": "images/5Alarm2026B.png",
             "hw_number": "32",
             "color": "Purple",
             "series": "HW Heavyweights",
@@ -17140,7 +17149,7 @@
           },
           {
             "name": "Haulerback",
-            "image": "images/images-coming-soon.png",
+            "image": "images/haulerback2026B.png",
             "hw_number": "33",
             "color": "Teal",
             "series": "HW Heavyweights",
@@ -17148,7 +17157,7 @@
           },
           {
             "name": "Porsche Taycan Turbo S",
-            "image": "images/images-coming-soon.png",
+            "image": "images/PorscheTaycan2026B.png",
             "hw_number": "34",
             "color": "White",
             "series": "HW EV",
@@ -17156,7 +17165,7 @@
           },
           {
             "name": "Wattzup",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Wattzup2026B.png",
             "hw_number": "35",
             "color": "Blue",
             "series": "HW EV",
@@ -17164,7 +17173,7 @@
           },
           {
             "name": "'70 Dodge Hemi Challenger",
-            "image": "images/images-coming-soon.png",
+            "image": "images/36.jpg",
             "hw_number": "36",
             "color": "Gold",
             "series": "Nightspeed",
@@ -17172,7 +17181,7 @@
           },
           {
             "name": "Cupra e-Racer",
-            "image": "images/images-coming-soon.png",
+            "image": "images/37.jpg",
             "hw_number": "37",
             "color": "Metalflake Steel Blue",
             "series": "Nightspeed",
@@ -17180,7 +17189,7 @@
           },
           {
             "name": "24/Seven",
-            "image": "images/images-coming-soon.png",
+            "image": "images/38.jpg",
             "hw_number": "38",
             "color": "Red",
             "series": "Nightspeed",
@@ -17188,7 +17197,7 @@
           },
           {
             "name": "Roller Toaster",
-            "image": "images/images-coming-soon.png",
+            "image": "images/39.jpg",
             "hw_number": "39",
             "color": "Yellow",
             "series": "Experimotors",
@@ -17196,7 +17205,7 @@
           },
           {
             "name": "Braille Racer - Twin Mill",
-            "image": "images/images-coming-soon.png",
+            "image": "images/40.jpg",
             "hw_number": "40",
             "color": "Metalflake Gold",
             "series": "HW All Drivers Welcome",
@@ -17204,7 +17213,7 @@
           },
           {
             "name": "Ferrari SF90 Stradale",
-            "image": "images/images-coming-soon.png",
+            "image": "images/41.jpg",
             "hw_number": "41",
             "color": "Blue",
             "series": "Ferrari",
@@ -17212,7 +17221,7 @@
           },
           {
             "name": "'83 Chevy Silverado",
-            "image": "images/images-coming-soon.png",
+            "image": "images/42.jpg",
             "hw_number": "42",
             "color": "Black",
             "series": "Truckin' Along",
@@ -17220,7 +17229,7 @@
           },
           {
             "name": "'47 Chevy Fleetline",
-            "image": "images/images-coming-soon.png",
+            "image": "images/45.jpg",
             "hw_number": "45",
             "color": "Light Green",
             "series": "Layin' Low",
@@ -17228,7 +17237,7 @@
           },
           {
             "name": "Purple Passion",
-            "image": "images/images-coming-soon.png",
+            "image": "images/46.jpg",
             "hw_number": "46",
             "color": "Pink",
             "series": "HW Fan Driven",
@@ -17236,7 +17245,7 @@
           },
           {
             "name": "High-Tail Chaser",
-            "image": "images/images-coming-soon.png",
+            "image": "images/HighTail2026B.png",
             "hw_number": "47",
             "color": "Red",
             "series": "HW Mods",
@@ -17244,7 +17253,7 @@
           },
           {
             "name": "Monster High Ghoul Mobile",
-            "image": "images/images-coming-soon.png",
+            "image": "images/48.jpg",
             "hw_number": "48",
             "color": "Light Purple",
             "series": "Mattel",
@@ -17252,7 +17261,7 @@
           },
           {
             "name": "Bugatti Bolide",
-            "image": "images/images-coming-soon.png",
+            "image": "images/50.jpg",
             "hw_number": "50",
             "color": "Metalflake Blue",
             "series": "HW Starting Grid",
@@ -17260,7 +17269,7 @@
           },
           {
             "name": "Raijin Express",
-            "image": "images/images-coming-soon.png",
+            "image": "images/57.jpg",
             "hw_number": "57",
             "color": "Green",
             "series": "HW Heavyweights",
@@ -17268,7 +17277,7 @@
           },
           {
             "name": "Drift Box",
-            "image": "images/images-coming-soon.png",
+            "image": "images/DriftBox2026B.png",
             "hw_number": "65",
             "color": "Red",
             "series": "HW Euro",
