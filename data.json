@@ -16773,13 +16773,17 @@
           "name": "'87 Buick Regal GNX",
           "image": "images/HW-9856-th.jpg",
           "hw_number": "9",
-          "color": "Purple"
+          "color": "Purple",
+          "series": "Nightspeed",
+          "series_number": "1"
         },
         "sth": {
           "name": "Drift Ender",
           "image": "images/HW-9684-th.jpg",
           "hw_number": "13",
-          "color": "Spectraflame Red"
+          "color": "Spectraflame Red",
+          "series": "Truckin' Along",
+          "series_number": "1"
         },
         "cars": [
           {
@@ -17053,14 +17057,6 @@
           },
           {
             "name": "Volkswagen ID. Buzz Bomb",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "",
-            "series": "",
-            "series_number": ""
-          },
-          {
-            "name": "Pagani Zonda Cinque",
             "image": "images/images-coming-soon.png",
             "hw_number": "",
             "color": "",
