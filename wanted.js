@@ -20,7 +20,7 @@ function loadWantedCars() {
   wantedListDiv.innerHTML = '';
 
   if (!wanted.length) {
-    wantedListDiv.innerHTML = '<p>No cars in your Wanted list yet.</p>';
+    wantedListDiv.innerHTML = '<p class="no-results">No cars in your Wanted list yet.</p>';
     return;
   }
 
@@ -36,11 +36,12 @@ function loadWantedCars() {
         <p><strong>Series:</strong> ${item.car.series} (#${item.car.series_number})</p>
         <p><strong>HW Number:</strong> ${item.car.hw_number}</p>
         <p><strong>Color:</strong> ${item.car.color}</p>
-        <button class="remove-btn">Remove</button>
+        <button class="remove-from-list-btn">Remove</button>
       </div>
     `;
 
-    card.querySelector('.remove-btn').addEventListener('click', () => {
+    // Updated class name in query selector
+    card.querySelector('.remove-from-list-btn').addEventListener('click', () => {
       let wanted = getWantedCars().filter(w => w.car.image !== item.car.image);
       setWantedCars(wanted);
       loadWantedCars(); // refresh list

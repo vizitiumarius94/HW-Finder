@@ -32,6 +32,10 @@ function populateYearSelect() {
     option.textContent = year;
     yearSelect.appendChild(option);
   });
+  
+  // Trigger initial list render if 'All Years' is selected by default
+  yearSelect.value = 'all'; 
+  yearSelect.dispatchEvent(new Event('change'));
 }
 
 // When year changes, show series
@@ -51,15 +55,22 @@ yearSelect.addEventListener('change', () => {
     });
   } else {
     // Only selected year
-    carsData[selectedYear].cases.forEach(hwCase => {
-      hwCase.cars.forEach(car => seriesSet.add(car.series));
-    });
+    const yearObj = carsData[selectedYear];
+    if (yearObj && Array.isArray(yearObj.cases)) {
+        yearObj.cases.forEach(hwCase => {
+            hwCase.cars.forEach(car => seriesSet.add(car.series));
+        });
+    }
   }
 
   Array.from(seriesSet).sort().forEach(seriesName => {
     const card = document.createElement('div');
     card.classList.add('result-card');
     card.innerHTML = `<div class="card-info"><h3>${seriesName}</h3></div>`;
+    // Prevent image rendering on these grouping cards
+    card.querySelector('.card-info').style.padding = '30px 15px'; 
+    card.style.minHeight = 'auto';
+
     card.addEventListener('click', () => showSeriesPopup(selectedYear, seriesName));
     seriesList.appendChild(card);
   });
@@ -116,55 +127,66 @@ function showSeriesPopup(selectedYear, seriesName) {
 
   // Render sorted list
   collected.forEach(entry => {
-    const { year, caseLetter, hwCase, car } = entry;
+    const { year, caseLetter, car } = entry;
     const div = document.createElement('div');
     div.classList.add('result-card');
 
     let isOwned = ownedCars.some(o => o.car.image === car.image);
     let isWanted = wantedCars.some(w => w.car.image === car.image);
+    let ownedCarData = ownedCars.find(o => o.car.image === car.image);
 
-    div.innerHTML = `
-      <img src="${car.image}" alt="${car.name}">
-      <div class="card-info">
-        <h4>${car.name}</h4>
-        <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
-        <p>Year: ${year} | Case: ${caseLetter}</p>
-        <p>${car.series} (#${car.series_number})</p>
-        <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
-          ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
-        </button>
-        ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
-      </div>
-    `;
+    function updateCardButtons() {
+        ownedCarData = ownedCars.find(o => o.car.image === car.image);
+        isOwned = !!ownedCarData;
+        isWanted = wantedCars.some(w => w.car.image === car.image);
 
-    // Owned/unowned toggle
-    const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
-    ownedBtn.addEventListener('click', () => {
-      if (isOwned) {
-        ownedCars = ownedCars.filter(o => o.car.image !== car.image);
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        ownedBtn.textContent = 'Mark Owned';
-        ownedBtn.className = 'owned-btn';
-        isOwned = false;
-      } else {
-        ownedCars.push({ year, caseLetter, car });
-        localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        ownedBtn.textContent = 'Unmark Owned';
-        ownedBtn.className = 'unowned-btn';
-        isOwned = true;
-      }
-    });
+        div.innerHTML = `
+            <img src="${car.image}" alt="${car.name}">
+            <div class="card-info">
+                <h4>${car.name}</h4>
+                <p>HW#: ${car.hw_number} | Color: ${car.color}</p>
+                <p>Year: ${year} | Case: ${caseLetter}</p>
+                <p>${car.series} (#${car.series_number})</p>
+                
+                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+                    ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
+                </button>
+                ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
+            </div>
+        `;
 
-    // Add to wanted button
-    const addWantedBtn = div.querySelector('.add-wanted-btn');
-    if (addWantedBtn) {
-      addWantedBtn.addEventListener('click', () => {
-        wantedCars.push({ year, caseLetter, car });
-        localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        addWantedBtn.style.display = 'none';
-      });
+        // Owned/unowned toggle
+        const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
+        if (ownedBtn) {
+            ownedBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isOwned) {
+                    ownedCars = ownedCars.filter(o => o.car.image !== car.image);
+                    localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+                } else {
+                    ownedCars.push({ year, caseLetter, car, quantity: 1 });
+                    localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+                }
+                updateCardButtons(); // Re-render to update state
+            });
+        }
+
+        // Add to wanted button
+        const addWantedBtn = div.querySelector('.add-wanted-btn');
+        if (addWantedBtn) {
+            addWantedBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                wantedCars.push({ year, caseLetter, car });
+                localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+                updateCardButtons(); // Re-render to hide the button
+            });
+        }
+        
+        // Disable default card click for details in this view, if desired
+        // div.addEventListener('click', () => alert("Details popup logic goes here if implemented."));
     }
 
+    updateCardButtons();
     seriesCarsGrid.appendChild(div);
   });
 
@@ -177,4 +199,12 @@ function showSeriesPopup(selectedYear, seriesName) {
 seriesPopupClose.addEventListener('click', () => {
   seriesPopup.style.display = 'none';
   document.body.classList.remove('popup-open');
+  // Re-fetch owned/wanted cars after closing in case changes were made
+  ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
+  wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 });
+
+// Trigger initial population on load
+// This is already done at the end of fetchData in the original script but adding a call for robustness.
+// If your script already calls populateYearSelect(), this line can be removed.
+// populateYearSelect();

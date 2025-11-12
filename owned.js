@@ -81,6 +81,8 @@ function renderOwnedCars(groupBy) {
       card.classList.add('result-card');
 
       const isWanted = wantedCars.some(w => w.car.image === item.car.image);
+      const quantity = item.quantity || 1;
+      const duplicates = quantity - 1;
 
       card.innerHTML = `
         <img class="car-image" src="${item.car.image}" alt="${item.car.name}">
@@ -90,10 +92,13 @@ function renderOwnedCars(groupBy) {
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
           <p class="quantity-line">
-            Quantity: <span class="quantity-value">${item.quantity || 1}</span>
-            <button class="add-qty-btn">+</button>
+            Quantity: <span class="quantity-value">${quantity}</span>
+            <button class="decrease-btn" data-action="decrement">-</button>
+            <button class="increase-btn" data-action="increment">+</button>
           </p>
-          <p>Duplicates: ${(item.quantity || 1) - 1}</p>
+          <p style="color: ${duplicates > 0 ? '#E91E63' : '#666'}; font-weight: ${duplicates > 0 ? '600' : '400'};">
+            Duplicates: ${duplicates}
+          </p>
           <button class="unowned-btn">Unmark Owned</button>
           ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
         </div>
@@ -102,7 +107,36 @@ function renderOwnedCars(groupBy) {
       // Select buttons and elements
       const unownedBtn = card.querySelector('.unowned-btn');
       const addWantedBtn = card.querySelector('.add-wanted-btn');
-      const addQtyBtn = card.querySelector('.add-qty-btn');
+      const addQtyBtn = card.querySelector('.increase-btn');
+      const decQtyBtn = card.querySelector('.decrease-btn');
+
+      // Helper to update quantity
+      const updateQuantity = (change) => {
+        const owned = getOwnedCars();
+        const idx = owned.findIndex(o => o.car.image === item.car.image);
+        if (idx !== -1) {
+          const currentQty = owned[idx].quantity || 1;
+          let newQty = currentQty + change;
+          
+          if (newQty < 1) newQty = 1; // Minimum quantity is 1
+          
+          owned[idx].quantity = newQty;
+          setOwnedCars(owned);
+          renderOwnedCars(groupBy);
+        }
+      };
+      
+      // ✅ Quantity + button
+      addQtyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateQuantity(1);
+      });
+      
+      // ✅ Quantity - button
+      decQtyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateQuantity(-1);
+      });
 
       // ✅ Unmark Owned
       unownedBtn.addEventListener('click', (e) => {
@@ -122,15 +156,14 @@ function renderOwnedCars(groupBy) {
           addWantedBtn.style.display = 'none';
         });
       }
-
-      // ✅ Quantity + button
-      addQtyBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const newQtyStr = prompt('Enter new quantity:', item.quantity || 1);
+      
+      // Click event for prompt (if you prefer prompt over +/- buttons)
+      card.addEventListener('click', () => {
+        const newQtyStr = prompt('Enter new quantity:', quantity);
         if (newQtyStr === null) return;
         const newQty = parseInt(newQtyStr, 10);
-        if (isNaN(newQty) || newQty < 0) {
-          alert('Please enter a valid number.');
+        if (isNaN(newQty) || newQty < 1) {
+          alert('Please enter a valid number (minimum 1).');
           return;
         }
 
@@ -143,6 +176,7 @@ function renderOwnedCars(groupBy) {
         }
       });
 
+
       grid.appendChild(card);
     });
 
@@ -151,45 +185,5 @@ function renderOwnedCars(groupBy) {
   });
 }
 
-// Function to render duplicates page
-function renderDuplicatesPage() {
-  const duplicatesContainer = document.getElementById('duplicatesContainer');
-  duplicatesContainer.innerHTML = '';
-
-  const ownedCars = getOwnedCars();
-  const duplicates = ownedCars.filter(car => car.quantity > 1);
-
-  if (duplicates.length === 0) {
-    duplicatesContainer.innerHTML = '<p>No duplicates found.</p>';
-    return;
-  }
-
-  const duplicatesDiv = document.createElement('div');
-  duplicatesDiv.classList.add('duplicates-container');
-
-  duplicates.forEach(item => {
-    const div = document.createElement('div');
-    div.classList.add('duplicate-card');
-
-    div.innerHTML = `
-      <img src="${item.car.image}" alt="${item.car.name}">
-      <div class="card-info">
-        <h4>${item.car.name}</h4>
-        <p>${item.car.series} (#${item.car.series_number})</p>
-        <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
-        <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
-        <p>Quantity: ${item.quantity}</p>
-        <p>Duplicates: ${item.quantity - 1}</p>
-      </div>
-    `;
-
-    duplicatesDiv.appendChild(div);
-  });
-
-  duplicatesContainer.appendChild(duplicatesDiv);
-}
-
-// Event listener for the back button on the duplicates page
-document.getElementById('backToMainBtn').addEventListener('click', () => {
-  window.location.href = 'index.html'; // Change this to your main page URL
-});
+// NOTE: The renderDuplicatesPage and backToMainBtn listeners are not needed here 
+// as they belong in duplicates.js and are likely remnants from older code.

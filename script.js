@@ -399,6 +399,9 @@ function fetchDataAndInitialize() {
           carsData = data;
           // Initialize filter options based on all data
           updateFilterOptionsUI();
+          
+          // Perform an initial search to show default results if needed (or just the prompt)
+          performSearch(); 
       })
       .catch(err => console.error("Failed to fetch data.json:", err));
 }
@@ -668,7 +671,7 @@ function showDetails(year, hwCase, car) {
         <p>${hwCase.sth?.name || 'N/A'}</p>
         ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
         <p></p>
-        <button id="addWantedBtn" class="action-btn">+ Add to Wanted</button>
+        <button id="addWantedBtn" class="add-wanted-btn action-btn">+ Add to Wanted</button>
         <p></p>
         <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
         <p></p>
@@ -680,12 +683,16 @@ function showDetails(year, hwCase, car) {
   `;
 
   const addBtn = document.getElementById('addWantedBtn');
-  if (wantedCars.some(w => w.car.image === car.image)) addBtn.style.display = 'none';
-  else addBtn.addEventListener('click', () => {
-    wantedCars.push({ year, caseLetter: hwCase.letter, car });
-    localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-    addBtn.style.display = 'none';
-  });
+  // Check if wantedCars contains this car (using image path for unique ID)
+  if (wantedCars.some(w => w.car.image === car.image)) {
+      addBtn.style.display = 'none';
+  } else {
+      addBtn.addEventListener('click', () => {
+          wantedCars.push({ year, caseLetter: hwCase.letter, car });
+          localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+          addBtn.style.display = 'none';
+      });
+  }
 
   const allCarsGrid = document.getElementById('allCarsGrid');
 
@@ -756,6 +763,8 @@ function renderCarCard(year, caseLetter, c, container) {
     let ownedCar = ownedCars.find(o => o.car.image === c.image);
     let isOwned = !!ownedCar;
     let isWanted = wantedCars.some(w => w.car.image === c.image);
+    const quantity = ownedCar ? (ownedCar.quantity || 1) : 0;
+
 
     div.innerHTML = `
       <img src="${c.image}" alt="${c.name}">
@@ -764,16 +773,43 @@ function renderCarCard(year, caseLetter, c, container) {
         <p>${year} - ${caseLetter}</p>
         <p>${c.series} (#${c.series_number})</p>
         <p>HW#: ${c.hw_number} | Color: ${c.color}</p>
-        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" class="label-icon"> Super Treasure Hunt</p>' : ''}
-        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" class="label-icon"> Treasure Hunt</p>' : ''}
+        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" width=20% class="hunt-badge"></p>' : ''}
+        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" width=20% class="hunt-badge"></p>' : ''}
 
         <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
           ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
         </button>
-        ${isOwned ? `<p class="quantity">Quantity: ${ownedCar.quantity || 1}</p><button class="increase-btn">+</button>` : ''}
+        
+        ${isOwned ? `
+            <p class="quantity-line">
+                Quantity: <span class="quantity-value">${quantity}</span>
+                <button class="decrease-btn">-</button>
+                <button class="increase-btn">+</button>
+            </p>
+        ` : ''}
+
         ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
       </div>
     `;
+
+    // Helper to update quantity in the ownedCars array
+    const updateQuantity = (change) => {
+        let carToUpdate = ownedCars.find(o => o.car.image === c.image);
+        if (carToUpdate) {
+            let newQty = (carToUpdate.quantity || 1) + change;
+            
+            if (newQty < 1) {
+                // If quantity drops to 0 or below, remove from owned list (Unmark Owned)
+                ownedCars = ownedCars.filter(o => o.car.image !== c.image);
+            } else {
+                carToUpdate.quantity = newQty;
+            }
+            
+            localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
+            updateCardUI(); // Re-render the card
+        }
+    };
+
 
     const ownedBtn = div.querySelector('.owned-btn, .unowned-btn');
     if (ownedBtn) {
@@ -781,12 +817,14 @@ function renderCarCard(year, caseLetter, c, container) {
         e.stopPropagation();
         const currentlyOwned = ownedCars.find(o => o.car.image === c.image);
         if (currentlyOwned) {
+          // Unmark Owned: remove car
           ownedCars = ownedCars.filter(o => o.car.image !== c.image);
         } else {
+          // Mark Owned: add car with quantity 1
           ownedCars.push({ year, caseLetter, car: c, quantity: 1 });
         }
         localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-        updateCardUI();
+        updateCardUI(); // Re-render the card for state change
       });
     }
 
@@ -794,14 +832,18 @@ function renderCarCard(year, caseLetter, c, container) {
     if (increaseBtn) {
       increaseBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        let carToUpdate = ownedCars.find(o => o.car.image === c.image);
-        if (carToUpdate) {
-          carToUpdate.quantity = (carToUpdate.quantity || 1) + 1;
-          localStorage.setItem('ownedCars', JSON.stringify(ownedCars));
-          div.querySelector('p.quantity').textContent = `Quantity: ${carToUpdate.quantity}`;
-        }
+        updateQuantity(1);
       });
     }
+
+    const decreaseBtn = div.querySelector('.decrease-btn');
+    if (decreaseBtn) {
+      decreaseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateQuantity(-1);
+      });
+    }
+
 
     const addWantedBtn = div.querySelector('.add-wanted-btn');
     if (addWantedBtn) {
@@ -809,12 +851,13 @@ function renderCarCard(year, caseLetter, c, container) {
         e.stopPropagation();
         wantedCars.push({ year, caseLetter, car: c });
         localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-        addWantedBtn.style.display = 'none';
+        updateCardUI(); // Re-render the card to hide the button
       });
     }
 
     div.addEventListener('click', e => {
-      if (e.target.tagName.toLowerCase() === 'button') return;
+      // Don't trigger details if clicking any button
+      if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) return;
 
       let parentCase = null;
       if (carsData[year] && carsData[year].cases) {

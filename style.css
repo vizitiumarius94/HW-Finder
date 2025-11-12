@@ -1,496 +1,615 @@
-/* Reset and body */
+/* Global box-sizing fix for true scalability */
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
-  color: #333;
+    font-family: 'Inter', sans-serif;
+    background-color: #FAFAFA; /* Very light gray background */
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
 }
 
-/* Container */
 .container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* ------------------- MENU BAR ------------------- */
+h1 {
+    font-size: 2.5em;
+    color: #2C3E50;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #007BFF; /* Blue Accent */
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: #333333;
+}
+
+/* ------------------- 2. NAVIGATION/MENU BAR & GLOBAL BUTTONS ------------------- */
 .menu-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 5px 10px;
-  border-bottom: 4px solid #ffcc00; /* yellow racing stripe */
-  background-color: #e2231a; /* red */
+    background-color: #2C3E50; /* Dark Navy/Slate */
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    margin: -20px -20px 20px -20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 }
 
-.menu-btn {
-  flex: 1 1 auto;
-  min-width: 120px;
-  padding: 10px 16px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  background-color: #fff;
-  color: #e2231a;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-  text-align: center;
+.menu-btn, .action-btn {
+    background: transparent;
+    color: #FFFFFF;
+    border: none;
+    padding: 15px 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9em;
 }
 
 .menu-btn:hover {
-  background-color: #ffcc00;
-  color: #111;
+    background-color: #3e5369; 
 }
 
-/* ------------------- TITLE ------------------- */
-h1 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #e2231a;
-}
-
-/* ------------------- CHECKBOX ------------------- */
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.checkbox-container input {
-  accent-color: #ffcc00;
-  margin-right: 8px;
-}
-
-/* ------------------- SEARCH BAR ------------------- */
-#searchBar {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-.search-wrapper {
-  position: relative;
-  display: block;
-  width: 100%;
-}
-
-.clear-btn {
-  position: absolute;
-  right: 10px;
-  top: 35%;
-  transform: translateY(-50%);  /* centers perfectly */
-  cursor: pointer;
-  font-size: 18px;
-  color: #999;
-  display: none;
-  line-height: 1;               /* prevents extra offset */
-}
-
-.clear-btn:hover {
-  color: #333;
-}
-/* ------------------- RESULTS GRID ------------------- */
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-/* ------------------- CAR CARDS ------------------- */
-.result-card, .car-item, .card-detail {
-  display: flex;
-  flex-direction: column;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  padding: 10px;
-  box-sizing: border-box;
-  transition: 0.2s;
-  border: 1px solid #e2231a;
-}
-
-.result-card:hover, .car-item:hover, .card-detail:hover {
-  background-color: #fff2f0;
-}
-
-.result-card img, .car-item img, .card-detail img {
-  width: 100%;
-  max-width: 200px;
-  border-radius: 6px;
-  align-self: center;
-}
-
-.card-info {
-  margin-top: 5px;
-  text-align: center;
-}
-
-.card-info h2, .card-info h3, .card-info h4 {
-  margin: 5px 0;
-  font-size: 16px;
-  color: #1a4fa0; /* blue */
-}
-
-.card-info p {
-  margin: 2px 0;
-  font-size: 14px;
-  color: #333;
-}
-
-/* --- Treasure Hunt Borders --- */
-.result-card.sth {
-  border: 3px solid gold !important;
-  box-shadow: 0 0 10px gold;
-}
-
-.result-card.th {
-  border: 3px solid silver !important;
-  box-shadow: 0 0 10px silver;
-}
-
-/* --- Optional: Dud Highlight (for testing or STH comparison) --- */
-.result-card.dud {
-  border: 3px solid red !important;
-  box-shadow: 0 0 10px red;
-}
-
-/* --- Labels for clarity --- */
-.card-info .sth-label {
-  color: rgb(201, 171, 0);
-  font-weight: bold;
-  text-shadow: 0 0 5px gold;
-}
-
-.card-info .th-label {
-  color: rgb(152, 152, 152);
-  font-weight: bold;
-  text-shadow: 0 0 5px silver;
-}
-
-/* --- 🟡 Label + Icon Styling (responsive scaling) --- */
-.card-info .sth-label,
-.card-info .th-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  margin-top: 6px;
-}
-
-.card-info .label-icon {
-  width: 18px;             /* consistent icon size */
-  height: 18px;
-  display: inline-block;
-  object-fit: contain;     /* keep proportions inside the box */
-  object-position: center;
-  vertical-align: middle;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
-}
-
-
-
-
-
-/* ------------------- ADD/OWNED/UNOWNED BUTTONS ------------------- */
-.add-btn, .add-btn-small, .owned-btn, .unowned-btn {
-  margin-top: 8px;
-  padding: 6px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-}
-
-.add-btn, .add-btn-small, .owned-btn {
-  background-color: #1a4fa0; /* blue */
-  color: #fff;
-}
-
-.add-btn:hover, .add-btn-small:hover, .owned-btn:hover {
-  background-color: #143974;
-}
-
-.unowned-btn {
-  background-color: #ffcc00; /* yellow */
-  color: #333;
-}
-
-.unowned-btn:hover {
-  background-color: #e6b800;
-}
-
-/* ------------------- POPUP ------------------- */
-.popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;              /* allow scroll if popup taller than screen */
-  background-color: rgba(0,0,0,0.5);
-  z-index: 9999;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.popup-content {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  max-width: 600px;
-  margin: 20px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  position: relative;
-  /* removed max-height so it grows with content */
-}
-
-.popup-close {
-  position: sticky;
-  top: 0;
-  align-self: flex-end;
-  background: #fff;
-  padding: 5px 10px;
-  font-size: 28px;
-  color: #e2231a;
-  cursor: pointer;
-  border-radius: 6px;
-  z-index: 10;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* optional for visibility */
-}
-
-/* Lock background scroll when popup is open */
-body.popup-open {
-  overflow: hidden;
-  height: 100vh;
-}
-
-/* ------------------- ALL CARS GRID ------------------- */
-#allCars {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-}
-
-#allCars .car-item {
-  display: flex;
-  flex-direction: column;
-  background-color: #f0f0f0;
-  border-radius: 6px;
-  padding: 5px;
-  border: 1px solid #e2231a;
-  align-items: center;
-}
-
-#allCars .car-item img {
-  width: 100%;
-  max-width: 120px;
-  margin-bottom: 5px;
-}
-
-#allCars .car-item .card-info {
-  font-size: 12px;
-  text-align: center;
-}
-
-/* ------------------- MEDIA QUERIES ------------------- */
-@media (max-width: 500px) {
-  .menu-btn {
-    flex: 1 1 45%;
-    min-width: auto;
-  }
-}
-
-@media (max-width: 400px) {
-  #allCars {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ------------------- ACTION BUTTONS ------------------- */
+/* Primary buttons (used outside the main menu) */
 .action-btn {
-  padding: 10px 16px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  background-color: #1a4fa0; /* Hot Wheels blue */
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
+    background-color: #007BFF; /* Blue Accent */
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-right: 10px;
+    display: inline-block;
 }
 
 .action-btn:hover {
-  background-color: #143974; /* darker blue on hover */
+    background-color: #0056b3;
 }
 
-/* Optional: smaller variant for inline buttons */
-.action-btn-small {
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-/* ------------------- DROPDOWNS ------------------- */
-.select-btn {
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #1a4fa0; /* Hot Wheels blue border */
-  background-color: #fff;
-  color: #1a4fa0;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-  appearance: none; /* remove default arrow styling */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-.select-btn:hover {
-  background-color: #1a4fa0;
-  color: #fff;
-  border-color: #143974; /* darker blue border on hover */
-}
-
-/* Optional: add a custom arrow using a pseudo-element */
-.select-btn-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.select-btn-wrapper::after {
-  content: "▼";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 12px;
-  color: #1a4fa0;
-}
-
-.select-btn-wrapper select.select-btn {
-  padding-right: 30px; /* space for custom arrow */
-}
-
-/* Filters */
-/* --- Chip Styling (for the '2024 x' effect) --- */
-
-/* Ensures the bar itself is flexible and looks nice */
-.filter-chips-display {
-    min-height: 25px; 
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: 5px;
-    padding: 5px 0;
-    /* Adding a light border for visual separation from options */
-    border-bottom: 1px dashed #eee; 
-}
-
-.filter-chip {
-    background-color: #2196F3; /* Blue background */
-    color: white;
-    padding: 4px 10px;
-    border-radius: 15px; /* Pill shape */
-    font-size: 0.9em;
-    cursor: default;
-    display: inline-flex;
+/* ------------------- 3. SEARCH & FILTERS ------------------- */
+.search-wrapper {
+    display: flex;
     align-items: center;
-    transition: background-color 0.2s;
+    margin-bottom: 15px;
 }
 
-.filter-chip:hover {
-    background-color: #0b7dda;
-}
-
-.chip-close {
-    margin-left: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* --- Custom Dropdown (List/Menu) Styling --- */
-.custom-dropdown-container {
-    position: relative; /* Crucial for positioning the content */
-    display: inline-block; /* Allows filters to sit next to each other */
+#searchBar {
+    flex-grow: 1;
+    padding: 12px 40px 12px 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-    background-color: #fff;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#searchBar:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    font-size: 1.5em;
+    color: #999;
+    cursor: pointer;
+    display: none;
+}
+
+.search-wrapper {
+    position: relative;
+    max-width: 600px;
+}
+
+/* Filter Container Styling */
+#filterContainer {
+    background-color: #FFFFFF; /* White background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+/* Custom Dropdown Styling (CRITICAL FIX: position: relative) */
+.custom-dropdown-container {
+    position: relative; 
+    display: inline-block;
+    background-color: #F8F9FA; 
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s;
     user-select: none;
 }
 
-.dropdown-label {
-    display: block;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 3px;
-    user-select: none; 
-}
-
-/* By default, hide the content */
+/* Dropdown Content Visibility (CRITICAL FIX: display: none/block) */
 .dropdown-content {
-    display: none;
+    display: none; 
     position: absolute;
-    top: 100%; /* Position right below the label */
-    left: -1px; /* Align to the left edge of the container */
-    z-index: 100; /* Ensure it's on top of other content */
-    min-width: 150px;
-    max-height: 200px; 
+    top: 100%; 
+    left: 0;
+    z-index: 100; 
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 200px;
     overflow-y: auto;
-    background-color: white;
-    border: 1px solid #aaa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-top: none;
-    padding: 0;
-    margin-top: 1px;
+    width: 200px;
+    margin-top: 5px; 
 }
 
-/* When the hidden checkbox is checked, show the content */
-.dropdown-toggle:checked ~ .dropdown-content {
-    display: block;
+/* Functional CSS: Show content when the hidden checkbox is checked */
+.dropdown-toggle:checked + .dropdown-content {
+    display: block; 
 }
 
-/* List styles (these are the clickable options) */
-.dropdown-content ul.filter-options {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* --- FIX: REMOVE LIST MARKERS --- */
+.dropdown-content ul {
+    list-style: none; /* Removes the bullet points/markers */
+    padding: 0;      /* Removes padding that causes initial indentation */
+    margin: 0;       /* Removes margin around the list */
+}
+/* ---------------------------------- */
+
+/* Filter Chips Display */
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007BFF; /* Blue Accent */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: default;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown-content ul.filter-options li {
-    padding: 6px 10px;
+.chip-close {
+    margin-left: 5px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 0.9em;
-    white-space: nowrap; 
-    border-bottom: 1px dotted #eee;
+    opacity: 0.8;
+    transition: opacity 0.1s;
 }
 
-.dropdown-content ul.filter-options li:hover {
+/* Dropdown list items */
+.dropdown-content li {
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.1s;
+    font-size: 0.9em;
+}
+
+.dropdown-content li:hover {
     background-color: #f0f0f0;
 }
 
-/* Highlight selected items for multi-select (e.g., Year 2024, 2025) */
-.dropdown-content ul.filter-options li.selected {
-    background-color: #4CAF50; /* Green for selected items */
+.dropdown-content li.selected {
+    background-color: #007BFF;
     color: white;
+    font-weight: 600;
+}
+
+/* ------------------- 4. RESULTS GRID & CARDS ------------------- */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.result-card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
+    border: none;
+}
+
+.result-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* --- MAIN CAR IMAGE SIZE FIX (DESKTOP) --- */
+/* CRITICAL FIX: Use :not() to exclude the small hunt icons from the 100% rule */
+.result-card img:not(.hunt-badge) {
+    width: 100%;
+    height: 180px; 
+    
+    display: block;
+    margin: 0 auto; 
+    object-fit: contain; 
+    background-color: #FFFFFF; 
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+/* --- MAIN CAR IMAGE SIZE FIX (DESKTOP) END --- */
+
+.card-info {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.card-info h3, .card-info h4 {
+    margin-top: 0;
+    margin-bottom: 3px; 
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2C3E50;
+    line-height: 1.2;
+    text-align: center; 
+}
+
+.card-info p {
+    margin: 2px 0;
+    font-size: 0.9em;
+    color: #666;
+    text-align: center; 
+}
+
+/* Card Action Buttons (Used in Grid) */
+.owned-btn, .unowned-btn, .add-wanted-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85em;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+    display: block; 
+    width: 100%;
+    text-align: center;
+}
+
+.owned-btn { /* Primary Action */
+    background-color: #007BFF;
+    color: white;
+}
+.owned-btn:hover { background-color: #0056b3; }
+
+.unowned-btn { /* Secondary Action (Unmark) */
+    background-color: #FFFFFF;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+}
+.unowned-btn:hover { background-color: #f0f0f0; }
+
+.add-wanted-btn { /* Neutral Action (Add to Wanted) */
+    background-color: #6c757d; 
+    color: white;
+}
+.add-wanted-btn:hover { background-color: #5a6268; }
+
+/* Quantity Controls */
+.quantity-line {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    font-weight: 600;
+    color: #333;
+    justify-content: center; /* Center quantity controls */
+}
+
+.quantity-value {
+    font-size: 1.2em;
+    margin: 0 5px;
+    color: #007BFF; 
+}
+
+.increase-btn, .decrease-btn {
+    display: inline-block;
+    width: 30px;
+    padding: 0;
+    line-height: 28px;
+    height: 30px;
+    text-align: center;
+    background-color: #6c757d; 
+    color: white;
+    border-radius: 50%;
+    margin-left: 2px;
+    font-size: 1.2em;
+    border: none;
+}
+
+/* --- SPECIAL HUNT LABELS AND ICON FIX (FINAL CENTERING) --- */
+.sth-label, .th-label {
+    /* CRITICAL FIX: Use Flexbox to guarantee horizontal centering across the full card width */
+    display: flex; 
+    justify-content: center; /* Center content (the icon) horizontally */
+    align-items: center; 
+    
+    margin: 5px auto 10px auto; /* Margin for vertical spacing */
+}
+
+/* Targeting the specific hunt labels */
+.sth-label { 
+    color: #FFD700; 
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
+} 
+.th-label { 
+    color: #C0C0C0; 
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
+}
+
+/* The icon itself */
+.hunt-badge {
+    /* CRITICAL SIZE ADJUSTMENT */
+    width: 20%; /* Final requested size */
+    height: 20%; /* Final requested size */
+    vertical-align: middle;
+}
+/* --- SPECIAL HUNT LABELS AND ICON SIZE FIX END --- */
+
+
+/* ------------------- 5. POPUP (MODAL) ------------------- */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.popup-content {
+    background-color: #FFFFFF;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    position: relative; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.popup-close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
+    line-height: 1; 
+    padding: 5px; 
+    z-index: 1010; 
+}
+
+.popup-close:hover,
+.popup-close:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+/* DETAIL CARD CONTAINER (CRITICAL FIX: Vertical centering of content) */
+.card-detail {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-top: 10%;
+     /* NEW: Vertically center image and info column */
+}
+
+.card-detail img {
+    /* HORIZONTAL CENTERING FIX */
+    display: block; /* Ensure it is treated as a block for auto margins */
+    margin: 0 auto; /* Center image horizontally within its 40% column */
+    /* END HORIZONTAL CENTERING FIX */
+    
+    width: 40%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.card-detail .card-info {
+    padding: 0;
+    width: 60%;
+}
+
+.card-detail h3 {
+    margin-top: 20px;
+    color: #007BFF; 
+    font-size: 1.2em;
+}
+
+/* POPUP BUTTON HIERARCHY */
+#addWantedBtn {
+    background-color: #6c757d; 
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    display: block;
+    width: 100%;
+}
+#addWantedBtn:hover {
+    background-color: #5a6268;
+}
+
+#showAllCaseBtn, #showAllSeriesBtn {
+    background-color: #007BFF; 
+    color: white;
+    text-transform: uppercase; 
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    margin-bottom: 10px; 
+    border: none;
+    cursor: pointer;
+}
+
+#showAllCaseBtn:hover, #showAllSeriesBtn:hover {
+    background-color: #0056b3;
+}
+
+
+/* Prevent body scroll when popup is open */
+.popup-open {
+    overflow: hidden;
+}
+
+/* ------------------- 6. OWNED/DUPLICATES/SERIES PAGES ------------------- */
+.group-container {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.group-container h2 {
+    color: #2C3E50;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 5px;
+}
+
+.select-btn {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #999;
+}
+
+
+/* Media Queries for Responsiveness (FINAL FIXES) */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .menu-bar {
+        justify-content: space-around;
+        padding: 0 10px;
+        margin: -10px -10px 15px -10px;
+    }
+    
+    .menu-btn {
+        padding: 10px 8px;
+        font-size: 0.8em;
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .result-card {
+        min-height: 250px;
+    }
+    
+    /* CRITICAL FIX: Applying user's requested mobile image styling */
+    .result-card img:not(.hunt-badge) {
+        width: 100%;
+        height: auto;
+        padding: 5px 0;
+        margin: 5px auto;
+    }
+
+    .card-info h3 {
+        font-size: 1em;
+    }
+
+    .card-info p {
+        font-size: 0.8em;
+    }
+
+    /* POPUP/DETAIL PAGE FIXES */
+    .popup-content {
+        margin: 5vh 5vw; 
+        width: 90%;
+        max-width: none;
+        padding: 20px 15px;
+        min-width: 0; 
+    }
+
+    .card-detail {
+        flex-direction: column; 
+        gap: 15px;
+        min-width: 0; 
+    }
+
+    .card-detail img, .card-detail .card-info {
+        width: 100%; 
+        max-width: none;
+        padding: 0;
+    }
+    
+    .card-detail img {
+        max-height: 200px;
+        object-fit: contain;
+    }
+
+    .card-detail .card-info * {
+        max-width: 100%; 
+    }
+
+    .owned-btn, .unowned-btn, .add-wanted-btn {
+        padding: 6px 8px;
+        font-size: 0.8em;
+    }
+}
+/* --- WANTED LIST SPECIFIC BUTTON --- */
+.remove-from-list-btn {
+    background-color: #dc3545; /* A standard, professional red for danger/removal */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85em;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+    display: block; 
+    width: 100%;
+    text-align: center;
+}
+
+.remove-from-list-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
 }
