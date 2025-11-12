@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v42"; // bump version
+const CACHE_NAME = "garage-cache-v43"; // bump version
 const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 
 const CORE_ASSETS = [
@@ -7,7 +7,7 @@ const CORE_ASSETS = [
   "series.html",
   "wanted.html",
   "style.css",
-  "script.js?v=16",
+  "script.js?v=17",
   "owned.js",
   "series.js",
   "wanted.js",
