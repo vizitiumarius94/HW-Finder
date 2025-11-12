@@ -654,83 +654,115 @@ const extractSeriesNumber = val => {
   };
   
 function showDetails(year, hwCase, car) {
-  const carsData = getCarData(); // ADD THIS LINE
-  detailsDiv.innerHTML = `
-      <div class="card-detail">
-      <img src="${car.image}" alt="${car.name}">
-      <div class="card-info">
-        <h2>${car.name}</h2>
-        <p><strong>Year:</strong> ${year}</p>
-        <p><strong>Case:</strong> ${hwCase.letter}</p>
-        <p><strong>Series:</strong> ${car.series} (#${car.series_number})</p>
-        <p><strong>HW Number:</strong> ${car.hw_number}</p>
-        <p><strong>Color:</strong> ${car.color}</p>
-        <h3>Treasure Hunt:</h3>
-        <p>${hwCase.th?.name || 'N/A'}</p>
-        ${hwCase.th?.image ? `<img src="${hwCase.th.image}" alt="TH" style="max-width:150px;">` : ''}
-        <h3>Super Treasure Hunt:</h3>
-        <p>${hwCase.sth?.name || 'N/A'}</p>
-        ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
-        <p></p>
-        <button id="addWantedBtn" class="add-wanted-btn action-btn">+ Add to Wanted</button>
-        <p></p>
-        <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
-        <p></p>
-        <button id="showAllSeriesBtn" class="action-btn">Show All Cars from Series ${car.series} (${year})</button>
-        <p></p>
-        <div id="allCarsGrid" class="results-grid"></div>
-      </div>
-    </div>
-  `;
+    const carsData = getCarData();
+    
+    // --- 1. DETECT STATUS ---
+    let isCarTH = false;
+    let isCarSTH = false;
+    
+    // Check if the selected car IS the TH or STH for this case
+    if (hwCase.th && car.hw_number === hwCase.th.hw_number && car.image === hwCase.th.image) {
+        isCarTH = true;
+    }
+    if (hwCase.sth && car.hw_number === hwCase.sth.hw_number && car.image === hwCase.sth.image) {
+        isCarSTH = true;
+    }
+    
+    // Check if the CASE CONTAINS a TH or STH (used for coloring the headings/details)
+    const hasCaseTH = !!hwCase.th;
+    const hasCaseSTH = !!hwCase.sth;
 
-  const addBtn = document.getElementById('addWantedBtn');
-  // Check if wantedCars contains this car (using image path for unique ID)
-  if (wantedCars.some(w => w.car.image === car.image)) {
-      addBtn.style.display = 'none';
-  } else {
-      addBtn.addEventListener('click', () => {
-          wantedCars.push({ year, caseLetter: hwCase.letter, car });
-          localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
-          addBtn.style.display = 'none';
-      });
-  }
+    // Defined colors based on your style.css TH/STH borders
+    // NOTE: We use inline style attributes to ensure these colors are applied dynamically.
+    const sthColor = 'style="color: #FFD700; text-shadow: 0px 0 9px #ffd700;"'; // Gold
+    const thColor = 'style="color: #C0C0C0; text-shadow: 0px 0 px #C0C0C0;"'; // Silver
+    
+    // The main car name uses the styling of the car being viewed (if it's a hunt)
+    const carNameStyle = isCarSTH ? sthColor : (isCarTH ? thColor : '');
 
-  const allCarsGrid = document.getElementById('allCarsGrid');
+    // --- 2. GENERATE HTML WITH CONDITIONAL STYLES ---
 
-  document.getElementById('showAllCaseBtn').addEventListener('click', e => {
-    e.stopPropagation();
-    allCarsGrid.innerHTML = '';
-    hwCase.cars.forEach(c => renderCarCard(year, hwCase.letter, c, allCarsGrid));
-  });
+    detailsDiv.innerHTML = `
+        <div class="card-detail">
+        <img src="${car.image}" alt="${car.name}">
+        <div class="card-info">
+            <h2 ${carNameStyle}>${car.name}</h2>
+            <p><strong>Year:</strong> ${year}</p>
+            <p><strong>Case:</strong> ${hwCase.letter}</p>
+            <p><strong>Series:</strong> ${car.series} (#${car.series_number})</p>
+            <p><strong>HW Number:</strong> ${car.hw_number}</p>
+            <p><strong>Color:</strong> ${car.color}</p>
+            
+            <h3 ${hasCaseTH ? thColor : ''}>Treasure Hunt:</h3>
+            <p ${hasCaseTH ? thColor : ''}>${hwCase.th?.name || 'N/A'}</p>
+            ${hwCase.th?.image ? `<img src="${hwCase.th.image}" alt="TH" style="max-width:150px;">` : ''}
+            
+            <h3 ${hasCaseSTH ? sthColor : ''}>Super Treasure Hunt:</h3>
+            <p ${hasCaseSTH ? sthColor : ''}>${hwCase.sth?.name || 'N/A'}</p>
+            ${hwCase.sth?.image ? `<img src="${hwCase.sth.image}" alt="STH" style="max-width:150px;">` : ''}
+            
+            <p></p>
+            <button id="addWantedBtn" class="add-wanted-btn action-btn">+ Add to Wanted</button>
+            <p></p>
+            <button id="showAllCaseBtn" class="action-btn">Show All Cars from Case ${hwCase.letter}</button>
+            <p></p>
+            <button id="showAllSeriesBtn" class="action-btn">Show All Cars from Series ${car.series} (${year})</button>
+            <p></p>
+            <div id="allCarsGrid" class="results-grid"></div>
+        </div>
+        </div>
+    `;
 
-  document.getElementById('showAllSeriesBtn').addEventListener('click', e => {
-    e.stopPropagation();
-    allCarsGrid.innerHTML = '';
+    // --- 3. EVENT LISTENERS (UNCHANGED) ---
+    const addBtn = document.getElementById('addWantedBtn');
+    // Check if wantedCars contains this car (using image path for unique ID)
+    if (wantedCars.some(w => w.car.image === car.image)) {
+        addBtn.style.display = 'none';
+    } else {
+        addBtn.addEventListener('click', () => {
+            wantedCars.push({ year, caseLetter: hwCase.letter, car });
+            localStorage.setItem('wantedCars', JSON.stringify(wantedCars));
+            addBtn.style.display = 'none';
+        });
+    }
 
-    const collected = carsData[year].cases.flatMap(hwCaseItem =>
-      hwCaseItem.cars
-        .filter(c => c.series === car.series)
-        .map(c => ({ year, caseLetter: hwCaseItem.letter, car: c }))
-    );
+    const allCarsGrid = document.getElementById('allCarsGrid');
 
-    collected.sort((a, b) => {
-      const numA = extractSeriesNumber(a.car.series_number);
-      const numB = extractSeriesNumber(b.car.series_number);
-      if (numA !== numB) return numA - numB;
-
-      const hwA = parseInt(String(a.car.hw_number).match(/\d+/)?.[0] || '0', 10);
-      const hwB = parseInt(String(b.car.hw_number).match(/\d+/)?.[0] || '0', 10);
-      if (hwA !== hwB) return hwA - hwB;
-
-      return (a.car.color || '').localeCompare(b.car.color || '');
+    document.getElementById('showAllCaseBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        allCarsGrid.innerHTML = '';
+        hwCase.cars.forEach(c => renderCarCard(year, hwCase.letter, c, allCarsGrid));
     });
 
-    collected.forEach(entry => renderCarCard(entry.year, entry.caseLetter, entry.car, allCarsGrid));
-  });
+    document.getElementById('showAllSeriesBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        allCarsGrid.innerHTML = '';
+        const carsData = getCarData();
 
-  popup.style.display = 'block';
-  document.body.classList.add('popup-open');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+        const collected = carsData[year].cases.flatMap(hwCaseItem =>
+            hwCaseItem.cars
+                .filter(c => c.series === car.series)
+                .map(c => ({ year, caseLetter: hwCaseItem.letter, car: c }))
+        );
+
+        collected.sort((a, b) => {
+            const numA = extractSeriesNumber(a.car.series_number);
+            const numB = extractSeriesNumber(b.car.series_number);
+            if (numA !== numB) return numA - numB;
+
+            const hwA = parseInt(String(a.car.hw_number).match(/\d+/)?.[0] || '0', 10);
+            const hwB = parseInt(String(b.car.hw_number).match(/\d+/)?.[0] || '0', 10);
+            if (hwA !== hwB) return hwA - hwB;
+
+            return (a.car.color || '').localeCompare(b.car.color || '');
+        });
+
+        collected.forEach(entry => renderCarCard(entry.year, entry.caseLetter, entry.car, allCarsGrid));
+    });
+
+    popup.style.display = 'block';
+    document.body.classList.add('popup-open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 // ------------------- RENDER CAR CARD HELPER (FINAL FIX) -------------------
 function renderCarCard(year, caseLetter, c, container) {
@@ -766,7 +798,7 @@ function renderCarCard(year, caseLetter, c, container) {
             <p>
             <button class="decrease-btn" data-action="decrement">-</button>
             <button class="increase-btn" data-action="increment">+</button>
-          </p>
+            </p>
         ` : ''}
 
         ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
