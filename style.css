@@ -27,7 +27,6 @@ h1 {
     border-bottom: 2px solid #007BFF; /* Blue Accent */
     padding-bottom: 10px;
     text-align: center;
-    
 }
 
 h2 {
@@ -223,9 +222,10 @@ h2 {
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     min-height: 350px;
     border: none;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 .result-card:hover {
@@ -410,8 +410,8 @@ h2 {
     gap: 30px;
     align-items: center;
     margin-top: 10%;
-    flex-wrap: wrap;
      /* NEW: Vertically center image and info column */
+     flex-wrap: wrap;
 }
 
 .card-detail img {
