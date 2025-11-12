@@ -762,9 +762,11 @@ function renderCarCard(year, caseLetter, c, container) {
         ${isOwned ? `
             <p class="quantity-line">
                 Quantity: <span class="quantity-value">${quantity}</span>
-                <button class="decrease-btn">-</button>
-                <button class="increase-btn">+</button>
             </p>
+            <p>
+            <button class="decrease-btn" data-action="decrement">-</button>
+            <button class="increase-btn" data-action="increment">+</button>
+          </p>
         ` : ''}
 
         ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}

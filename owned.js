@@ -96,6 +96,8 @@ function renderOwnedCars(groupBy) {
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
           ${huntIconHtml} <p class="quantity-line">
             Quantity: <span class="quantity-value">${quantity}</span>
+          </p>
+            <p>
             <button class="decrease-btn" data-action="decrement">-</button>
             <button class="increase-btn" data-action="increment">+</button>
           </p>
