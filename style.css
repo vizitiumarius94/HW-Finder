@@ -410,6 +410,7 @@ h2 {
     gap: 30px;
     align-items: center;
     margin-top: 10%;
+    flex-wrap: wrap;
      /* NEW: Vertically center image and info column */
 }
 
