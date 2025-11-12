@@ -8,21 +8,25 @@
 </head>
 <body>
   <div class="container">
+    <nav class="menu-bar">
+      <button id="searchPageBtn" class="menu-btn">Search</button>
+      <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="menu-btn">Series Collection</button>
+      <button id="ownedPageBtn" class="menu-btn">Owned Cars</button>
+      <button id="duplicatesPageBtn" class="menu-btn">View Duplicates</button>
+      <button id="exportBtn" class="menu-btn">Export</button>
+      <input type="file" id="importFile" style="display:none;">
+      <button id="importBtn" class="menu-btn">Import</button>
+    </nav>
     <h1>Hot Wheels Series</h1>
 
-    <!-- Back to Search button -->
-    <button id="backToSearchBtn" class="action-btn">← Back to Search</button>
-
-    <!-- Year selector -->
     <select id="yearSelect" class="select-btn">
       <option value="all">All Years</option>
     </select>
 
-    <!-- Series list -->
     <div id="seriesList" class="results-grid"></div>
   </div>
 
-  <!-- Popup for series cars -->
   <div id="seriesPopup" class="popup">
     <div class="popup-content">
       <span id="seriesPopupClose" class="popup-close">&times;</span>
@@ -32,5 +36,6 @@
   </div>
 
   <script src="series.js"></script>
+  <script src="nav.js"></script>
 </body>
 </html>

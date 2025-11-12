@@ -10,10 +10,6 @@ const seriesPopupClose = document.getElementById('seriesPopupClose');
 const seriesPopupTitle = document.getElementById('seriesPopupTitle');
 const seriesCarsGrid = document.getElementById('seriesCarsGrid');
 
-const backToSearchBtn = document.getElementById('backToSearchBtn');
-backToSearchBtn.addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
 
 // Fetch cars data
 fetch('data.json')

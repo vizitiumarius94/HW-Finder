@@ -21,11 +21,7 @@ function setWantedCars(cars) {
 
 const ownedCarsContainer = document.getElementById('ownedCarsContainer');
 const groupSelect = document.getElementById('groupSelect');
-const backToSearchBtn = document.getElementById('backToSearchBtn');
 
-backToSearchBtn.addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
 
 // Render cars initially grouped by case
 renderOwnedCars('case');

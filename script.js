@@ -886,12 +886,6 @@ popupClose.addEventListener('click', () => {
   document.body.classList.remove('popup-open');
 });
 
-// ------------------- NAVIGATION -------------------
-wantedPageBtn.addEventListener('click', () => window.location.href = 'wanted.html');
-seriesPageBtn.addEventListener('click', () => window.location.href = 'series.html');
-ownedPageBtn.addEventListener('click', () => window.location.href = 'owned.html');
-duplicatesPageBtn.addEventListener('click', () => window.location.href = 'duplicates.html');
-
 // ------------------- EXPORT / IMPORT -------------------
 exportBtn.addEventListener('click', () => {
   if (!wantedCars.length && !ownedCars.length) return alert("No data to export!");

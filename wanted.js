@@ -1,5 +1,4 @@
 const wantedListDiv = document.getElementById('wantedList');
-const backBtn = document.getElementById('backBtn');
 
 // Helpers
 function getWantedCars() {
@@ -8,11 +7,6 @@ function getWantedCars() {
 function setWantedCars(cars) {
   localStorage.setItem('wantedCars', JSON.stringify(cars));
 }
-
-// Back to main search page
-backBtn.addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
 
 // Load wanted cars as full cards
 function loadWantedCars() {

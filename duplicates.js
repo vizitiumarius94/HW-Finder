@@ -15,11 +15,7 @@ function setOwnedCars(cars) {
 
 const duplicatesContainer = document.getElementById('duplicatesContainer');
 const groupSelect = document.getElementById('groupSelect');
-const backToSearchBtn = document.getElementById('backToSearchBtn');
 
-backToSearchBtn.addEventListener('click', () => {
-  window.location.href = 'index.html'; // Change this to your main search page URL
-});
 
 // Render duplicates initially grouped by case
 renderDuplicates('case');

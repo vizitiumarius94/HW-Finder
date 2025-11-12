@@ -8,21 +8,29 @@
 </head>
 <body>
   <div class="container">
+    <nav class="menu-bar">
+      <button id="searchPageBtn" class="menu-btn">Search</button>
+      <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="menu-btn">Series Collection</button>
+      <button id="ownedPageBtn" class="menu-btn">Owned Cars</button>
+      <button id="duplicatesPageBtn" class="menu-btn">View Duplicates</button>
+      <button id="exportBtn" class="menu-btn">Export</button>
+      <input type="file" id="importFile" style="display:none;">
+      <button id="importBtn" class="menu-btn">Import</button>
+    </nav>
     <h1>My Owned Cars</h1>
-    <!-- Back to Search button -->
-    <button id="backToSearchBtn" class="action-btn">← Back to Search</button>
-    <!-- Grouping option -->
+    
     <label for="groupSelect">Group By:</label>
     <select id="groupSelect" class="select-btn">
       <option value="case">Case</option>
       <option value="series">Series</option>
     </select>
 
-    <!-- Owned cars container -->
     <h1 id="ownedCount"></h1>
     <div id="ownedCarsContainer" class="results-grid"></div>
   </div>
 
   <script src="owned.js"></script>
+  <script src="nav.js"></script>
 </body>
 </html>
