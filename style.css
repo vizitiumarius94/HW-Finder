@@ -231,7 +231,7 @@ h2 {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* --- MAIN CAR IMAGE SIZE FIX (DESKTOP) --- */
+/* --- MAIN CAR IMAGE SIZE (DESKTOP) --- */
 /* CRITICAL FIX: Use :not() to exclude the small hunt icons from the 100% rule */
 .result-card img:not(.hunt-badge) {
     width: 100%;
@@ -333,13 +333,12 @@ h2 {
     border: none;
 }
 
-/* --- SPECIAL HUNT LABELS AND ICON FIX (FINAL CENTERING) --- */
+/* --- SPECIAL HUNT LABELS AND ICON FIX (FINAL CENTERING & SIZING) --- */
 .sth-label, .th-label {
     /* CRITICAL FIX: Use Flexbox to guarantee horizontal centering across the full card width */
     display: flex; 
     justify-content: center; /* Center content (the icon) horizontally */
     align-items: center; 
-    
     margin: 5px auto 10px auto; /* Margin for vertical spacing */
 }
 
@@ -353,15 +352,13 @@ h2 {
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
 }
 
-/* The icon itself */
 .hunt-badge {
-    /* CRITICAL SIZE ADJUSTMENT */
-    width: 20%; /* Final requested size */
-    height: 20%; /* Final requested size */
+    /* FINAL ROBUST SIZE ADJUSTMENT: Fixed pixel size to avoid percentage inheritance issues */
+    width: 30px !important; 
+    height: 30px !important; 
     vertical-align: middle;
 }
 /* --- SPECIAL HUNT LABELS AND ICON SIZE FIX END --- */
-
 
 /* ------------------- 5. POPUP (MODAL) ------------------- */
 .popup {
@@ -433,6 +430,7 @@ h2 {
 .card-detail .card-info {
     padding: 0;
     width: 60%;
+    text-align: center;
 }
 
 .card-detail h3 {

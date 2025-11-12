@@ -773,8 +773,8 @@ function renderCarCard(year, caseLetter, c, container) {
         <p>${year} - ${caseLetter}</p>
         <p>${c.series} (#${c.series_number})</p>
         <p>HW#: ${c.hw_number} | Color: ${c.color}</p>
-        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" width=20% class="hunt-badge"></p>' : ''}
-        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" width=20% class="hunt-badge"></p>' : ''}
+        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" class="hunt-badge"></p>' : ''}
+        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" class="hunt-badge"></p>' : ''}
 
         <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
           ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
