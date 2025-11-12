@@ -32,14 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exportBtn && !window.location.href.includes('index.html')) {
         exportBtn.addEventListener('click', () => {
             alert("Please use the Export function on the main search page.");
-            window.location.href = 'index.html';
         });
     }
 
     if (importBtn && !window.location.href.includes('index.html')) {
         importBtn.addEventListener('click', () => {
             alert("Please use the Import function on the main search page.");
-            window.location.href = 'index.html';
         });
     }
 });

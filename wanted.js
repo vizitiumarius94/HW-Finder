@@ -1,3 +1,5 @@
+// wanted.js
+
 const wantedListDiv = document.getElementById('wantedList');
 
 // Helpers
@@ -7,6 +9,12 @@ function getWantedCars() {
 function setWantedCars(cars) {
   localStorage.setItem('wantedCars', JSON.stringify(cars));
 }
+
+// --- CRITICAL CHANGE START: Fetch data before rendering ---
+fetchCarData().then(() => {
+    loadWantedCars();
+});
+// --- CRITICAL CHANGE END ---
 
 // Load wanted cars as full cards
 function loadWantedCars() {
@@ -21,6 +29,10 @@ function loadWantedCars() {
   wanted.forEach(item => {
     const card = document.createElement('div');
     card.classList.add('result-card');
+    
+    // APPLY HUNT STYLING: Calls function, applies borders, and gets icons
+    const huntIconHtml = applyHuntStyling(card, item.year, item.caseLetter, item.car);
+
     card.innerHTML = `
       <img src="${item.car.image}" alt="${item.car.name}">
       <div class="card-info">
@@ -30,7 +42,7 @@ function loadWantedCars() {
         <p><strong>Series:</strong> ${item.car.series} (#${item.car.series_number})</p>
         <p><strong>HW Number:</strong> ${item.car.hw_number}</p>
         <p><strong>Color:</strong> ${item.car.color}</p>
-        <button class="remove-from-list-btn">Remove</button>
+        ${huntIconHtml} <button class="remove-from-list-btn">Remove</button>
       </div>
     `;
 
@@ -44,5 +56,3 @@ function loadWantedCars() {
     wantedListDiv.appendChild(card);
   });
 }
-
-loadWantedCars();

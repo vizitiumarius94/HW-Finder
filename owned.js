@@ -1,10 +1,11 @@
+// owned.js
+
 // Helpers
 function getOwnedCars() {
   const cars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
-  // Ensure each car has a quantity property
   cars.forEach(car => {
     if (typeof car.quantity === 'undefined') {
-      car.quantity = 1; // Set default quantity to 1 if undefined
+      car.quantity = 1; 
     }
   });
   return cars;
@@ -22,14 +23,17 @@ function setWantedCars(cars) {
 const ownedCarsContainer = document.getElementById('ownedCarsContainer');
 const groupSelect = document.getElementById('groupSelect');
 
+// --- CRITICAL CHANGE START: Fetch data before rendering ---
+fetchCarData().then(() => {
+    renderOwnedCars('case');
 
-// Render cars initially grouped by case
-renderOwnedCars('case');
-
-// Change grouping
-groupSelect.addEventListener('change', () => {
-  renderOwnedCars(groupSelect.value);
+    // Change grouping
+    groupSelect.addEventListener('change', () => {
+        renderOwnedCars(groupSelect.value);
+    });
 });
+// --- CRITICAL CHANGE END ---
+
 
 function renderOwnedCars(groupBy) {
   ownedCarsContainer.innerHTML = '';
@@ -75,6 +79,9 @@ function renderOwnedCars(groupBy) {
     groups[groupName].forEach(item => {
       const card = document.createElement('div');
       card.classList.add('result-card');
+      
+      // APPLY HUNT STYLING: Calls function, applies borders, and gets icons
+      const huntIconHtml = applyHuntStyling(card, item.year, item.caseLetter, item.car);
 
       const isWanted = wantedCars.some(w => w.car.image === item.car.image);
       const quantity = item.quantity || 1;
@@ -87,7 +94,7 @@ function renderOwnedCars(groupBy) {
           <p>${item.car.series} (#${item.car.series_number})</p>
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
-          <p class="quantity-line">
+          ${huntIconHtml} <p class="quantity-line">
             Quantity: <span class="quantity-value">${quantity}</span>
             <button class="decrease-btn" data-action="decrement">-</button>
             <button class="increase-btn" data-action="increment">+</button>
@@ -100,6 +107,7 @@ function renderOwnedCars(groupBy) {
         </div>
       `;
 
+      // ... (rest of the event listeners for buttons remain the same) ...
       // Select buttons and elements
       const unownedBtn = card.querySelector('.unowned-btn');
       const addWantedBtn = card.querySelector('.add-wanted-btn');
@@ -111,7 +119,7 @@ function renderOwnedCars(groupBy) {
         const owned = getOwnedCars();
         const idx = owned.findIndex(o => o.car.image === item.car.image);
         if (idx !== -1) {
-          const currentQty = owned[idx].quantity || 1;
+          const currentQty = item.quantity || 1;
           let newQty = currentQty + change;
           
           if (newQty < 1) newQty = 1; // Minimum quantity is 1
@@ -180,6 +188,3 @@ function renderOwnedCars(groupBy) {
     ownedCarsContainer.appendChild(groupDiv);
   });
 }
-
-// NOTE: The renderDuplicatesPage and backToMainBtn listeners are not needed here 
-// as they belong in duplicates.js and are likely remnants from older code.

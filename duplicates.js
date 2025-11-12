@@ -1,3 +1,5 @@
+// duplicates.js
+
 // Helpers
 function getOwnedCars() {
   const cars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
@@ -17,13 +19,16 @@ const duplicatesContainer = document.getElementById('duplicatesContainer');
 const groupSelect = document.getElementById('groupSelect');
 
 
-// Render duplicates initially grouped by case
-renderDuplicates('case');
+// --- CRITICAL CHANGE START: Fetch data before rendering ---
+fetchCarData().then(() => {
+    renderDuplicates('case');
 
-// Change grouping
-groupSelect.addEventListener('change', () => {
-  renderDuplicates(groupSelect.value);
+    // Change grouping
+    groupSelect.addEventListener('change', () => {
+        renderDuplicates(groupSelect.value);
+    });
 });
+// --- CRITICAL CHANGE END ---
 
 function renderDuplicates(groupBy) {
   duplicatesContainer.innerHTML = '';
@@ -80,6 +85,9 @@ function renderDuplicates(groupBy) {
       const div = document.createElement('div');
       div.classList.add('result-card');
       
+      // APPLY HUNT STYLING: Calls function, applies borders, and gets icons
+      const huntIconHtml = applyHuntStyling(div, item.year, item.caseLetter, item.car);
+
       const quantity = item.quantity || 1;
       const dups = quantity - 1;
 
@@ -90,7 +98,7 @@ function renderDuplicates(groupBy) {
           <p>${item.car.series} (#${item.car.series_number})</p>
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
-          <p class="quantity-line">
+          ${huntIconHtml} <p class="quantity-line">
             Quantity: <span class="quantity-value">${quantity}</span>
             <button class="decrease-btn" data-action="decrement">-</button>
             <button class="increase-btn" data-action="increment">+</button>

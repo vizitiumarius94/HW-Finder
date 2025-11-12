@@ -407,7 +407,7 @@ function fetchDataAndInitialize() {
 }
 
 // Call the new initialization function at startup
-fetchDataAndInitialize();
+fetchCarData().then(fetchDataAndInitialize);
 
 
 // ------------------- CORE FILTER CHANGE HANDLER -------------------
@@ -654,6 +654,7 @@ const extractSeriesNumber = val => {
   };
   
 function showDetails(year, hwCase, car) {
+  const carsData = getCarData(); // ADD THIS LINE
   detailsDiv.innerHTML = `
       <div class="card-detail">
       <img src="${car.image}" alt="${car.name}">
@@ -736,28 +737,9 @@ function renderCarCard(year, caseLetter, c, container) {
   const div = document.createElement('div');
   div.classList.add('result-card');
 
-  // 🟨 Detect if this car is a Treasure Hunt (TH) or Super Treasure Hunt (STH)
-  let isTH = false;
-  let isSTH = false;
-
-  const caseData = carsData[year]?.cases?.find(cs => cs.letter === caseLetter);
-  if (caseData) {
-    if (caseData.th && c.hw_number === caseData.th.hw_number && c.image === caseData.th.image) {
-      isTH = true;
-    }
-    if (caseData.sth && c.hw_number === caseData.sth.hw_number && c.image === caseData.sth.image) {
-      isSTH = true;
-    }
-  }
-
-  // 🟨 Apply gold/silver borders for special hunts
-  if (isSTH) {
-    div.style.border = '4px solid gold';
-    div.style.boxShadow = '0 0 10px gold';
-  } else if (isTH) {
-    div.style.border = '4px solid silver';
-    div.style.boxShadow = '0 0 10px silver';
-  }
+  // --- CRITICAL CHANGE: Use centralized styling function ---
+  // The styling logic is now called here in all contexts (main search, and pop-up grids)
+  const huntIconHtml = applyHuntStyling(div, year, caseLetter, c);
 
   function updateCardUI() {
     let ownedCar = ownedCars.find(o => o.car.image === c.image);
@@ -773,10 +755,7 @@ function renderCarCard(year, caseLetter, c, container) {
         <p>${year} - ${caseLetter}</p>
         <p>${c.series} (#${c.series_number})</p>
         <p>HW#: ${c.hw_number} | Color: ${c.color}</p>
-        ${isSTH ? '<p class="sth-label"><img src="images/STH.png" alt="STH" class="hunt-badge"></p>' : ''}
-        ${isTH ? '<p class="th-label"><img src="images/TH.png" alt="TH" class="hunt-badge"></p>' : ''}
-
-        <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+        ${huntIconHtml} <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
           ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
         </button>
         

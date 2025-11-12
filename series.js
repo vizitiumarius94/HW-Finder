@@ -1,4 +1,6 @@
-let carsData = {};
+// series.js
+
+// Removed local carsData, relying on getCarData() from utils.js
 let ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
 let wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 
@@ -11,16 +13,18 @@ const seriesPopupTitle = document.getElementById('seriesPopupTitle');
 const seriesCarsGrid = document.getElementById('seriesCarsGrid');
 
 
-// Fetch cars data
-fetch('data.json')
-  .then(res => res.json())
-  .then(data => {
-    carsData = data;
+// --- CRITICAL CHANGE START: Fetch data before initializing ---
+// Rely on global fetchCarData from utils.js
+fetchCarData().then(data => {
+    // Note: data is now available via getCarData()
     populateYearSelect();
-  });
+});
+// --- CRITICAL CHANGE END ---
+
 
 // Populate year dropdown
 function populateYearSelect() {
+  const carsData = getCarData(); // Use global data
   const years = Object.keys(carsData).sort();
   years.forEach(year => {
     const option = document.createElement('option');
@@ -40,6 +44,7 @@ yearSelect.addEventListener('change', () => {
   seriesList.innerHTML = '';
   if (!selectedYear) return;
 
+  const carsData = getCarData(); // Use global data
   const seriesSet = new Set();
 
   if (selectedYear === 'all') {
@@ -63,10 +68,9 @@ yearSelect.addEventListener('change', () => {
     const card = document.createElement('div');
     card.classList.add('result-card');
     card.innerHTML = `<div class="card-info"><h3>${seriesName}</h3></div>`;
-    // Prevent image rendering on these grouping cards
-    card.querySelector('.card-info').style.padding = '30px 15px'; 
-    card.style.minHeight = 'auto';
-
+    
+    // NOTE: Removed image styling lines since that should be in style.css
+    
     card.addEventListener('click', () => showSeriesPopup(selectedYear, seriesName));
     seriesList.appendChild(card);
   });
@@ -77,6 +81,7 @@ function showSeriesPopup(selectedYear, seriesName) {
   seriesPopupTitle.textContent = `${seriesName} (${selectedYear === 'all' ? 'All Years' : selectedYear})`;
   seriesCarsGrid.innerHTML = '';
 
+  const carsData = getCarData(); // Use global data
   const yearsToCheck = selectedYear === 'all' ? Object.keys(carsData) : [selectedYear];
 
   // Collect all matching cars across years and cases
@@ -129,12 +134,23 @@ function showSeriesPopup(selectedYear, seriesName) {
 
     let isOwned = ownedCars.some(o => o.car.image === car.image);
     let isWanted = wantedCars.some(w => w.car.image === car.image);
-    let ownedCarData = ownedCars.find(o => o.car.image === car.image);
 
     function updateCardButtons() {
-        ownedCarData = ownedCars.find(o => o.car.image === car.image);
+        ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
+        wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
+
+        let ownedCarData = ownedCars.find(o => o.car.image === car.image);
         isOwned = !!ownedCarData;
         isWanted = wantedCars.some(w => w.car.image === car.image);
+
+        // --- CRITICAL CHANGE: APPLY HUNT STYLING ---
+        const tempCardDiv = document.createElement('div');
+        const huntIconHtml = applyHuntStyling(tempCardDiv, year, caseLetter, car);
+
+        // Apply borders/shadows from the utility function
+        div.style.border = tempCardDiv.style.border;
+        div.style.boxShadow = tempCardDiv.style.boxShadow;
+
 
         div.innerHTML = `
             <img src="${car.image}" alt="${car.name}">
@@ -144,7 +160,7 @@ function showSeriesPopup(selectedYear, seriesName) {
                 <p>Year: ${year} | Case: ${caseLetter}</p>
                 <p>${car.series} (#${car.series_number})</p>
                 
-                <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
+                ${huntIconHtml} <button class="${isOwned ? 'unowned-btn' : 'owned-btn'}">
                     ${isOwned ? 'Unmark Owned' : 'Mark Owned'}
                 </button>
                 ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
@@ -199,8 +215,3 @@ seriesPopupClose.addEventListener('click', () => {
   ownedCars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
   wantedCars = JSON.parse(localStorage.getItem('wantedCars') || '[]');
 });
-
-// Trigger initial population on load
-// This is already done at the end of fetchData in the original script but adding a call for robustness.
-// If your script already calls populateYearSelect(), this line can be removed.
-// populateYearSelect();
