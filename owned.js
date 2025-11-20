@@ -47,12 +47,12 @@ fetchCarData().then(() => {
             clearBtn.style.display = searchBar.value ? 'block' : 'none';
         });
         clearBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  searchBar.value = '';
-  clearBtn.style.display = 'none';
-  performSearch();
-  searchBar.focus(); 
-  }
+        e.stopPropagation();
+        searchBar.value = '';
+        clearBtn.style.display = 'none';
+        performSearch();
+        searchBar.focus(); 
+      });
     }
     
 });
