@@ -34,7 +34,7 @@
   </div>
 <div id="filterContainer">
     <h3 style="margin-top: 0; margin-bottom: 10px;">Filter Options 🔎</h3>
-    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start;">
+    <div class="FilterBox">
         
         <div id="yearFilterContainer" class="custom-dropdown-container">
             <label class="dropdown-label" for="toggle-year" style="font-weight: bold;">Year</label>
@@ -66,7 +66,9 @@
             <input type="checkbox" id="toggle-color" class="dropdown-toggle" hidden>
             <div class="dropdown-content"></div>
         </div>
-
+</div>
+<p></p>
+<div>
         <label style="white-space: nowrap; margin-top: 5px;">
             <input type="checkbox" id="unownedOnlyCheckbox"> Unowned Only
         </label>
@@ -76,7 +78,7 @@
         <label style="white-space: nowrap; margin-top: 5px;">
             <input type="checkbox" id="sthCheckbox"> STH
         </label>
-        <div id="dudsCheckboxWrapper" style="display: none; margin-top: 5px;"> 
+        <div id="dudsCheckboxWrapper" style="display: none;"> 
             <label style="white-space: nowrap;">
                 <input type="checkbox" id="showDudsCheckbox"> Show Duds
             </label>

@@ -649,3 +649,35 @@ h2 {
 .remove-from-list-btn:hover {
     background-color: #c82333; /* Darker red on hover */
 }
+
+
+.FilterBox{
+display: flex; 
+flex-wrap: nowrap; 
+gap: 1%; 
+align-items: flex-start;
+}
+
+/* Media Queries for Responsiveness (FINAL FIXES) */
+@media (max-width: 768px) {
+    .FilterBox {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping for better layout on small screens */
+        gap: 1%;
+        align-items: flex-start;
+        width: 100%; /* Ensure the container takes full width */
+    }
+
+    .custom-dropdown-container {
+        flex: 1; /* Make each button take equal space */
+        min-width: 0; /* Allow flex items to shrink */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    /* Ensure buttons have consistent padding and font size */
+    .custom-dropdown-container, .menu-btn, .action-btn {
+        padding: 10px;
+        font-size: 0.9em;
+        text-align: center;
+    }
+}
