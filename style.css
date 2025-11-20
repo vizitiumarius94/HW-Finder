@@ -207,12 +207,42 @@ h2 {
 }
 
 /* ------------------- 4. RESULTS GRID & CARDS ------------------- */
+/* Standard grid definition for grouped views */
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     margin-top: 20px;
 }
+
+/* 🚀 FIX 1: Overrides for the main container when a single group view is active */
+#ownedCarsContainer.single-group-view .group-container,
+#duplicatesContainer.single-group-view .group-container {
+    padding: 15px;
+    box-shadow: none;
+    border-radius: 8px;
+    margin-bottom: 0;
+    position: absolute;
+}
+
+/* 🚀 FIX 2: Force two equal columns inside the single-group-view */
+#ownedCarsContainer.single-group-view .results-grid {
+    /* CRITICAL: Override the auto-fill to force exactly two equal columns (1fr 1fr) */
+    grid-template-columns: 1fr 1fr;
+    
+    /* Ensure no outer margin/padding is trapping the width */
+    max-width: none;
+    margin: 20px 0; 
+}
+
+/* 🚀 FIX 3: Restrict the individual card width inside the two-column view */
+#ownedCarsContainer.single-group-view .results-grid .result-card {
+    /* Ensures cards don't stretch too wide within the 1fr column */
+    max-width: 450px; 
+    /* Centers the card within its 1fr column */
+    margin: 0 auto; 
+}
+
 
 .result-card {
     background-color: #FFFFFF;
@@ -520,6 +550,14 @@ h2 {
 @media (max-width: 768px) {
     .container {
         padding: 10px;
+    }
+    
+    /* On mobile, override the single-group view to revert to default responsive auto-fit behavior */
+    #ownedCarsContainer.single-group-view .results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        max-width: none;
+        margin-left: initial;
+        margin-right: initial;
     }
     
     .menu-bar {
