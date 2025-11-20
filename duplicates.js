@@ -22,9 +22,12 @@ const searchBar = document.getElementById('searchBar');
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
 fetchCarData().then(() => {
     // Render starting with a sensible default, maybe 'no_filter' for duplicates
-    renderDuplicates('case');
+    const initialGroup = groupSelect.value;
+    
+    // Call the rendering function with the value read from the HTML/Browser
+    renderDuplicates(initialGroup);
 
-    // Change grouping
+   // Change grouping
     groupSelect.addEventListener('change', () => {
         renderDuplicates(groupSelect.value, searchBar.value);
     });
