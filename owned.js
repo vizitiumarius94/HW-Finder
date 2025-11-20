@@ -206,7 +206,7 @@ function renderOwnedCars(groupBy, searchTerm = '') {
         } else if (groupBy === 'year_sort') { 
             titleText = `Year: ${groupName}`;
         } else if (groupBy === 'no_filter') { 
-            titleText = 'All Cars (2025 & 2024 Top Priority)';
+            titleText = 'All Cars';
         }
         
         title.textContent = titleText;
