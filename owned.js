@@ -1,4 +1,5 @@
 // owned.js
+const clearBtn = document.getElementById('clearSearch');
 
 // Helpers (Keep all existing helper functions)
 function getOwnedCars() {
