@@ -46,7 +46,15 @@ fetchCarData().then(() => {
             renderOwnedCars(groupSelect.value, searchBar.value); 
             clearBtn.style.display = searchBar.value ? 'block' : 'none';
         });
+        clearBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  searchBar.value = '';
+  clearBtn.style.display = 'none';
+  performSearch();
+  searchBar.focus(); 
+  }
     }
+    
 });
 // --- CRITICAL CHANGE END ---
 
