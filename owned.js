@@ -44,6 +44,7 @@ fetchCarData().then(() => {
         searchBar.addEventListener('input', () => { 
             // Trigger refresh on input, passing current grouping
             renderOwnedCars(groupSelect.value, searchBar.value); 
+            clearBtn.style.display = searchBar.value ? 'block' : 'none';
         });
     }
 });
