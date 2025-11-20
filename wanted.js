@@ -1,6 +1,7 @@
 // wanted.js
 
 const wantedListDiv = document.getElementById('wantedList');
+const searchBar = document.getElementById('searchBar'); 														
 
 // Helpers
 function getWantedCars() {
@@ -10,27 +11,63 @@ function setWantedCars(cars) {
   localStorage.setItem('wantedCars', JSON.stringify(cars));
 }
 
+																	   
+									
+																				 
+					  
+																					  
+								   
+		  
+  
+
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
 // fetchCarData is assumed to be defined in utils.js and sets window.carsData
 fetchCarData().then(() => {
-    loadWantedCars();
+														
+  loadWantedCars('');
+    
+    // Search Listener 
+    if (searchBar) {
+        searchBar.addEventListener('input', () => {
+            // Trigger refresh on input
+            loadWantedCars(searchBar.value); 
+        });
+    }
 });
 // --- CRITICAL CHANGE END ---
 
 // Load wanted cars as full cards
-function loadWantedCars() {
+function loadWantedCars(searchTerm = '') { // ⬅️ UPDATED signature to accept searchTerm
   const wanted = getWantedCars();
   wantedListDiv.innerHTML = '';
+  
+  // ⬅️ NEW: Filtering Logic
+  const normalizedSearch = searchTerm.toLowerCase().trim();
+  
+  const filteredCars = (normalizedSearch.length > 0)
+    ? wanted.filter(item => {
+        const car = item.car;
+        // Safety check for malformed data
+        if (!item || !car) return false;
 
-  if (!wanted.length) {
-    wantedListDiv.innerHTML = '<p class="no-results">No cars in your Wanted list yet.</p>';
+        return (
+          car.name?.toLowerCase().includes(normalizedSearch) ||
+          car.series?.toLowerCase().includes(normalizedSearch) ||
+          String(car.hw_number).includes(normalizedSearch) ||
+          car.color?.toLowerCase().includes(normalizedSearch)
+        );
+      })
+    : wanted;
+
+  if (!filteredCars.length) { 
+    wantedListDiv.innerHTML = `<p class="no-results">No cars found matching your criteria${normalizedSearch ? ` for "${searchTerm}"` : ''}.</p>`; 
     return;
   }
 
   // Define the refresh function globally so remove/add buttons on other pages can call it
   window.loadWantedCars = loadWantedCars;
 
-  wanted.forEach(item => {
+  filteredCars.forEach(item => { //
     const card = document.createElement('div');
     card.classList.add('result-card');
     

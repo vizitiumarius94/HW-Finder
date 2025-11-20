@@ -24,22 +24,32 @@ function setWantedCars(cars) {
 // Expose groupSelect globally
 const ownedCarsContainer = document.getElementById('ownedCarsContainer');
 const groupSelect = document.getElementById('groupSelect');
+const searchBar = document.getElementById('searchBar'); // ⬅️ NEW: Reference search bar																						   
 window.groupSelect = groupSelect;
 
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
 // fetchCarData is assumed to be defined in utils.js and sets window.carsData
 fetchCarData().then(() => {
+														
     renderOwnedCars('case');
 
     // Change grouping
     groupSelect.addEventListener('change', () => {
-        renderOwnedCars(groupSelect.value);
+													  
+        renderOwnedCars(groupSelect.value, searchBar ? searchBar.value : ''); 
     });
+    
+    // Search input listener ⬅️ NEW
+    if (searchBar) {
+        searchBar.addEventListener('input', () => { 
+            // Trigger refresh on input, passing current grouping
+            renderOwnedCars(groupSelect.value, searchBar.value); 
+        });
+    }
 });
+	 
 // --- CRITICAL CHANGE END ---
-
-
-function renderOwnedCars(groupBy) {
+function renderOwnedCars(groupBy, searchTerm = '') { // ⬅️ UPDATED signature to accept searchTerm
   ownedCarsContainer.innerHTML = '';
 
   // Expose renderOwnedCars globally for utils.js to use
@@ -48,15 +58,52 @@ function renderOwnedCars(groupBy) {
   // 🧮 Show total count
   const ownedCountElem = document.getElementById('ownedCount');
   const ownedCars = getOwnedCars();
+  
+	
+  // ⬅️ NEW: Filtering Logic
+  const normalizedSearch = searchTerm.toLowerCase().trim();
+  
+  const filteredCars = (normalizedSearch.length > 0) 
+    ? ownedCars.filter(item => {
+        const car = item.car;
+        // Safety check for malformed data
+        if (!item || !car) return false; 
+        
+        return (
+          car.name?.toLowerCase().includes(normalizedSearch) ||
+          car.series?.toLowerCase().includes(normalizedSearch) ||
+          String(car.hw_number).includes(normalizedSearch) ||
+          car.color?.toLowerCase().includes(normalizedSearch)
+        );
+      })
+    : ownedCars; // Use all cars if search is empty							
+														   
+    // Display message if no cars are found
+  if (filteredCars.length === 0) {
+      ownedCarsContainer.innerHTML = '<p class="no-results">' + 
+        (normalizedSearch.length > 0 
+            ? 'No cars found matching your criteria.' 
+            : 'Your collection is currently empty.') + 
+        '</p>';
+      return;
+  }
+
   const totalOwned = ownedCars.reduce((sum, car) => sum + (car.quantity || 1), 0);
   if (ownedCountElem) {
+																							
       ownedCountElem.textContent = `You own ${totalOwned} Hot Wheels in your collection`;
   }
-  
+
   const groups = {};
   const wantedCars = getWantedCars();
 
-  ownedCars.forEach(item => {
+   filteredCars.forEach(item => { // ⬅️ Iterate over filteredCars
+    // Safety check for malformed grouping data
+    if (!item || !item.year || !item.caseLetter || !item.car || !item.car.series) {
+        console.error("Skipping malformed car data entry:", item);
+        return; 
+    }
+
     const key = groupBy === 'case'
       ? `${item.year} - ${item.caseLetter}`
       : `${item.car.series} (${item.year})`;

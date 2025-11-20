@@ -17,7 +17,7 @@ function setOwnedCars(cars) {
 
 const duplicatesContainer = document.getElementById('duplicatesContainer');
 const groupSelect = document.getElementById('groupSelect');
-
+const searchBar = document.getElementById('searchBar'); 
 
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
 fetchCarData().then(() => {
@@ -25,26 +25,55 @@ fetchCarData().then(() => {
 
     // Change grouping
     groupSelect.addEventListener('change', () => {
-        renderDuplicates(groupSelect.value);
+        renderDuplicates(groupSelect.value, searchBar.value);
+    });
+    
+    // Search Listener
+    searchBar.addEventListener('input', () => {
+      renderDuplicates(groupSelect.value, searchBar.value);
     });
 });
 // --- CRITICAL CHANGE END ---
 
-function renderDuplicates(groupBy) {
+function renderDuplicates(groupBy, searchTerm = '') {
   duplicatesContainer.innerHTML = '';
 
   // Group cars
   const groups = {};
   const ownedCars = getOwnedCars();
   // Filter for only cars where quantity is greater than 1
-  const duplicates = ownedCars.filter(car => (car.quantity || 1) > 1);
+  let duplicates = ownedCars.filter(car => (car.quantity || 1) > 1);
+
+  // Filtering logic on the duplicates list
+  const normalizedSearch = searchTerm.toLowerCase().trim();
+  if (normalizedSearch.length > 0) {
+      duplicates = duplicates.filter(item => {
+          const car = item.car;
+          // Ensure item.car exists before accessing its properties
+          if (!car) return false;
+
+          return (
+            car.name.toLowerCase().includes(normalizedSearch) ||
+            car.series.toLowerCase().includes(normalizedSearch) ||
+            String(car.hw_number).includes(normalizedSearch) ||
+            car.color.toLowerCase().includes(normalizedSearch)
+          );
+      });
+  }
+
 
   if (duplicates.length === 0) {
-    duplicatesContainer.innerHTML = '<p class="no-results">No duplicates found in your collection.</p>';
+    duplicatesContainer.innerHTML = '<p class="no-results">No duplicates found matching your criteria.</p>'; 
     return;
   }
 
   duplicates.forEach(item => {
+    // 🎯 FIX: Add robust checks for essential data points before trying to create the key.
+    if (!item || !item.year || !item.caseLetter || !item.car || !item.car.series) {
+        console.error("Skipping malformed car data entry:", item);
+        return; // Skip this entry if critical data is missing
+    }
+
     let key;
     if (groupBy === 'case') {
       // Group by year + case, e.g. "2025 - A"
@@ -126,7 +155,7 @@ function renderDuplicates(groupBy) {
         if (idx !== -1) {
           owned[idx].quantity = newQty;
           setOwnedCars(owned);
-          renderDuplicates(groupBy);
+          renderDuplicates(groupBy, searchBar.value); // ⬅️ Pass current search term
         }
       };
       
@@ -146,7 +175,7 @@ function renderDuplicates(groupBy) {
         e.stopPropagation();
         const updated = getOwnedCars().filter(o => o.car.image !== item.car.image);
         setOwnedCars(updated);
-        renderDuplicates(groupBy);
+        renderDuplicates(groupBy, searchBar.value); // ⬅️ Pass current search term
       });
 
       // Default card click for prompt for safety/manual entry
@@ -155,7 +184,7 @@ function renderDuplicates(groupBy) {
         if (newQuantity !== null && !isNaN(newQuantity) && newQuantity > 0) {
           item.quantity = parseInt(newQuantity, 10);
           setOwnedCars(ownedCars); // Save with updated quantity
-          renderDuplicates(groupBy);
+          renderDuplicates(groupBy, searchBar.value); // ⬅️ Pass current search term
         }
       });
 
