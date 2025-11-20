@@ -50,7 +50,7 @@ fetchCarData().then(() => {
         e.stopPropagation();
         searchBar.value = '';
         clearBtn.style.display = 'none';
-        performSearch();
+        renderOwnedCars(groupSelect.value, '');
         searchBar.focus(); 
       });
     }
