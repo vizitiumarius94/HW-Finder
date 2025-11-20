@@ -1,9 +1,10 @@
 // owned.js
 
-// Helpers
+// Helpers (These specific helpers are kept here for clear local dependency management)
 function getOwnedCars() {
   const cars = JSON.parse(localStorage.getItem('ownedCars') || '[]');
   cars.forEach(car => {
+    // Ensure quantity property exists
     if (typeof car.quantity === 'undefined') {
       car.quantity = 1; 
     }
@@ -20,10 +21,13 @@ function setWantedCars(cars) {
   localStorage.setItem('wantedCars', JSON.stringify(cars));
 }
 
+// Expose groupSelect globally
 const ownedCarsContainer = document.getElementById('ownedCarsContainer');
 const groupSelect = document.getElementById('groupSelect');
+window.groupSelect = groupSelect;
 
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
+// fetchCarData is assumed to be defined in utils.js and sets window.carsData
 fetchCarData().then(() => {
     renderOwnedCars('case');
 
@@ -38,12 +42,17 @@ fetchCarData().then(() => {
 function renderOwnedCars(groupBy) {
   ownedCarsContainer.innerHTML = '';
 
+  // Expose renderOwnedCars globally for utils.js to use
+  window.renderOwnedCars = renderOwnedCars;
+
   // 🧮 Show total count
   const ownedCountElem = document.getElementById('ownedCount');
   const ownedCars = getOwnedCars();
   const totalOwned = ownedCars.reduce((sum, car) => sum + (car.quantity || 1), 0);
-  ownedCountElem.textContent = `You own ${totalOwned} Hot Wheels in your collection`;
-
+  if (ownedCountElem) {
+      ownedCountElem.textContent = `You own ${totalOwned} Hot Wheels in your collection`;
+  }
+  
   const groups = {};
   const wantedCars = getWantedCars();
 
@@ -55,6 +64,7 @@ function renderOwnedCars(groupBy) {
     groups[key].push(item);
   });
 
+  // Extract series number helper (re-defined locally as it's small and frequently used for sorting)
   const extractSeriesNum = (val) => {
     if (!val) return 0;
     const m = String(val).match(/(\d+)/);
@@ -76,16 +86,17 @@ function renderOwnedCars(groupBy) {
     const grid = document.createElement('div');
     grid.classList.add('results-grid');
 
+    // --- START: Individual Card Rendering Loop ---
     groups[groupName].forEach(item => {
       const card = document.createElement('div');
       card.classList.add('result-card');
       
-      // APPLY HUNT STYLING: Calls function, applies borders, and gets icons
+      // APPLY HUNT STYLING: Calls function, applies borders, and gets icons (from utils.js)
       const huntIconHtml = applyHuntStyling(card, item.year, item.caseLetter, item.car);
 
       const isWanted = wantedCars.some(w => w.car.image === item.car.image);
       const quantity = item.quantity || 1;
-      const duplicates = quantity - 1;
+      const duplicates = quantity - 1; // ⬅️ DUPLICATE COUNT CALCULATION
 
       card.innerHTML = `
         <img class="car-image" src="${item.car.image}" alt="${item.car.name}">
@@ -94,27 +105,27 @@ function renderOwnedCars(groupBy) {
           <p>${item.car.series} (#${item.car.series_number})</p>
           <p>HW#: ${item.car.hw_number} | Color: ${item.car.color}</p>
           <p>Year: ${item.year} | Case: ${item.caseLetter}</p>
-          ${huntIconHtml} <p class="quantity-line">
-            Quantity: <span class="quantity-value">${quantity}</span>
+          ${huntIconHtml} 
+          <p class="quantity-line">
+            Quantity: <span class="quantity-value" data-image="${item.car.image}" data-qty="${quantity}">${quantity}</span>
           </p>
-            <p>
+          <p>
             <button class="decrease-btn" data-action="decrement">-</button>
             <button class="increase-btn" data-action="increment">+</button>
           </p>
           <p style="color: ${duplicates > 0 ? '#E91E63' : '#666'}; font-weight: ${duplicates > 0 ? '600' : '400'};">
-            Duplicates: ${duplicates}
-          </p>
+            Duplicates: ${duplicates} </p>
           <button class="unowned-btn">Unmark Owned</button>
           ${!isWanted ? '<button class="add-wanted-btn">+ Add to Wanted</button>' : ''}
         </div>
       `;
 
-      // ... (rest of the event listeners for buttons remain the same) ...
       // Select buttons and elements
       const unownedBtn = card.querySelector('.unowned-btn');
       const addWantedBtn = card.querySelector('.add-wanted-btn');
       const addQtyBtn = card.querySelector('.increase-btn');
       const decQtyBtn = card.querySelector('.decrease-btn');
+      const qtySpan = card.querySelector('.quantity-value'); 
 
       // Helper to update quantity
       const updateQuantity = (change) => {
@@ -128,7 +139,7 @@ function renderOwnedCars(groupBy) {
           
           owned[idx].quantity = newQty;
           setOwnedCars(owned);
-          renderOwnedCars(groupBy);
+          renderOwnedCars(groupBy); // Full refresh of the owned view
         }
       };
       
@@ -157,34 +168,80 @@ function renderOwnedCars(groupBy) {
         addWantedBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           const wanted = getWantedCars();
-          wanted.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
-          setWantedCars(wanted);
-          addWantedBtn.style.display = 'none';
+          // Safety check to prevent duplicates in wanted list
+          if (!wanted.some(w => w.car.image === item.car.image)) {
+            wanted.push({ year: item.year, caseLetter: item.caseLetter, car: item.car });
+            setWantedCars(wanted);
+          }
+          renderOwnedCars(groupBy); // Refresh to update wanted status
         });
       }
       
-      // Click event for prompt (if you prefer prompt over +/- buttons)
-      card.addEventListener('click', () => {
-        const newQtyStr = prompt('Enter new quantity:', quantity);
-        if (newQtyStr === null) return;
-        const newQty = parseInt(newQtyStr, 10);
-        if (isNaN(newQty) || newQty < 1) {
-          alert('Please enter a valid number (minimum 1).');
-          return;
+      // ✅ Click event for quantity prompt
+      if (qtySpan) {
+          qtySpan.addEventListener('click', (e) => {
+              e.stopPropagation(); 
+              
+              const currentQty = parseInt(qtySpan.dataset.qty, 10);
+              const newQtyStr = prompt(`Enter new quantity for ${item.car.name}:`, currentQty);
+              
+              if (newQtyStr === null) return; 
+              
+              const newQty = parseInt(newQtyStr, 10);
+              
+              if (isNaN(newQty) || newQty < 1) {
+                  alert('Please enter a valid number (minimum 1).');
+                  return;
+              }
+
+              let owned = getOwnedCars();
+              const idx = owned.findIndex(o => o.car.image === item.car.image);
+              
+              if (idx !== -1) {
+                  owned[idx].quantity = newQty;
+                  setOwnedCars(owned); 
+                  renderOwnedCars(groupBy);
+              }
+          });
+      }
+
+
+      // ✅ Click event to show car details pop-up (from popup.js)
+      card.addEventListener('click', e => {
+        // Don't trigger details if clicking any button or the quantity span
+        if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button') || e.target.classList.contains('quantity-value')) return;
+          
+        const year = item.year;
+        const caseLetter = item.caseLetter;
+        const car = item.car;
+        
+        // Use the global helper exposed by utils.js
+        const carsData = window.getCarData(); 
+        let parentCase = null;
+        
+        if (carsData[year] && carsData[year].cases) {
+          carsData[year].cases.forEach(hCase => {
+            if (hCase.letter === caseLetter) {
+              if (hCase.cars.some(carInCase => carInCase.image === car.image)) {
+                parentCase = hCase;
+              }
+            }
+          });
         }
 
-        const owned = getOwnedCars();
-        const idx = owned.findIndex(o => o.car.image === item.car.image);
-        if (idx !== -1) {
-          owned[idx].quantity = newQty;
-          setOwnedCars(owned);
-          renderOwnedCars(groupBy);
+        if (parentCase) {
+          // Call the global showDetails function
+          if (typeof window.showDetails === 'function') {
+             window.showDetails(year, parentCase, car); 
+          }
+        } else {
+          alert("Case details not available in the loaded data.");
         }
       });
 
-
       grid.appendChild(card);
     });
+    // --- END: Individual Card Rendering Loop ---
 
     groupDiv.appendChild(grid);
     ownedCarsContainer.appendChild(groupDiv);

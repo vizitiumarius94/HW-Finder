@@ -11,6 +11,7 @@ function setWantedCars(cars) {
 }
 
 // --- CRITICAL CHANGE START: Fetch data before rendering ---
+// fetchCarData is assumed to be defined in utils.js and sets window.carsData
 fetchCarData().then(() => {
     loadWantedCars();
 });
@@ -26,11 +27,15 @@ function loadWantedCars() {
     return;
   }
 
+  // Define the refresh function globally so remove/add buttons on other pages can call it
+  window.loadWantedCars = loadWantedCars;
+
   wanted.forEach(item => {
     const card = document.createElement('div');
     card.classList.add('result-card');
     
     // APPLY HUNT STYLING: Calls function, applies borders, and gets icons
+    // applyHuntStyling is assumed to be defined in utils.js
     const huntIconHtml = applyHuntStyling(card, item.year, item.caseLetter, item.car);
 
     card.innerHTML = `
@@ -46,11 +51,45 @@ function loadWantedCars() {
       </div>
     `;
 
-    // Updated class name in query selector
-    card.querySelector('.remove-from-list-btn').addEventListener('click', () => {
+    // Remove from list listener
+    card.querySelector('.remove-from-list-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
       let wanted = getWantedCars().filter(w => w.car.image !== item.car.image);
       setWantedCars(wanted);
       loadWantedCars(); // refresh list
+    });
+    
+    // ADD POPUP CLICK LISTENER HERE
+    card.addEventListener('click', e => {
+      // Don't trigger details if clicking the Remove button
+      if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) return;
+
+      const year = item.year;
+      const caseLetter = item.caseLetter;
+      const car = item.car;
+        
+      // Use the global helper exposed by utils.js
+      const carsData = window.getCarData(); 
+      let parentCase = null;
+        
+      // Find the specific case object for this car
+      if (carsData[year] && carsData[year].cases) {
+        carsData[year].cases.forEach(hCase => {
+          // Find case by letter AND confirm car is in that case
+          if (hCase.letter === caseLetter && hCase.cars.some(carInCase => carInCase.image === car.image)) {
+            parentCase = hCase;
+          }
+        });
+      }
+
+      if (parentCase) {
+        // Call the global showDetails function exposed from popup.js
+        if (typeof window.showDetails === 'function') {
+             window.showDetails(year, parentCase, car); 
+        }
+      } else {
+        alert("Case details not available in the loaded data.");
+      }
     });
 
     wantedListDiv.appendChild(card);
