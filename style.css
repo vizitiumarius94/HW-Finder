@@ -136,10 +136,13 @@ h2 {
 
 /* Dropdown Content Visibility (CRITICAL FIX: display: none/block) */
 .dropdown-content {
+    /* Set default alignment to left */
+    left: 0; 
+    transform: none; 
+    
     display: none; 
     position: absolute;
     top: 100%; 
-    left: 0;
     z-index: 100; 
     background-color: #FFFFFF;
     border: 1px solid #ddd;
@@ -148,8 +151,23 @@ h2 {
     padding: 10px;
     max-height: 200px;
     overflow-y: auto;
-    width: 200px;
+    overflow-x: hidden; 
+    
+    /* 🚀 FIX: Use max-content for width adjustment */
+    width: max-content; 
+    
     margin-top: 5px; 
+    text-align: left; 
+    box-sizing: border-box; 
+    /* Keep white-space nowrap to allow max-content to calculate full text width */
+    white-space: nowrap; 
+}
+
+/* NEW CLASS FOR JS ALIGNMENT FIX (Right alignment override) */
+.dropdown-content.dropdown-align-right {
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
 }
 
 /* Functional CSS: Show content when the hidden checkbox is checked */
@@ -160,8 +178,8 @@ h2 {
 /* --- FIX: REMOVE LIST MARKERS --- */
 .dropdown-content ul {
     list-style: none; /* Removes the bullet points/markers */
-    padding: 0;      /* Removes padding that causes initial indentation */
-    margin: 0;       /* Removes margin around the list */
+    padding: 0;      
+    margin: 0;       
 }
 /* ---------------------------------- */
 
@@ -189,7 +207,9 @@ h2 {
 
 /* Dropdown list items */
 .dropdown-content li {
-    padding: 5px 8px;
+    text-align: left; /* Explicitly ensure left alignment */
+    padding: 5px 15px; 
+    
     cursor: pointer;
     border-radius: 3px;
     transition: background-color 0.1s;
@@ -215,17 +235,16 @@ h2 {
     margin-top: 20px;
 }
 
-/* 🚀 FIX 1: Overrides for the main container when a single group view is active */
+/* FIX 1: Overrides for the main container when a single group view is active */
 #ownedCarsContainer.single-group-view .group-container,
 #duplicatesContainer.single-group-view .group-container {
     padding: 15px;
     box-shadow: none;
     border-radius: 8px;
     margin-bottom: 0;
-    position: absolute;
 }
 
-/* 🚀 FIX 2: Force two equal columns inside the single-group-view */
+/* FIX 2: Force two equal columns inside the single-group-view */
 #ownedCarsContainer.single-group-view .results-grid {
     /* CRITICAL: Override the auto-fill to force exactly two equal columns (1fr 1fr) */
     grid-template-columns: 1fr 1fr;
@@ -235,7 +254,7 @@ h2 {
     margin: 20px 0; 
 }
 
-/* 🚀 FIX 3: Restrict the individual card width inside the two-column view */
+/* FIX 3: Restrict the individual card width inside the two-column view */
 #ownedCarsContainer.single-group-view .results-grid .result-card {
     /* Ensures cards don't stretch too wide within the 1fr column */
     max-width: 450px; 
@@ -628,7 +647,18 @@ h2 {
         padding: 6px 8px;
         font-size: 0.8em;
     }
+    
+    /* CRITICAL MOBILE DROPDOWN FIX: Use right: auto and limit width using vw */
+    .dropdown-content {
+        left: 0; 
+        right: auto; 
+        transform: none; 
+        /* Ensures the dropdown cannot push the page wider than the viewport */
+        max-width: calc(100vw - 20px); 
+        width: max-content; 
+    }
 }
+
 /* --- WANTED LIST SPECIFIC BUTTON --- */
 .remove-from-list-btn {
     background-color: #dc3545; /* A standard, professional red for danger/removal */
@@ -680,4 +710,6 @@ align-items: flex-start;
         font-size: 0.9em;
         text-align: center;
     }
+
+    /* The general media query already handles .dropdown-content for mobile */
 }

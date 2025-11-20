@@ -1,5 +1,52 @@
 // utils.js
+// Add this to your main script or utils.js
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Select all elements that control the dropdown content visibility
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const PADDING = 10; // Margin from the edge of the viewport
+
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('change', () => {
+            const dropdownContent = toggle.nextElementSibling;
+            
+            // Only run alignment check if the dropdown is OPEN
+            if (toggle.checked) {
+                const buttonRect = toggle.closest('.custom-dropdown-container').getBoundingClientRect();
+                const contentWidth = dropdownContent.offsetWidth;
+                const viewportWidth = window.innerWidth;
+
+                // --- 🚀 NEW LEFT EDGE CHECK ---
+                const dropdownLeftEdge = buttonRect.left;
+                
+                // Check if dropdown goes outside the viewport on the LEFT side (where the issue is)
+                if (dropdownLeftEdge < PADDING) {
+                    // If it's too close to the left edge, align the button container to the left of the *screen*
+                    // This forces the entire button + dropdown to shift right if needed.
+                    toggle.closest('.custom-dropdown-container').style.position = 'fixed';
+                    toggle.closest('.custom-dropdown-container').style.left = PADDING + 'px';
+                    toggle.closest('.custom-dropdown-container').style.right = 'auto';
+
+                } else if (buttonRect.right + contentWidth > viewportWidth - PADDING) {
+                    // Secondary check: If the dropdown spills off the RIGHT side, align it to the right
+                    dropdownContent.classList.add('dropdown-align-right');
+                } else {
+                    // Default alignment: align left of the button
+                    dropdownContent.classList.remove('dropdown-align-right');
+                    // Reset fixed position if it was set
+                    toggle.closest('.custom-dropdown-container').style.position = 'relative'; 
+                }
+            } else {
+                // When closing, clean up the alignment class and reset position
+                if (dropdownContent) {
+                    dropdownContent.classList.remove('dropdown-align-right');
+                }
+                toggle.closest('.custom-dropdown-container').style.position = 'relative';
+                toggle.closest('.custom-dropdown-container').style.left = 'auto';
+            }
+        });
+    });
+});
 // Global variable to hold the full car data once fetched
 let globalCarsData = {};
 

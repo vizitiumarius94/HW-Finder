@@ -474,16 +474,35 @@ if (showDudsCheckbox) showDudsCheckbox.addEventListener('click', handleFilterCha
 // ------------------- GLOBAL DROPDOWN CLOSE LOGIC -------------------
 
 function closeAllDropdowns(event) {
-    const isClickInsideFilter = event.target.closest('.custom-dropdown-container') || event.target.closest('.filter-chip');
-    
-    if (!isClickInsideFilter) {
-        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-            toggle.checked = false;
-        });
-    }
+    const isClickInsideFilterContainer = event.target.closest('.custom-dropdown-container');
+    const isClickOnChip = event.target.closest('.filter-chip');
+
+    // Iterate over all dropdown toggles
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        const container = toggle.closest('.custom-dropdown-container');
+        
+        // If the toggle is checked (dropdown is open)
+        if (toggle.checked) {
+            // Check if the click was OUTSIDE the current dropdown container AND not on a chip
+            if (!container.contains(event.target) && !isClickOnChip) {
+                toggle.checked = false; // Close the dropdown
+            }
+            
+            // 🔥 Edge case: If the click was inside a DIFFERENT dropdown container, 
+            // the previous one needs to close *before* the new one opens. 
+            // The logic below ensures ALL other open ones close.
+
+        } else if (isClickInsideFilterContainer && container !== isClickInsideFilterContainer) {
+             // If a closed toggle is clicked AND the click target is a DIFFERENT container, 
+             // we need to make sure this one stays closed. (The above logic covers most cases, 
+             // but this structure is safer against immediate opening/closing race conditions).
+             toggle.checked = false;
+        }
+    });
 }
 
 // Attach the global listener to the document
+// 🚀 FIX: This handler ensures only one dropdown can be open at a time.
 document.addEventListener('click', closeAllDropdowns);
 
 
