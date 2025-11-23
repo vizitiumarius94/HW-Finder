@@ -242,6 +242,7 @@ h2 {
     box-shadow: none;
     border-radius: 8px;
     margin-bottom: 0;
+    position: absolute;
 }
 
 /* FIX 2: Force two equal columns inside the single-group-view */
