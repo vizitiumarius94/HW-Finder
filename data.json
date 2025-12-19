@@ -17008,51 +17008,11 @@
         },
         "cars": [
           {
-            "name": "Track Ripper",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "ZAMAC",
-            "series": "HW Starting Grid",
-            "series_number": ""
-          },
-          {
             "name": "Porsche 911 Carrera T",
             "image": "images/911Zamac2026B.png",
             "hw_number": "",
             "color": "ZAMAC",
             "series": "Factory Fresh",
-            "series_number": ""
-          },
-          {
-            "name": "Pontiac Aztek Custom",
-            "image": "images/HW-9943-th.jpg",
-            "hw_number": "",
-            "color": "Maroon",
-            "series": "Wild Widebody",
-            "series_number": ""
-          },
-          {
-            "name": "Land Rover Defender 90",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Blue Gray",
-            "series": "Then and Now",
-            "series_number": ""
-          },
-          {
-            "name": "Ford RS200",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "Peak Pursuit",
-            "series_number": ""
-          },
-          {
-            "name": "1983 Porsche 928S",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Gold",
-            "series": "HW Torque",
             "series_number": ""
           },
           {
@@ -17062,14 +17022,6 @@
             "color": "White",
             "series": "Drop Tops",
             "series_number": "2"
-          },
-          {
-            "name": "Volkswagen ID. Buzz Bomb",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "",
-            "series": "",
-            "series_number": ""
           },
           {
             "name": "Ford Mustang GTD",
@@ -17094,14 +17046,6 @@
             "color": "White",
             "series": "HW Dream Garage",
             "series_number": "1"
-          },
-          {
-            "name": "La Liebre",
-            "image": "images/LaLiebre2026B.png",
-            "hw_number": "1",
-            "color": "",
-            "series": "HW Dream Garage",
-            "series_number": ""
           },
           {
             "name": "McLaren Formula 1 Team",
@@ -17286,159 +17230,225 @@
             "color": "Red",
             "series": "HW Euro",
             "series_number": "1"
+          },
+          {
+            "name": "Optimus Prime",
+            "image": "images/OptimusPrime2026B.jpg",
+            "hw_number": "27",
+            "color": "",
+            "series": "Screen Time",
+            "series_number": ""
           }
         ]
       },
       {
         "letter": "C",
-        "th": null,
+        "th": {
+          "name": "Electro Silhouette",
+          "image": "images/ElectroSil2026C.jpg",
+          "hw_number": "58",
+          "color": "Black",
+          "series": "HW EV",
+          "series_number": "5"
+        },
         "sth": {
           "name": "Ferrari F40 Competizione",
           "image": "images/HW-9877-th.jpg",
           "hw_number": "63",
-          "color": "Spectraflame Black"
+          "color": "Spectraflame Black",
+          "series": "Ferrari",
+          "series_number": "3"
         },
         "cars": [
           {
             "name": "Ferrari F40 Competizione",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Ferrari2026C.jpg",
             "hw_number": "63",
             "color": "Black",
             "series": "Ferrari",
             "series_number": "3"
           },
           {
-            "name": "Maserati Shamal",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "Red Edition",
-            "series_number": ""
-          },
-          {
-            "name": "'20 Jeep Gladiator",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Red",
-            "series": "Red Edition",
-            "series_number": ""
-          },
-          {
-            "name": "Ford Mustang Mach-E 1400",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Red",
-            "series": "Red Edition",
-            "series_number": ""
-          },
-          {
-            "name": "'69 Dodge Charger Daytona",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "HW Starting Grid",
-            "series_number": ""
-          },
-          {
-            "name": "Rodger Dodger",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Dark Blue",
-            "series": "HW Fan Driven",
-            "series_number": ""
-          },
-          {
-            "name": "2020 Ford Mustang Shelby GT500",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Light Blue",
-            "series": "Nightspeed",
-            "series_number": ""
-          },
-          {
-            "name": "'16 Lamborghini Centenario Roadster",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Steel Blue",
-            "series": "Exoticars",
-            "series_number": ""
-          },
-          {
-            "name": "Austin Mini Cooper S",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Army Green",
-            "series": "Then and Now",
-            "series_number": ""
-          },
-          {
             "name": "Ferrari F40 Competizione",
             "image": "images/HW-9877-th.jpg",
             "hw_number": "63",
             "color": "Spectraflame Black",
-            "series": "",
+            "series": "Ferrari",
             "series_number": "3"
           },
           {
-            "name": "LA Leibre",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "1",
+            "name": "Ferrari 365 GTB4 Competizione",
+            "image": "images/Ferrari3652026C.jpg",
+            "hw_number": "62",
+            "color": "White",
+            "series": "Ferrari",
+            "series_number": "2"
+          },
+          {
+            "name": "Lotus Cortina",
+            "image": "images/LotusCortina2026C.jpg",
+            "hw_number": "67",
+            "color": "Red",
+            "series": "HW Euro",
+            "series_number": "3"
+          },
+          {
+            "name": "La Liebre",
+            "image": "images/LaLiebre2026C.jpg",
+            "hw_number": "31",
             "color": "Black",
-            "series": "Dream Garage",
-            "series_number": ""
+            "series": "HW Dream Garage",
+            "series_number": "2"
+          },
+          {
+            "name": "Datsun 240Z",
+            "image": "images/Datsun240Z2026C.jpg",
+            "hw_number": "72",
+            "color": "Orange",
+            "series": "Then and Now",
+            "series_number": "2"
+          },
+          {
+            "name": "Mazda RX-7",
+            "image": "images/MazdaRx72026C.jpg",
+            "hw_number": "61",
+            "color": "Purple",
+            "series": "HW J-Imports",
+            "series_number": "2"
+          },
+          {
+            "name": "Mclaren W1",
+            "image": "images/MclarenW12026C.jpg",
+            "hw_number": "74",
+            "color": "Blue",
+            "series": "Exoticars",
+            "series_number": "5"
+          },
+          {
+            "name": "'17 Audi RS 6 Avant",
+            "image": "images/AudiRs62026C.jpg",
+            "hw_number": "66",
+            "color": "Yellow",
+            "series": "HW Euro",
+            "series_number": "2"
+          },
+          {
+            "name": "Lucid Air",
+            "image": "images/LucidAir2026C.jpg",
+            "hw_number": "59",
+            "color": "Burgundy",
+            "series": "HW EV",
+            "series_number": "6"
+          },
+          {
+            "name": "'67 Camaro",
+            "image": "images/57Camaro2026C.jpg",
+            "hw_number": "56",
+            "color": "Gold",
+            "series": "HW Dream Garage",
+            "series_number": "3"
+          },
+          {
+            "name": "Corvette Grand Sport",
+            "image": "images/CorveteGrand2026C.jpg",
+            "hw_number": "97",
+            "color": "White",
+            "series": "Then and Now",
+            "series_number": "3"
+          },
+          {
+            "name": "'76 Chevy Chevette",
+            "image": "images/Chevy2026C.jpg",
+            "hw_number": "76",
+            "color": "Baby Blue",
+            "series": "Drag Racers",
+            "series_number": "1"
+          },
+          {
+            "name": "Porsche 911 Turbo Cabriolet",
+            "image": "images/Porsche9112026C.jpg",
+            "hw_number": "52",
+            "color": "White",
+            "series": "Drop Tops",
+            "series_number": "3"
+          },
+          {
+            "name": "Austin Mini Cooper S",
+            "image": "images/AustinMini2026C.jpg",
+            "hw_number": "71",
+            "color": "Green",
+            "series": "Then and Now",
+            "series_number": "1"
+          },
+          {
+            "name": "Volvo 240 Drift Wagon",
+            "image": "images/Volvo2402026C.jpg",
+            "hw_number": "69",
+            "color": "Blue",
+            "series": "HW Mods",
+            "series_number": "2"
+          },
+          {
+            "name": "Decidedly Go",
+            "image": "images/DecidetlyGo2026C.jpg",
+            "hw_number": "70",
+            "color": "Blue",
+            "series": "Mattel",
+            "series_number": "4"
+          },
+          {
+            "name": "The Dark Knight Batmobile",
+            "image": "images/TheDarkKnight2026C.jpg",
+            "hw_number": "51",
+            "color": "Brown",
+            "series": "Batman",
+            "series_number": "2"
+          },
+          {
+            "name": "Quick Chat",
+            "image": "images/QuickChat2026C.jpg",
+            "hw_number": "49",
+            "color": "White",
+            "series": "Mattel",
+            "series_number": "3"
+          },
+          {
+            "name": "'69 Chevelle",
+            "image": "images/69Chevelle2026C.jpg",
+            "hw_number": "53",
+            "color": "Black",
+            "series": "X-Raycers",
+            "series_number": "3"
+          },
+          {
+            "name": "Electro Silhouette",
+            "image": "images/ElectroSil2026C.jpg",
+            "hw_number": "58",
+            "color": "Black",
+            "series": "HW EV",
+            "series_number": "5"
           }
         ]
       },
       {
         "letter": "D",
-        "th": null,
+        "th": {
+          "name": "Hot Wheengs",
+          "image": "images/HotWheengs2026D.jpg",
+          "hw_number": "81",
+          "color": "Green",
+          "series": "X-Raycers",
+          "series_number": "4"
+        },
         "sth": {
           "name": "'64 Impala",
           "image": "images/1761108796455_imapalasth.jpg",
           "hw_number": "95",
-          "color": "Spectraflame Teal"
+          "color": "Spectraflame Teal",
+          "series": "Layin' Low",
+          "series_number": "4"
         },
         "cars": [
-          {
-            "name": "'59 Chevy Impala",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "ZAMAC",
-            "series": "Layin' Low",
-            "series_number": ""
-          },
-          {
-            "name": "'70 Dodge Hemi Challenger",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "ZAMAC",
-            "series": "Nightspeed",
-            "series_number": ""
-          },
-          {
-            "name": "VW ID Buzz Bomb",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Red",
-            "series": "HW Euro",
-            "series_number": ""
-          },
-          {
-            "name": "Toyota Prius Custom",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "HW J-Imports",
-            "series_number": ""
-          },
-          {
-            "name": "X-Cceleron",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "Exoticars",
-            "series_number": ""
-          },
           {
             "name": "'64 Impala",
             "image": "images/1761108796455_imapalasth.jpg",
@@ -17446,82 +17456,355 @@
             "color": "Spectraflame Teal",
             "series": "Layin' Low",
             "series_number": "4"
+          },
+          {
+            "name": "Ferrari 12Cilindri",
+            "image": "images/Ferrari122026D.jpg",
+            "hw_number": "94",
+            "color": "Red",
+            "series": "Ferrari",
+            "series_number": "4"
+          },
+          {
+            "name": "'64 Impala",
+            "image": "images/Impala2026D.jpg",
+            "hw_number": "95",
+            "color": "Blue",
+            "series": "Layin' Low",
+            "series_number": "4"
+          },
+          {
+            "name": "Toyota Prius Custom",
+            "image": "images/ToyotaPrius2026D.jpg",
+            "hw_number": "80",
+            "color": "White",
+            "series": "HW J-Imports",
+            "series_number": "1"
+          },
+          {
+            "name": "VW ID Buzz Bomb",
+            "image": "images/VW2026D.jpg",
+            "hw_number": "86",
+            "color": "Pink",
+            "series": "HW Euro",
+            "series_number": "4"
+          },
+          {
+            "name": "LB-Works Lamborghini Huracan Coupe",
+            "image": "images/LBWorksLambo2026D.jpg",
+            "hw_number": "91",
+            "color": "Black",
+            "series": "Night Speed",
+            "series_number": "8"
+          },
+          {
+            "name": "'96 Porsche Carrera",
+            "image": "images/Porsche2026D.jpg",
+            "hw_number": "98",
+            "color": "Brown",
+            "series": "Then and Now",
+            "series_number": "4"
+          },
+          {
+            "name": "2023 Nissan Z",
+            "image": "images/NissanZ2026D.jpg",
+            "hw_number": "121",
+            "color": "Red",
+            "series": "Then and Now",
+            "series_number": "5"
+          },
+          {
+            "name": "Nissan Skyline 2000 GT-R",
+            "image": "images/Nissan2026D.jpg",
+            "hw_number": "88",
+            "color": "Orange",
+            "series": "HW J-Imports",
+            "series_number": "3"
+          },
+          {
+            "name": "'16 Cadilac ATS-V R",
+            "image": "images/Cadilac2026D.jpg",
+            "hw_number": "90",
+            "color": "Orange",
+            "series": "Night Speed",
+            "series_number": "7"
+          },
+          {
+            "name": "1985 Honda CR-X",
+            "image": "images/HondCRX2026D.jpg",
+            "hw_number": "89",
+            "color": "Yellow",
+            "series": "HW J-Imports",
+            "series_number": "4"
+          },
+          {
+            "name": "Visa Cash App Racing Bulls Formula One Team",
+            "image": "images/VisaCash2026D.jpg",
+            "hw_number": "68",
+            "color": "White",
+            "series": "Formula 1",
+            "series_number": "2"
+          },
+          {
+            "name": "Hako Type D",
+            "image": "images/HakoType2026D.jpg",
+            "hw_number": "78",
+            "color": "Green",
+            "series": "Compact Kings",
+            "series_number": "1"
+          },
+          {
+            "name": "Pass'n Gasser",
+            "image": "images/PassnGasser2026D.jpg",
+            "hw_number": "102",
+            "color": "Yellow",
+            "series": "Drag Racers",
+            "series_number": "3"
+          },
+          {
+            "name": "Twin Dorado",
+            "image": "images/TwinDorado2026D.jpg",
+            "hw_number": "100",
+            "color": "White",
+            "series": "HW Starting Grid",
+            "series_number": "7"
+          },
+          {
+            "name": "El Segundo Coupe",
+            "image": "images/ElSegundo2026D.jpg",
+            "hw_number": "96",
+            "color": "White",
+            "series": "HW Fan Driven",
+            "series_number": "4"
+          },
+          {
+            "name": "Cruise Bruiser",
+            "image": "images/CruiseBruiser2026D.jpg",
+            "hw_number": "87",
+            "color": "Brown",
+            "series": "Wagons",
+            "series_number": "1"
+          },
+          {
+            "name": "Coupe Clip",
+            "image": "images/CoupeClip2026D.jpg",
+            "hw_number": "93",
+            "color": "Purple",
+            "series": "Experimotors",
+            "series_number": "1"
+          },
+          {
+            "name": "Hot Wheengs",
+            "image": "images/HotWheengs2026D.jpg",
+            "hw_number": "81",
+            "color": "Green",
+            "series": "X-Raycers",
+            "series_number": "4"
           }
         ]
       },
       {
         "letter": "E",
-        "th": null,
+        "th": {
+          "name": "Cone Shaker",
+          "image": "images/ConeShaker2026E.jpg",
+          "hw_number": "122",
+          "color": "Green",
+          "series": "HW Starting Grid",
+          "series_number": "8"
+        },
         "sth": {
           "name": "'87 Ford Sierra Cosworth",
           "image": "images/1761109140794_fordcosworthsth.jpg",
-          "hw_number": "0",
-          "color": "Spectraflame Red"
+          "hw_number": "116",
+          "color": "Spectraflame Red",
+          "series": "HW Euro",
+          "series_number": "5"
         },
         "cars": [
           {
-            "name": "Toyota Prius Custom",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Dark Gray",
-            "series": "HW J-Imports",
-            "series_number": ""
-          },
-          {
-            "name": "Lotus Cortina",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Green",
+            "name": "'87 Ford Sierra Cosworth",
+            "image": "images/1761109140794_fordcosworthsth.jpg",
+            "hw_number": "116",
+            "color": "Spectraflame Red",
             "series": "HW Euro",
-            "series_number": ""
-          },
-          {
-            "name": "'67 Camaro",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Blue",
-            "series": "Dream Garage",
-            "series_number": ""
-          },
-          {
-            "name": "Custom '66 Toronado",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Red",
-            "series": "Factory Fresh",
-            "series_number": ""
-          },
-          {
-            "name": "Maserati Tipo 61",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "White",
-            "series": "HW Starting Grid",
-            "series_number": ""
-          },
-          {
-            "name": "Custom 2020 Honda E",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Yellow",
-            "series": "HW EV",
-            "series_number": ""
-          },
-          {
-            "name": "Eggshelleracer",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "",
-            "color": "Yellow",
-            "series": "Drag Racers",
-            "series_number": ""
+            "series_number": "5"
           },
           {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/1761109140794_fordcosworthsth.jpg",
-            "hw_number": "0",
-            "color": "Spectraflame Red",
+            "image": "images/FordSierra2026E.jpg",
+            "hw_number": "116",
+            "color": "Pink",
             "series": "HW Euro",
-            "series_number": ""
+            "series_number": "5"
+          },
+          {
+            "name": "Cone Shaker",
+            "image": "images/ConeShaker2026E.jpg",
+            "hw_number": "122",
+            "color": "Green",
+            "series": "HW Starting Grid",
+            "series_number": "8"
+          },
+          {
+            "name": "Mazda RX-3",
+            "image": "images/MazdaRX3Tooned.jpg",
+            "hw_number": "142",
+            "color": "Blue",
+            "series": "Tooned",
+            "series_number": "1"
+          },
+          {
+            "name": "Corvette C7 Z06",
+            "image": "images/CorvetteC72026E.jpg",
+            "hw_number": "113",
+            "color": "Pink",
+            "series": "Night Speed",
+            "series_number": "9"
+          },
+          {
+            "name": "The Simpson Family Car",
+            "image": "images/Simpson2026E.jpg",
+            "hw_number": "108",
+            "color": "Pink",
+            "series": "Screen Time",
+            "series_number": "3"
+          },
+          {
+            "name": "'85 Honda City Turbo II",
+            "image": "images/HondaCity2026E.jpg",
+            "hw_number": "105",
+            "color": "Black",
+            "series": "Compact Kings",
+            "series_number": "4"
+          },
+          {
+            "name": "Custom 2020 Honda E",
+            "image": "images/HondaE2026E.jpg",
+            "hw_number": "115",
+            "color": "Yellow",
+            "series": "HW EV",
+            "series_number": "9"
+          },
+          {
+            "name": "Custom '66 Toronado",
+            "image": "images/Toronado2026E.jpg",
+            "hw_number": "114",
+            "color": "Red",
+            "series": "Factory Fresh",
+            "series_number": "4"
+          },
+          {
+            "name": "'68 Dodge Dart",
+            "image": "images/DodgeDart2026E.jpg",
+            "hw_number": "104",
+            "color": "Orange",
+            "series": "Drag Racers",
+            "series_number": "5"
+          },
+          {
+            "name": "'17 Pagani Huayra Roadster / Cabriolet",
+            "image": "images/PaganiHuayra2026E.jpg",
+            "hw_number": "101",
+            "color": "Green",
+            "series": "Exoticars",
+            "series_number": "7"
+          },
+          {
+            "name": "Mazda RX-3",
+            "image": "images/MazdaRX32026E.jpg",
+            "hw_number": "108",
+            "color": "Silver",
+            "series": "Compact Kings",
+            "series_number": "5"
+          },
+          {
+            "name": "'70 Chevelle SS Wagon",
+            "image": "images/ChevelleSS2026E.jpg",
+            "hw_number": "110",
+            "color": "White",
+            "series": "Wagons",
+            "series_number": "3"
+          },
+          {
+            "name": "2019 Audi R8 Spyder",
+            "image": "images/AudiR82026E.jpg",
+            "hw_number": "130",
+            "color": "Black",
+            "series": "Drop Tops",
+            "series_number": "4"
+          },
+          {
+            "name": "'89 Mazda Savanna RX-7 FC3S",
+            "image": "images/MazdaSavanna2026E.jpg",
+            "hw_number": "112",
+            "color": "Orange",
+            "series": "HW J-Imports",
+            "series_number": "5"
+          },
+          {
+            "name": "'84 Dodge 330",
+            "image": "images/Dodge3302026E.jpg",
+            "hw_number": "126",
+            "color": "White",
+            "series": "Drag Racers",
+            "series_number": "6"
+          },
+          {
+            "name": "Maserati Tipo 61",
+            "image": "images/Maserati2026E.jpg",
+            "hw_number": "123",
+            "color": "White",
+            "series": "HW Starting Grid",
+            "series_number": "9"
+          },
+          {
+            "name": "Long Bloc",
+            "image": "images/LongBloc2026E.jpg",
+            "hw_number": "111",
+            "color": "Yellow",
+            "series": "Wagons",
+            "series_number": "4"
+          },
+          {
+            "name": "Pedal Driver",
+            "image": "images/PedalDriver2026E.jpg",
+            "hw_number": "118",
+            "color": "Purple",
+            "series": "Rod Squad",
+            "series_number": "2"
+          },
+          {
+            "name": "1966 Bat Boat",
+            "image": "images/BatBoat2026E.jpg",
+            "hw_number": "107",
+            "color": "Black",
+            "series": "Batman",
+            "series_number": "3"
+          },
+          {
+            "name": "Kei Swap",
+            "image": "images/KeiSwap2026E.jpg",
+            "hw_number": "80",
+            "color": "White",
+            "series": "Compact Kings",
+            "series_number": "3"
+          },
+          {
+            "name": "Erikenstein Rod",
+            "image": "images/Erikenstein2026E.jpg",
+            "hw_number": "117",
+            "color": "Green",
+            "series": "Rod Squad",
+            "series_number": "1"
+          },
+          {
+            "name": "EGGSHELLRACER",
+            "image": "images/Egg2026E.jpg",
+            "hw_number": "103",
+            "color": "Copper",
+            "series": "Drag Racers",
+            "series_number": "4"
           }
         ]
       },
@@ -17547,5 +17830,4 @@
       }
     ]
   }
-
 }
