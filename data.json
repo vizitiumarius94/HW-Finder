@@ -17449,6 +17449,14 @@
           "series_number": "4"
         },
         "cars": [
+		  {
+            "name": "'64 Impala",
+            "image": "images/Impala2026D.jpg",
+            "hw_number": "95",
+            "color": "Blue",
+            "series": "Layin' Low",
+            "series_number": "4"
+          },
           {
             "name": "'64 Impala",
             "image": "images/1761108796455_imapalasth.jpg",
@@ -17463,14 +17471,6 @@
             "hw_number": "94",
             "color": "Red",
             "series": "Ferrari",
-            "series_number": "4"
-          },
-          {
-            "name": "'64 Impala",
-            "image": "images/Impala2026D.jpg",
-            "hw_number": "95",
-            "color": "Blue",
-            "series": "Layin' Low",
             "series_number": "4"
           },
           {
@@ -17622,19 +17622,19 @@
           "series_number": "5"
         },
         "cars": [
-          {
+		  {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/1761109140794_fordcosworthsth.jpg",
+            "image": "images/FordSierra2026E.jpg",
             "hw_number": "116",
-            "color": "Spectraflame Red",
+            "color": "Pink",
             "series": "HW Euro",
             "series_number": "5"
           },
           {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/FordSierra2026E.jpg",
+            "image": "images/1761109140794_fordcosworthsth.jpg",
             "hw_number": "116",
-            "color": "Pink",
+            "color": "Spectraflame Red",
             "series": "HW Euro",
             "series_number": "5"
           },
