@@ -18692,6 +18692,14 @@
             "color": "Orange",
             "series": "Compact Kings",
             "series_number": "7"
+          },
+		  {
+            "name": "Lotus Sport Elise",
+            "image": "images/10220_th.jpg",
+            "hw_number": "160",
+            "color": "Spectraflame Orange",
+            "series": "Compact Kings",
+            "series_number": "7"
           }
         ]
       },

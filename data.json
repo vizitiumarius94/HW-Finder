@@ -18732,17 +18732,17 @@
           },
           {
             "name": "Subaru Impreza",
-            "image": "images/10219_th.jpg",
-            "hw_number": "176",
-            "color": "Spectraflame Blue",
-            "series": "HW J-Imports",
-            "series_number": "7"
-          },
-          {
-            "name": "Subaru Impreza",
             "image": "images/10622_th.jpg",
             "hw_number": "176",
             "color": "Metalflake Blue",
+            "series": "HW J-Imports",
+            "series_number": "7"
+          },
+		  {
+            "name": "Subaru Impreza",
+            "image": "images/10219_th.jpg",
+            "hw_number": "176",
+            "color": "Spectraflame Blue",
             "series": "HW J-Imports",
             "series_number": "7"
           },
