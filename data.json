@@ -17434,7 +17434,7 @@
         "letter": "D",
         "th": {
           "name": "Hot Wheengs",
-          "image": "images/HotWheengs2026D.jpg",
+          "image": "images/10081_th.jpg",
           "hw_number": "81",
           "color": "Green",
           "series": "X-Raycers",
@@ -17442,21 +17442,13 @@
         },
         "sth": {
           "name": "'64 Impala",
-          "image": "images/1761108796455_imapalasth.jpg",
+          "image": "images/9924_th.jpg",
           "hw_number": "95",
           "color": "Spectraflame Teal",
           "series": "Layin' Low",
           "series_number": "4"
         },
         "cars": [
-          {
-            "name": "'64 Impala",
-            "image": "images/9924_th.jpg",
-            "hw_number": "95",
-            "color": "Spectraflame Teal",
-            "series": "Layin' Low",
-            "series_number": "4"
-          },
           {
             "name": "X-Cceleron",
             "image": "images/9957_th.jpg",
@@ -17502,6 +17494,14 @@
             "image": "images/10012_th.jpg",
             "hw_number": "95",
             "color": "Teal",
+            "series": "Layin' Low",
+            "series_number": "4"
+          },
+		  {
+            "name": "'64 Impala",
+            "image": "images/9924_th.jpg",
+            "hw_number": "95",
+            "color": "Spectraflame Teal",
             "series": "Layin' Low",
             "series_number": "4"
           },
@@ -17711,14 +17711,6 @@
         },
         "cars": [
           {
-            "name": "'87 Ford Sierra Cosworth",
-            "image": "images/9939_th.jpg",
-            "hw_number": "116",
-            "color": "Spectraflame Pink",
-            "series": "HW Euro",
-            "series_number": "5"
-          },
-          {
             "name": "Eggshelleracer",
             "image": "images/9962_th.jpg",
             "hw_number": "103",
@@ -17779,6 +17771,14 @@
             "image": "images/10084_th.jpg",
             "hw_number": "116",
             "color": "Pink",
+            "series": "HW Euro",
+            "series_number": "5"
+          },
+		  {
+            "name": "'87 Ford Sierra Cosworth",
+            "image": "images/9939_th.jpg",
+            "hw_number": "116",
+            "color": "Spectraflame Pink",
             "series": "HW Euro",
             "series_number": "5"
           },
@@ -17949,17 +17949,17 @@
         "cars": [
           {
             "name": "Honda Civic Custom",
-            "image": "images/9969_th.jpg",
-            "hw_number": "151",
-            "color": "Spectraflame Teal",
-            "series": "Drag Racers",
-            "series_number": "8"
-          },
-          {
-            "name": "Honda Civic Custom",
             "image": "images/10085_th.jpg",
             "hw_number": "151",
             "color": "Teal",
+            "series": "Drag Racers",
+            "series_number": "8"
+          },
+		  {
+            "name": "Honda Civic Custom",
+            "image": "images/9969_th.jpg",
+            "hw_number": "151",
+            "color": "Spectraflame Teal",
             "series": "Drag Racers",
             "series_number": "8"
           },
@@ -18234,17 +18234,17 @@
         "cars": [
           {
             "name": "Custom Otto",
-            "image": "images/10217_th.jpg",
-            "hw_number": "156",
-            "color": "Spectraflame Blue",
-            "series": "Mattel",
-            "series_number": "5"
-          },
-          {
-            "name": "Custom Otto",
             "image": "images/10218_th.jpg",
             "hw_number": "156",
             "color": "Blue",
+            "series": "Mattel",
+            "series_number": "5"
+          },
+		  {
+            "name": "Custom Otto",
+            "image": "images/10217_th.jpg",
+            "hw_number": "156",
+            "color": "Spectraflame Blue",
             "series": "Mattel",
             "series_number": "5"
           },
@@ -18445,14 +18445,6 @@
           "series_number": "7"
         },
         "cars": [
-          {
-            "name": "Lotus Sport Elise",
-            "image": "images/10220_th.jpg",
-            "hw_number": "160",
-            "color": "Spectraflame Orange",
-            "series": "Compact Kings",
-            "series_number": "7"
-          },
           {
             "name": "Track Ripper",
             "image": "images/10590_th.jpg",
@@ -18698,6 +18690,14 @@
             "image": "images/10620_th.jpg",
             "hw_number": "160",
             "color": "Orange",
+            "series": "Compact Kings",
+            "series_number": "7"
+          },
+		  {
+            "name": "Lotus Sport Elise",
+            "image": "images/10220_th.jpg",
+            "hw_number": "160",
+            "color": "Spectraflame Orange",
             "series": "Compact Kings",
             "series_number": "7"
           }
