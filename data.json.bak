@@ -17622,19 +17622,19 @@
           "series_number": "5"
         },
         "cars": [
-          {
+		  {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/1761109140794_fordcosworthsth.jpg",
+            "image": "images/FordSierra2026E.jpg",
             "hw_number": "116",
-            "color": "Spectraflame Red",
+            "color": "Pink",
             "series": "HW Euro",
             "series_number": "5"
           },
           {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/FordSierra2026E.jpg",
+            "image": "images/1761109140794_fordcosworthsth.jpg",
             "hw_number": "116",
-            "color": "Pink",
+            "color": "Spectraflame Red",
             "series": "HW Euro",
             "series_number": "5"
           },
