@@ -4340,6 +4340,14 @@
             "color": "Blue",
             "series": "HW Turbo",
             "series_number": "3"
+          },
+          {
+            "name": "Honda Civic Si",
+            "image": "images/CivicSI2021C_1.jpg",
+            "hw_number": "63",
+            "color": "Blue",
+            "series": "Factory Fresh",
+            "series_number": "3"
           }
         ]
       },
@@ -4558,6 +4566,14 @@
             "color": "Red",
             "series": "Then and Now",
             "series_number": "4"
+          },
+          {
+            "name": "98 Subaru Impreza 22B STi-Version",
+            "image": "images/Subaru2021jpg_1.jpg",
+            "hw_number": "124",
+            "color": "Blue",
+            "series": "HW H-Imports",
+            "series_number": "1"
           }
         ]
       },
@@ -4686,7 +4702,7 @@
           },
           {
             "name": "'98 Subaru Impreza 22B STi-Version",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Subaru2021jpg_2.jpg",
             "hw_number": "124",
             "color": "Dark Blue",
             "series": "HW J-Imports",
@@ -4787,7 +4803,7 @@
           },
           {
             "name": "Volvo 850 Estate",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Volvo2021yellow_1.jpg",
             "hw_number": "43",
             "color": "Yellow",
             "series": "Factory Fresh",
@@ -4883,7 +4899,7 @@
           },
           {
             "name": "2017 Camaro ZL1",
-            "image": "images/images-coming-soon.png",
+            "image": "images/2021ZL1G_1.jpg",
             "hw_number": "154",
             "color": "Orange",
             "series": "Then and Now",
@@ -5476,6 +5492,14 @@
             "color": "Spectraflame Green",
             "series": "HW Flames",
             "series_number": "2"
+          },
+          {
+            "name": "Mclaren Speedtail",
+            "image": "images/mclarenspeed2021L_1.jpg",
+            "hw_number": "112",
+            "color": "Silver",
+            "series": "Factory Fresh",
+            "series_number": "7"
           }
         ]
       },
@@ -5875,6 +5899,14 @@
             "color": "Yellow",
             "series": "Muscle Mania",
             "series_number": "8"
+          },
+          {
+            "name": "Mercedes-Benz 500 E",
+            "image": "images/Mercedes2021_1.jpg",
+            "hw_number": "145",
+            "color": "Silver",
+            "series": "Factory Fresh",
+            "series_number": "8"
           }
         ]
       },
@@ -6185,8 +6217,8 @@
           },
           {
             "name": "'87 Ford Sierra Cosworth",
-            "image": "images/images-coming-soon.png",
-            "hw_number": "35",
+            "image": "images/Sierra2022Black_1.jpg",
+            "hw_number": "33",
             "color": "Black",
             "series": "Retro Racers",
             "series_number": "1"
@@ -6245,6 +6277,14 @@
             "hw_number": "46",
             "color": "Maroon",
             "series": "HW Contoured",
+            "series_number": "3"
+          },
+          {
+            "name": "Tesla Cybertruck",
+            "image": "images/Tesla2022B_1.jpg",
+            "hw_number": "49",
+            "color": "Silver",
+            "series": "HW Hot Trucks",
             "series_number": "3"
           }
         ]
@@ -6427,7 +6467,7 @@
           },
           {
             "name": "Subaru WRX STI",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Subaru2022WRX_1.jpg",
             "hw_number": "67",
             "color": "Metallic Blue",
             "series": "HW Hatchbacks",
@@ -6483,7 +6523,7 @@
           },
           {
             "name": "Lamborghini Sian FKP 37",
-            "image": "images/images-coming-soon.png",
+            "image": "images/LamboGreen2022_2.jpg",
             "hw_number": "85",
             "color": "Green",
             "series": "Factory Fresh",
@@ -6515,10 +6555,10 @@
           },
           {
             "name": "Mazda RX-7",
-            "image": "images/images-coming-soon.png",
+            "image": "images/MazdaRX7Blue2022_1.jpg",
             "hw_number": "97",
             "color": "Blue",
-            "series": "HW J-iImports",
+            "series": "HW J-Imports",
             "series_number": "1"
           },
           {
@@ -6677,6 +6717,30 @@
             "color": "Red",
             "series": "HW Hot Trucks",
             "series_number": "8"
+          },
+          {
+            "name": "Nissan Leaf NISMO RC_02",
+            "image": "images/NissanRed2022E_1.jpg",
+            "hw_number": "100",
+            "color": "Red",
+            "series": "NW Green Speed",
+            "series_number": "2"
+          },
+          {
+            "name": "McLaren F1",
+            "image": "images/MclarenF12022E_1.jpg",
+            "hw_number": "107",
+            "color": "Black",
+            "series": "Factory Fresh",
+            "series_number": "4"
+          },
+          {
+            "name": "Ford Mustang Mach-E 1400",
+            "image": "images/Mustangmach2022_1.jpg",
+            "hw_number": "73",
+            "color": "White",
+            "series": "HW Green Speed",
+            "series_number": "1"
           }
         ]
       },
@@ -6789,7 +6853,7 @@
           },
           {
             "name": "'99 Honda Civic Type R EK9",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Honda2022F_1.jpg",
             "hw_number": "125",
             "color": "Yellow",
             "series": "HW Hatchbacks",
@@ -6914,11 +6978,19 @@
           },
           {
             "name": "2005 Ford Mustang",
-            "image": "images/images-coming-soon.png",
+            "image": "images/2005Mustang2022_1.jpg",
             "hw_number": "146",
             "color": "Gray",
             "series": "Spoiler Alert",
             "series_number": "3"
+          },
+          {
+            "name": "70 Dodge Charger",
+            "image": "images/Dodge2022Fast_1.jpg",
+            "hw_number": "129",
+            "color": "Black",
+            "series": "Baja Blazers",
+            "series_number": "9"
           }
         ]
       },
@@ -6983,7 +7055,7 @@
           },
           {
             "name": "Volvo 850 Estate",
-            "image": "images/images-coming-soon.png",
+            "image": "images/Volvo850Estate_1.jpg",
             "hw_number": "140",
             "color": "Green",
             "series": "HW Wagons",
@@ -7145,6 +7217,14 @@
             "color": "Spectraflame Red",
             "series": "Spoiler Alert",
             "series_number": "5"
+          },
+          {
+            "name": "Nissan Skyline 2000GT-R LBWK",
+            "image": "images/Nissan2022J_1.jpg",
+            "hw_number": "174",
+            "color": "Teal",
+            "series": "HW J-Imports",
+            "series_number": "8"
           }
         ]
       },
@@ -7176,7 +7256,7 @@
             "series_number": "9"
           },
           {
-            "name": "'94 B8ugatti EB110 SS",
+            "name": "'94 Bugatti EB110 SS",
             "image": "images/images-coming-soon.png",
             "hw_number": "65",
             "color": "Gray",
@@ -7318,6 +7398,14 @@
             "color": "Blue",
             "series": "Then and Now",
             "series_number": "1"
+          },
+          {
+            "name": "95 Mazda RX-7",
+            "image": "images/MazdaRX72022K_1.jpg",
+            "hw_number": "177",
+            "color": "Blue/Green",
+            "series": "HW Drift",
+            "series_number": "2"
           }
         ]
       },
@@ -7395,6 +7483,14 @@
             "color": "Gray",
             "series": "Muscle Mania",
             "series_number": "3"
+          },
+          {
+            "name": "Lamborghini Sian FKP 37",
+            "image": "images/LamboGreen2022_1.jpg",
+            "hw_number": "85",
+            "color": "Green",
+            "series": "Factory Fresh",
+            "series_number": "1"
           }
         ]
       },
@@ -8269,6 +8365,22 @@
             "color": "Pink",
             "series": "Surf's Up",
             "series_number": "3"
+          },
+          {
+            "name": "Porsche Panamera Turbo S E-Hybrid Sport Turismo",
+            "image": "images/Porsche2023B_1.jpg",
+            "hw_number": "38",
+            "color": "Red",
+            "series": "HW Green Speed",
+            "series_number": "2"
+          },
+          {
+            "name": "Tesla Model Y",
+            "image": "images/Tesla2023B_1.jpg",
+            "hw_number": "37",
+            "color": "White",
+            "series": "HW Green Speed",
+            "series_number": "1"
           }
         ]
       },
@@ -17497,7 +17609,7 @@
             "series": "Layin' Low",
             "series_number": "4"
           },
-		  {
+          {
             "name": "'64 Impala",
             "image": "images/9924_th.jpg",
             "hw_number": "95",
@@ -17774,7 +17886,7 @@
             "series": "HW Euro",
             "series_number": "5"
           },
-		  {
+          {
             "name": "'87 Ford Sierra Cosworth",
             "image": "images/9939_th.jpg",
             "hw_number": "116",
@@ -17955,7 +18067,7 @@
             "series": "Drag Racers",
             "series_number": "8"
           },
-		  {
+          {
             "name": "Honda Civic Custom",
             "image": "images/9969_th.jpg",
             "hw_number": "151",
@@ -18240,7 +18352,7 @@
             "series": "Mattel",
             "series_number": "5"
           },
-		  {
+          {
             "name": "Custom Otto",
             "image": "images/10217_th.jpg",
             "hw_number": "156",
@@ -18693,7 +18805,7 @@
             "series": "Compact Kings",
             "series_number": "7"
           },
-		  {
+          {
             "name": "Lotus Sport Elise",
             "image": "images/10220_th.jpg",
             "hw_number": "160",
@@ -18738,7 +18850,7 @@
             "series": "HW J-Imports",
             "series_number": "7"
           },
-		  {
+          {
             "name": "Subaru Impreza",
             "image": "images/10219_th.jpg",
             "hw_number": "176",
