@@ -19065,17 +19065,17 @@
         "cars": [
           {
             "name": "'94 Toyota Supra",
-            "image": "images/10571_th.jpg",
-            "hw_number": "222",
-            "color": "Spectraflame Black",
-            "series": "Tooned",
-            "series_number": "5"
-          },
-          {
-            "name": "'94 Toyota Supra",
             "image": "images/10624_th.jpg",
             "hw_number": "222",
             "color": "Black",
+            "series": "Tooned",
+            "series_number": "5"
+          },
+		            {
+            "name": "'94 Toyota Supra",
+            "image": "images/10571_th.jpg",
+            "hw_number": "222",
+            "color": "Spectraflame Black",
             "series": "Tooned",
             "series_number": "5"
           },
