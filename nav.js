@@ -20,8 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavButton('seriesPageBtn', 'series.html');
     setupNavButton('ownedPageBtn', 'owned.html');
     setupNavButton('duplicatesPageBtn', 'duplicates.html');
+    // Admin page
+    setupNavButton('adminPageBtn', 'admin-cars.html');
 
     // --- Utility Links (Export/Import) ---
+
     // NOTE: Export/Import logic is complex and must remain on the index page for now.
     // For simplicity, we redirect them back to the search page if they try to use it elsewhere.
 

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Edit Cars</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <nav class="menu-bar">
+      <button id="searchPageBtn" class="menu-btn">Search</button>
+      <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="menu-btn">Series Collection</button>
+      <button id="ownedPageBtn" class="menu-btn">Owned Cars</button>
+      <button id="duplicatesPageBtn" class="menu-btn">View Duplicates</button>
+      <button id="adminPageBtn" class="menu-btn">Admin</button>
+    </nav>
+
+    <h1>Admin - Edit Cars</h1>
+
+    <section id="loginSection" class="card-info" style="max-width: 520px; margin: 0 auto;">
+      <p style="text-align:center; color:#666;">Protected server-side via GitHub App. This page collects the updated JSON and sends it to the backend.</p>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+        <label>Username</label>
+        <input id="username" class="select-btn" style="padding:12px;">
+
+        <label>Password</label>
+        <input id="password" type="password" class="select-btn" style="padding:12px;">
+
+        <button id="loginBtn" class="action-btn">Login</button>
+        <div id="loginError" style="color:#d32f2f; font-weight:600;"></div>
+      </div>
+
+      <p style="font-size:0.85em; color:#999; margin-top:18px;">
+        Note: GitHub App token usage is server-side. Login here is a UI gate; real write protection is done by the backend.
+      </p>
+    </section>
+
+    <section id="editorSection" style="display:none;">
+      <div id="adminStatus" style="margin: 10px 0; font-weight:600;"></div>
+
+      <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
+          <div style="flex: 1 1 340px; min-width: 340px;">
+            <h2>Load & Edit</h2>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <label>Year</label>
+              <select id="yearSelect" class="select-btn" style="padding:10px; flex: 1 1 auto;"></select>
+
+              <label>Case Letter</label>
+              <select id="caseSelect" class="select-btn" style="padding:10px; flex: 1 1 auto;"></select>
+            </div>
+
+            <div style="margin-top:15px;">
+              <h3 style="margin:0 0 10px 0;">Cars in case</h3>
+              <div id="carsList" style="display:flex; flex-direction:column; gap:10px;"></div>
+            </div>
+
+            <button id="addCarBtn" class="action-btn" style="width:100%; margin-top:10px;">+ Add Car</button>
+          </div>
+
+          <div style="flex: 1 1 520px; min-width: 520px;">
+            <h2>Row Editor</h2>
+            <div id="rowEditor" style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+              <p style="color:#666;">Select a car row to edit.</p>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+              <button id="saveRowBtn" class="action-btn" style="flex:1 1 200px;">Save Row</button>
+              <button id="deleteRowBtn" class="action-btn" style="flex:1 1 200px; background:#dc3545;">Delete Row</button>
+            </div>
+
+            <div style="margin-top:20px;">
+              <button id="commitAllBtn" class="action-btn" style="width:100%;">Commit Updated data.json to GitHub</button>
+              <div id="commitMsg" style="margin-top:10px; color:#333; font-weight:600;"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="nav.js"></script>
+  <script src="admin-cars.js"></script>
+</body>
+</html>
+
