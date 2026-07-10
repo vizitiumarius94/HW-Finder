@@ -1,4 +1,4 @@
-const CACHE_NAME = "garage-cache-v66"; //bump version
+const CACHE_NAME = "garage-cache-v67"; //bump version
 const DATA_CACHE = "dynamic-data"; // dedicated cache for data.json
 
 const CORE_ASSETS = [
