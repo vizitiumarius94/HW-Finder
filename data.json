@@ -20058,8 +20058,22 @@
       },
       {
         "letter": "P",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "'70 Plymouth AAR Cuda",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "",
+          "color": "Spectraflame Gold",
+          "series": "",
+          "series_number": ""
+        },
+        "sth": {
+          "name": "'70 Plymouth AAR Cuda",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "",
+          "color": "Spectraflame Gold",
+          "series": "",
+          "series_number": ""
+        },
         "cars": [
           {
             "name": "'70 Plymouth AAR Cuda",
@@ -20097,8 +20111,22 @@
       },
       {
         "letter": "Q",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "'67 Pontiac Firebird 400",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "",
+          "color": "Spectraflame Blue",
+          "series": "",
+          "series_number": ""
+        },
+        "sth": {
+          "name": "'67 Pontiac Firebird 400",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "",
+          "color": "Spectraflame Blue",
+          "series": "",
+          "series_number": ""
+        },
         "cars": [
           {
             "name": "'67 Pontiac Firebird 400",
