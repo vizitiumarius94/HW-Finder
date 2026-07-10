@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Edit Cars</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <nav class="menu-bar">
+      <button id="searchPageBtn" class="menu-btn">Search</button>
+      <button id="wantedPageBtn" class="menu-btn">Wanted Cars</button>
+      <button id="seriesPageBtn" class="menu-btn">Series Collection</button>
+      <button id="ownedPageBtn" class="menu-btn">Owned Cars</button>
+      <button id="duplicatesPageBtn" class="menu-btn">View Duplicates</button>
+      <button id="exportBtn" class="menu-btn">Export</button>
+      <input type="file" id="importFile" style="display:none;" />
+      <button id="importBtn" class="menu-btn">Import</button>
+      <button id="adminPageBtn" class="menu-btn">Admin</button>
+    </nav>
+
+    <h1>Admin: Edit Cars (Download Updated data.json)</h1>
+
+    <div id="loginView" style="max-width: 520px; margin: 0 auto;">
+      <h2 style="text-align:center;">Login</h2>
+      <p style="text-align:center; color:#666;">Enter credentials to edit the local draft and export an updated <code>data.json</code>.</p>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <label>
+          Username
+          <input id="adminUser" type="text" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:8px;" />
+        </label>
+        <label>
+          Password
+          <input id="adminPass" type="password" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:8px;" />
+        </label>
+
+        <button id="loginBtn" class="action-btn" style="margin-right:0;" type="button">Login</button>
+        <div id="loginError" style="color:#dc3545; display:none; text-align:center; font-weight:600;"></div>
+      </div>
+    </div>
+
+    <div id="adminView" style="display:none;">
+      <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom: 15px;">
+        <div style="flex: 1 1 220px;">
+          <label style="font-weight:700;">Year</label>
+          <select id="yearSelect" class="select-btn" style="width:100%;">
+            <option value="">Loading...</option>
+          </select>
+        </div>
+
+        <div style="flex: 1 1 220px;">
+          <label style="font-weight:700;">Case Letter</label>
+          <select id="caseSelect" class="select-btn" style="width:100%;">
+            <option value="">Select year first</option>
+          </select>
+        </div>
+
+        <div style="flex: 1 1 260px;">
+          <label style="font-weight:700;">Search cars in this case</label>
+          <input id="caseSearch" type="text" class="search-bar" placeholder="name / hw_number / color / series..." style="width:100%;" />
+        </div>
+      </div>
+
+      <div id="thSthCard" style="background:#fff; border:1px solid #ddd; border-radius:10px; padding:15px; margin-bottom: 15px;">
+        <h2 style="margin-top:0;">TH / STH Management (for this Year + Case)</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+          <div style="flex:1 1 240px;">
+            <label style="font-weight:700;">TH Car</label>
+            <select id="thSelect" class="select-btn" style="width:100%;"></select>
+            <div style="margin-top:8px;">
+              <img id="thPreview" src="images/images-coming-soon.png" alt="TH preview" style="max-width:100%; height:90px; object-fit:contain; border-radius:8px; border:1px solid #eee; background:#fff;" />
+            </div>
+          </div>
+          <div style="flex:1 1 240px;">
+            <label style="font-weight:700;">STH Car</label>
+            <select id="sthSelect" class="select-btn" style="width:100%;"></select>
+            <div style="margin-top:8px;">
+              <img id="sthPreview" src="images/images-coming-soon.png" alt="STH preview" style="max-width:100%; height:90px; object-fit:contain; border-radius:8px; border:1px solid #eee; background:#fff;" />
+            </div>
+          </div>
+
+          <button id="thSthSave" class="action-btn" style="align-self:flex-end;">Update TH/STH</button>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom: 10px;">
+        <h2 style="margin:0;">Cars in Case</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="addCarBtn" class="action-btn" style="margin-right:0;">+ Add Car</button>
+          <button id="exportBtnAdmin" class="menu-btn" style="background:#007BFF; color:#fff; border-radius:8px; border:none; padding:12px 18px;">Export updated data.json</button>
+        </div>
+      </div>
+
+      <div id="carsList" style="display:flex; flex-direction:column; gap:14px;"></div>
+
+      <p style="color:#666; font-weight:600;">Tip: The admin modifies an in-memory draft and exports it. After downloading, upload/commit the exported <code>data.json</code> from your GitHub phone app.</p>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="nav.js"></script>
+  <script src="admin-cars.js"></script>
+</body>
+</html>
+
