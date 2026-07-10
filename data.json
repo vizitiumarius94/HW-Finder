@@ -6979,7 +6979,6 @@
           {
             "name": "2005 Ford Mustang",
             "image": "images/2005Mustang2022.jpg",
-            "image": "images/2005Mustang2022.jpg",
             "hw_number": "146",
             "color": "Gray",
             "series": "Spoiler Alert",
@@ -19045,10 +19044,24 @@
           }
         ]
       },
-	  {
+      {
         "letter": "K",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "Sweet Driver",
+          "image": "images/10876_th.jpg",
+          "hw_number": "196",
+          "color": "Cream",
+          "series": "Sweet Rides",
+          "series_number": "5"
+        },
+        "sth": {
+          "name": "'94 Toyota Supra",
+          "image": "images/10571_th.jpg",
+          "hw_number": "222",
+          "color": "Spectraflame Black",
+          "series": "Tooned",
+          "series_number": "5"
+        },
         "cars": [
           {
             "name": "'94 Toyota Supra",
@@ -19318,8 +19331,22 @@
       },
       {
         "letter": "L",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "Mad Manga",
+          "image": "images/10877_th.jpg",
+          "hw_number": "217",
+          "color": "White",
+          "series": "Hot Wheels Let's Race",
+          "series_number": "4"
+        },
+        "sth": {
+          "name": "Nissan Maxima Drift Car",
+          "image": "images/10621_th.jpg",
+          "hw_number": "225",
+          "color": "Black",
+          "series": "Wagons",
+          "series_number": "10"
+        },
         "cars": [
           {
             "name": "Nissan Maxima Drift Car",
@@ -19525,8 +19552,22 @@
       },
       {
         "letter": "M",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "Ford Model A Custom '31",
+          "image": "images/10950_th.jpg",
+          "hw_number": "229",
+          "color": "Gray Blue",
+          "series": "Rod Squad",
+          "series_number": "9"
+        },
+        "sth": {
+          "name": "Porsche 911 Carrera RS 2.7",
+          "image": "images/10221_th.jpg",
+          "hw_number": "208",
+          "color": "Spectraflame Brown",
+          "series": "Then and Now",
+          "series_number": "9"
+        },
         "cars": [
           {
             "name": "Porsche 911 Carrera RS 2.7",
@@ -19804,8 +19845,22 @@
       },
       {
         "letter": "N",
-        "th": null,
-        "sth": null,
+        "th": {
+          "name": "Fast Fish",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "238",
+          "color": "Blue",
+          "series": "Team Wheels",
+          "series_number": "5"
+        },
+        "sth": {
+          "name": "'23 Ram 1500",
+          "image": "images/images-coming-soon.png",
+          "hw_number": "234",
+          "color": "Spectraflame Purple",
+          "series": "HW Dirt",
+          "series_number": "9"
+        },
         "cars": [
           {
             "name": "'65 Mercury Comet Cyclone",
